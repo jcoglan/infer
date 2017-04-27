@@ -1,22 +1,12 @@
 module Infer
 
-  class Language
-    def initialize
-      @relations = {}
-    end
-
-    def augment(block)
-      case block
-      when Relation
-        @relations[block.name] = block
-      when Syntax
-        @syntax = block
-      end
-    end
-
+  Language = Struct.new(:syntax, :rules) do
     def relation(name)
-      rel = @relations.fetch(Word.new(name))
-      rel.with_syntax(@syntax)
+      Relation.new(self, name)
+    end
+
+    def derive(target, state = State.new({}))
+      rules.flat_map { |name, rule| rule.match(self, target, state) }
     end
   end
 

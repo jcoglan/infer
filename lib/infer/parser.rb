@@ -2,9 +2,10 @@ module Infer
 
   class Parser
     def mk_language(t, a, b, el)
-      lang = Language.new
-      el[1].elements.each { |elem| lang.augment(elem.block) }
-      lang
+      blocks = el[1].elements.map(&:block)
+      rules  = blocks.grep(Rule).map { |rule| [rule.name, rule] }
+
+      Language.new(nil, Hash[rules])
     end
 
     def mk_syntax_block(t, a, b, el)
@@ -12,29 +13,23 @@ module Infer
       Syntax.new(Hash[rules])
     end
 
-    def mk_syntax_rule(t, a, b, el)
+    def mk_syntax_clause(t, a, b, el)
       choices = [el[2]] + el[3].elements.map(&:el)
       [el[0].name, choices]
     end
 
-    def mk_relation_block(t, a, b, el)
-      name  = el[2]
-      rules = el[6].elements.map(&:rule_smt)
-      Relation.new(name, Hash[rules], nil)
-    end
+    def mk_rule(t, a, b, el)
+      name = el[2]
 
-    def mk_relation_rule(t, a, b, el)
-      name = el[0]
-
-      pred = el[4].elements[0].elements[0]
+      pred = el[6].elements[0].elements[0]
       pred = pred ? [pred] : []
 
-      cons = [el[4].elements[1]]
+      cons = [el[6].elements[1]]
 
       rule = Rule.new(name, pred, cons)
       (pred + cons).each { |expr| expr.rule = rule }
 
-      [name, rule]
+      rule
     end
 
     def mk_var(t, a, b, el)

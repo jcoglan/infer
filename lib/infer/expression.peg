@@ -1,11 +1,11 @@
 grammar Infer.Expression
 
-expr          <-  element (_ el:element)*                         %mk_expr
+expr          <-  element (_ el:element)*                     %mk_expr
 element       <-  sub_expr / keyword
-sub_expr      <-  "(" _ expr _ ")"                                %mk_sub_expr
+sub_expr      <-  "(" _ expr _ ")"                            %mk_sub_expr
 
-keyword       <-  [A-Za-z0-9] [A-Za-z0-9-]*                       %mk_keyword
-               /  [^A-Za-z0-9\s\t\n\r(){}#$|]+                    %mk_keyword
+keyword       <-  [A-Za-z0-9] [A-Za-z0-9-]*                   %mk_keyword
+               /  [^A-Za-z0-9\s\t\n\r(){}#$|]+                %mk_keyword
 
 comment       <-  "#" [^\n\r]*
 sp            <-  [ \t] / comment

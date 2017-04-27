@@ -10,18 +10,16 @@ syntax {
       | false
 }
 
-relation -> {
-  E-IfTrue {
-    (if true then $t2 else $t3) -> $t2
-  }
+rule E-IfTrue {
+  (if true then $t2 else $t3) -> $t2
+}
 
-  E-IfFalse {
-    (if false then $t2 else $t3) -> $t3
-  }
+rule E-IfFalse {
+  (if false then $t2 else $t3) -> $t3
+}
 
-  E-If {
-                           $t1 -> $t1'                          # if the condition can reduce
-    ---------------------------------------------------------   # then
-    (if $t1 then $t2 else $t3) -> (if $t1' then $t2 else $t3)   # reduce it
-  }
+rule E-If {
+                         $t1 -> $t1'                          # if the condition can reduce
+  ---------------------------------------------------------   # then
+  (if $t1 then $t2 else $t3) -> (if $t1' then $t2 else $t3)   # reduce it
 }

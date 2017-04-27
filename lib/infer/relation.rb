@@ -3,19 +3,11 @@ module Infer
   Ambiguous = Class.new(StandardError)
   Stuck = Class.new(StandardError)
 
-  Relation = Struct.new(:name, :rules, :syntax) do
-    def with_syntax(syntax)
-      Relation.new(name, rules, syntax)
-    end
-
-    def derive(target, state = State.new({}))
-      rules.flat_map { |name, rule| rule.match(self, target, state) }
-    end
-
+  Relation = Struct.new(:language, :name) do
     def once(term)
       result = Variable.new('<?>', '')
-      target = Sequence.new([term, name, result])
-      states = derive(target)
+      target = Sequence.new([term, Word.new(name), result])
+      states = language.derive(target)
 
       case states.size
       when 0 then raise Stuck
