@@ -1,6 +1,6 @@
 grammar Infer.Grammar
 
-root          <-  _ (block _)*                                    %mk_language
+language      <-  _ (block _)*                                    %mk_language
 
 block         <-  syntax_blk / relation_blk
 
@@ -15,12 +15,13 @@ then          <-  "\n" sp* "-"+ sp* "\n"
 lb            <-  "{"
 rb            <-  "}"
 
-expr          <-  element (seq el:element)*                       %mk_expr
-element       <-  sub_expr / refvar / keyword
-sub_expr      <-  "(" _ expr _ ")"                                %mk_sub_expr
-refvar        <-  var !assign                                     %mk_refvar
 var           <-  "$" [A-Za-z]+ [0-9]* "'"*                       %mk_var
+refvar        <-  var !assign                                     %mk_refvar
 assign        <-  _ ":=" _
+
+expr          <-  element (seq el:element)*                       %mk_expr
+element       <-  sub_expr / keyword / refvar
+sub_expr      <-  "(" _ expr _ ")"                                %mk_sub_expr
 seq           <-  sp? sp? sp?
 
 keyword       <-  [A-Za-z0-9] [A-Za-z0-9-]*                       %mk_keyword

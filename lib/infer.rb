@@ -1,4 +1,5 @@
 module Infer
+
   ROOT = File.expand_path('../infer', __FILE__)
 
   autoload :Language, ROOT + '/language'
@@ -13,4 +14,13 @@ module Infer
   autoload :Expression, ROOT + '/expression'
   autoload :Grammar,    ROOT + '/grammar'
   autoload :Parser ,    ROOT + '/parser'
+
+  def self.parse_expression(text)
+    Expression.parse(text, :actions => Parser.new)
+  end
+
+  def self.parse_language(text)
+    Grammar.parse(text, :actions => Parser.new)
+  end
+
 end
