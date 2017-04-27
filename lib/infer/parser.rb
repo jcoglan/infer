@@ -52,6 +52,10 @@ module Infer
       el[2]
     end
 
+    def mk_padded(t, a, b, el)
+      el[1]
+    end
+
     def mk_keyword(t, a, b, el)
       Word.new(t[a...b])
     end

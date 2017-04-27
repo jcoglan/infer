@@ -1,5 +1,7 @@
 grammar Infer.Expression
 
+padded        <-  _ expr _                                    %mk_padded
+
 expr          <-  element (_ el:element)*                     %mk_expr
 element       <-  sub_expr / keyword
 sub_expr      <-  "(" _ expr _ ")"                            %mk_sub_expr
