@@ -8,7 +8,7 @@ seq           <-  sp? sp? sp?
 keyword       <-  [A-Za-z0-9] [A-Za-z0-9-]*                       %mk_keyword
                /  [^A-Za-z0-9\s\t\n\r(){}#$|]+                    %mk_keyword
 
-comment       <-  "#" [^\n]*
-sp            <-  [ \t]
-ws            <-  [ \t\n\r]
-_             <-  (comment / ws)*
+comment       <-  "#" [^\n\r]*
+sp            <-  [ \t] / comment
+nl            <-  [\n\r]
+_             <-  (sp / nl)*
