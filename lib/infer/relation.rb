@@ -8,16 +8,29 @@ module Infer
       Relation.new(name, rules, syntax)
     end
 
-    def apply(term)
-      result = Variable.new('<result>', '')
-      target = Sequence.from(term) + Sequence.new([name, result])
+    def derive(target, state = State.new({}))
+      rules.flat_map { |name, rule| rule.match(self, target, state) }
+    end
 
-      states = rules.map { |name, rule| rule.match(target) }.compact
+    def once(term)
+      result = Variable.new('<?>', '')
+      target = Sequence.new([term, name, result])
+      states = derive(target)
 
       case states.size
       when 0 then raise Stuck
       when 1 then states.first.walk(result)
       else raise Ambiguous
+      end
+    end
+
+    def many(term)
+      loop do
+        begin
+          term = once(term)
+        rescue Stuck
+          return term
+        end
       end
     end
   end

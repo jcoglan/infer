@@ -1,8 +1,8 @@
 grammar Infer.Expression
 
 expr          <-  element (seq el:element)*                       %mk_expr
-then          <-  "\n" sp* "-"+ sp* "\n"
-element       <-  refvar / keyword
+element       <-  sub_expr / refvar / keyword
+sub_expr      <-  "(" _ expr _ ")"                                %mk_sub_expr
 refvar        <-  var !assign                                     %mk_refvar
 var           <-  "$" [A-Za-z]+ [0-9]* "'"*                       %mk_var
 assign        <-  _ ":=" _

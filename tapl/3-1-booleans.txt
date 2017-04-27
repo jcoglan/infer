@@ -12,16 +12,16 @@ syntax {
 
 relation -> {
   E-IfTrue {
-    if true then $t2 else $t3 -> $t2
+    (if true then $t2 else $t3) -> $t2
   }
 
   E-IfFalse {
-    if false then $t2 else $t3 -> $t3
+    (if false then $t2 else $t3) -> $t3
   }
 
   E-If {
-                         $t1 -> $t1'
-    -----------------------------------------------------
-    if $t1 then $t2 else $t3 -> if $t1' then $t2 else $t3
+                           $t1 -> $t1'
+    ---------------------------------------------------------
+    (if $t1 then $t2 else $t3) -> (if $t1' then $t2 else $t3)
   }
 }

@@ -19,6 +19,7 @@ module Infer
       x, y = walk(x), walk(y)
 
       return self if x == y
+
       return assign(x, y) if x.is_a?(Variable)
       return assign(y, x) if y.is_a?(Variable)
 

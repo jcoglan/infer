@@ -34,10 +34,15 @@ module Infer
 
       def mk_relation_rule(t, a, b, el)
         name = el[0]
-        pred = el[4].elements[0].elements[0]
-        cons = el[4].elements[1]
 
-        rule = Rule.new(name, pred ? [pred] : [], [cons])
+        pred = el[4].elements[0].elements[0]
+        pred = pred ? [pred] : []
+
+        cons = [el[4].elements[1]]
+
+        rule = Rule.new(name, pred, cons)
+        (pred + cons).each { |expr| expr.rule = rule }
+
         [name, rule]
       end
 
@@ -47,12 +52,18 @@ module Infer
         Sequence.new(parts)
       end
 
+      def mk_sub_expr(t, a, b, el)
+        el[2]
+      end
+
       def mk_keyword(t, a, b, el)
         Word.new(t[a...b])
       end
 
       def mk_var(t, a, b, el)
-        Variable.new(el[1].text, el[2].text + el[3].text)
+        syntax_name = el[1].text
+        index = el[2].text + el[3].text
+        Variable.new(syntax_name, index, nil)
       end
 
       def mk_refvar(t, a, b, el)
