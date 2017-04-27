@@ -10,7 +10,7 @@ syntax_smt    <-  var assign expr (_ "|" _ el:expr)*              %mk_syntax_rul
 relation_blk  <-  "relation" _ keyword _ lb _ (rule_smt _)* rb    %mk_relation_block
 rule_smt      <-  keyword _ lb _ rule_expr _ rb                   %mk_relation_rule
 rule_expr     <-  (expr sp* then _)? expr
-then          <-  "\n" sp* "-"+ sp* "\n"
+then          <-  nl sp* "-"+ sp* nl
 
 lb            <-  "{"
 rb            <-  "}"
@@ -19,10 +19,9 @@ var           <-  "$" [A-Za-z]+ [0-9]* "'"*                       %mk_var
 refvar        <-  var !assign                                     %mk_refvar
 assign        <-  _ ":=" _
 
-expr          <-  element (seq el:element)*                       %mk_expr
+expr          <-  element (sp* el:element)*                       %mk_expr
 element       <-  sub_expr / keyword / refvar
 sub_expr      <-  "(" _ expr _ ")"                                %mk_sub_expr
-seq           <-  sp? sp? sp?
 
 keyword       <-  [A-Za-z0-9] [A-Za-z0-9-]*                       %mk_keyword
                /  [^A-Za-z0-9\s\t\n\r(){}#$|]+                    %mk_keyword

@@ -1,9 +1,8 @@
 grammar Infer.Expression
 
-expr          <-  element (seq el:element)*                       %mk_expr
+expr          <-  element (_ el:element)*                         %mk_expr
 element       <-  sub_expr / keyword
 sub_expr      <-  "(" _ expr _ ")"                                %mk_sub_expr
-seq           <-  sp? sp? sp?
 
 keyword       <-  [A-Za-z0-9] [A-Za-z0-9-]*                       %mk_keyword
                /  [^A-Za-z0-9\s\t\n\r(){}#$|]+                    %mk_keyword
