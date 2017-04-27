@@ -1,18 +1,4 @@
-grammar Infer.Grammar
-
-root          <-  _ (block _)*                                    %mk_language
-
-block         <-  syntax_blk / relation_blk
-
-syntax_blk    <-  "syntax" _ lb _ (syntax_smt _)* rb              %mk_syntax_block
-syntax_smt    <-  var assign expr (_ "|" _ el:expr)*              %mk_syntax_rule
-
-relation_blk  <-  "relation" _ keyword _ lb _ (rule_smt _)* rb    %mk_relation_block
-rule_smt      <-  keyword _ lb _ rule_expr _ rb                   %mk_relation_rule
-rule_expr     <-  (expr sp* then _)? expr
-
-lb            <-  "{"
-rb            <-  "}"
+grammar Infer.Expression
 
 expr          <-  element (seq el:element)*                       %mk_expr
 then          <-  "\n" sp* "-"+ sp* "\n"

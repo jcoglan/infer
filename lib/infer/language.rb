@@ -13,6 +13,11 @@ module Infer
         @syntax = block
       end
     end
+
+    def relation(name)
+      rel = @relations.fetch(Word.new(name))
+      rel.with_syntax(@syntax)
+    end
   end
 
 end

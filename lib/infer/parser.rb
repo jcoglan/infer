@@ -1,7 +1,11 @@
 module Infer
   class Parser
 
-    def self.parse(text)
+    def self.parse_expression(text)
+      Expression.parse(text, :actions => Actions.new)
+    end
+
+    def self.parse_language(text)
       Grammar.parse(text, :actions => Actions.new)
     end
 
@@ -25,7 +29,7 @@ module Infer
       def mk_relation_block(t, a, b, el)
         name  = el[2]
         rules = el[6].elements.map(&:rule_smt)
-        Relation.new(name, Hash[rules])
+        Relation.new(name, Hash[rules], nil)
       end
 
       def mk_relation_rule(t, a, b, el)
