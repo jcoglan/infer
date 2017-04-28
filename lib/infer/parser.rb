@@ -26,16 +26,13 @@ module Infer
 
       cons = [el[6].elements[1]]
 
-      rule = Rule.new(name, pred, cons)
-      (pred + cons).each { |expr| expr.rule = rule }
-
-      rule
+      Rule.new(name, pred, cons)
     end
 
     def mk_var(t, a, b, el)
       syntax_name = el[1].text
       index = el[2].text + el[3].text
-      Variable.new(syntax_name, index, nil)
+      Variable.new(syntax_name, index)
     end
 
     def mk_refvar(t, a, b, el)

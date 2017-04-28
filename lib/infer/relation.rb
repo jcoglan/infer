@@ -5,7 +5,7 @@ module Infer
 
   Relation = Struct.new(:language, :name) do
     def once(term)
-      result = Variable.new('<?>', '')
+      result = Variable.new('<?>', '', Object.new)
       target = Sequence.new([term, Word.new(name), result])
       states = language.derive(target)
 

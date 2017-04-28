@@ -5,15 +5,17 @@ module Infer
       "<rule [#{name.inspect}] #{premises.inspect} #{conclusions.inspect}>"
     end
 
-    def match(relation, target, state)
+    def match(lang, target, state)
+      scope = Object.new
+
       state = conclusions.inject(state) do |state, expr|
-        state && state.unify(target, expr)
+        state && state.unify(target, expr.in_scope(scope))
       end
 
       return [] unless state
 
       premises.inject([state]) do |states, expr|
-        states.flat_map { |state| relation.derive(expr, state) }
+        states.flat_map { |state| lang.derive(expr.in_scope(scope), state) }
       end
     end
   end

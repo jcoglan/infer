@@ -3,7 +3,8 @@ module Infer
   Word = Struct.new(:name) do
     alias :inspect :name
 
-    def rule=(rule)
+    def in_scope(scope)
+      self
     end
   end
 

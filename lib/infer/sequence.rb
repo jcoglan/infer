@@ -4,11 +4,7 @@ module Infer
     include Enumerable
 
     def inspect
-      '(' + items.map(&:inspect).join(' ') + ')'
-    end
-
-    def rule=(rule)
-      each { |expr| expr.rule = rule }
+      '(' + map(&:inspect).join(' ') + ')'
     end
 
     def each
@@ -17,6 +13,10 @@ module Infer
 
     def size
       items.size
+    end
+
+    def in_scope(scope)
+      Sequence.new(map { |v| v.in_scope(scope) })
     end
   end
 
