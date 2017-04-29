@@ -23,4 +23,12 @@ module Infer
     Grammar.parse(text, :actions => Parser.new)
   end
 
+  def self.print_derivation(derivation, d = 0)
+    dent = '  ' * d
+    puts "#{dent}- [#{derivation.rule}] #{derivation.conclusions.first}"
+    derivation.parents.each do |deriv|
+      print_derivation(deriv, d + 1)
+    end
+  end
+
 end

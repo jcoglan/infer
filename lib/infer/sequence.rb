@@ -6,6 +6,7 @@ module Infer
     def inspect
       map { |part| part.with_parens rescue part.inspect }.join(' ')
     end
+    alias :to_s :inspect
 
     def with_parens
       '(' + inspect + ')'

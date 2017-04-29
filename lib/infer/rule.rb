@@ -7,6 +7,7 @@ module Infer
 
     def match(lang, target, state)
       scope = Object.new
+      exprs = conclusions.map { |expr| expr.in_scope(scope) }
 
       state = conclusions.inject(state) do |state, expr|
         state && state.unify(target, expr.in_scope(scope))
@@ -14,9 +15,13 @@ module Infer
 
       return [] unless state
 
-      premises.inject([state]) do |states, expr|
-        states.flat_map { |state| lang.derive(expr.in_scope(scope), state) }
+      states = premises.inject([state]) do |states, expr|
+        states.flat_map do |state|
+          lang.derive(expr.in_scope(scope), state).map { |s| s.connect(state) }
+        end
       end
+
+      states.map { |s| s.derive(name, exprs) }
     end
   end
 

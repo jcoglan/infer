@@ -1,8 +1,36 @@
 module Infer
 
-  State = Struct.new(:values) do
+  Derivation = Struct.new(:parents, :rule, :conclusions) do
+    def in_state(state)
+      parents  = self.parents.map { |d| d.in_state(state) }
+      conclude = self.conclusions.map { |expr| state.walk(expr) }
+      Derivation.new(parents, rule, conclude)
+    end
+  end
+
+  State = Struct.new(:values, :derivation) do
     def assign(var, value)
       State.new(values.merge(var => value))
+    end
+
+    def connect(state)
+      State.new(values, state.parents + [derivation])
+    end
+
+    def derive(rule, conclusions)
+      State.new(values, Derivation.new(parents, rule, conclusions))
+    end
+
+    def parents
+      case derivation
+      when NilClass   then []
+      when Derivation then [derivation]
+      when Array      then derivation
+      end
+    end
+
+    def build_derivation
+      derivation.in_state(self)
     end
 
     def walk(value)

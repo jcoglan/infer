@@ -10,7 +10,10 @@ STR
 
 puts
 p expr
-p [:type, typeof.once(expr)]
+type, derivation = typeof.once_with_derivation(expr)
+p [:type, type]
+puts
+Infer.print_derivation(derivation)
 
 
 expr = Infer.parse_expression <<-STR
