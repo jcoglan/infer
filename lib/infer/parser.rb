@@ -20,11 +20,15 @@ module Infer
 
     def mk_rule(t, a, b, el)
       name = el[2]
+      expr = el[6].elements
 
-      pred = el[6].elements[0].elements[0]
-      pred = pred ? [pred] : []
+      if expr[0].elements.empty?
+        pred = []
+      else
+        pred = [expr[0].elements[0]] + expr[0].elements[1].map(&:expr)
+      end
 
-      cons = [el[6].elements[1]]
+      cons = [expr[1]]
 
       Rule.new(name, pred, cons)
     end

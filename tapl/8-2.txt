@@ -1,0 +1,35 @@
+rule T-True {
+  true : Bool
+}
+
+rule T-False {
+  false : Bool
+}
+
+rule T-Zero {
+  0 : Int
+}
+
+rule T-Succ {
+      $n : Int
+  ---------------
+  (succ $n) : Int
+}
+
+rule T-Pred {
+      $n : Int
+  ---------------
+  (pred $n) : Int
+}
+
+rule T-IsZero {
+        $n : Int
+  ------------------
+  (iszero $n) : Bool
+}
+
+rule T-If {
+  $t1 : Bool, $t2 : $T, $t3 : $T
+  -------------------------------
+  (if $t1 then $t2 else $t3) : $T
+}

@@ -11,7 +11,8 @@ clean:
 	rm -rf $(derived)
 
 test: all
-	@ruby test.rb
+	@ruby test/eval.rb
+	@ruby test/type.rb
 
 %.rb: %.peg
 	canopy $< --lang ruby
