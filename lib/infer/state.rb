@@ -10,7 +10,11 @@ module Infer
 
   State = Struct.new(:values, :derivation) do
     def assign(var, value)
-      State.new(values.merge(var => value))
+      State.new(values.merge(var => value), derivation)
+    end
+
+    def clear
+      State.new(values)
     end
 
     def connect(state)

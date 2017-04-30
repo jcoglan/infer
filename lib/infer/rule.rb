@@ -15,7 +15,7 @@ module Infer
 
       return [] unless state
 
-      states = premises.inject([state]) do |states, expr|
+      states = premises.inject([state.clear]) do |states, expr|
         states.flat_map do |state|
           lang.derive(expr.in_scope(scope), state).map { |s| s.connect(state) }
         end
