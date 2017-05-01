@@ -5,11 +5,14 @@ module Infer
   autoload :Language, ROOT + '/language'
   autoload :Relation, ROOT + '/relation'
   autoload :Rule,     ROOT + '/rule'
-  autoload :Sequence, ROOT + '/sequence'
   autoload :State,    ROOT + '/state'
   autoload :Syntax,   ROOT + '/syntax'
+
+  autoload :Sequence, ROOT + '/sequence'
   autoload :Variable, ROOT + '/variable'
   autoload :Word,     ROOT + '/word'
+
+  autoload :Printer, ROOT + '/printer'
 
   autoload :Expression, ROOT + '/expression'
   autoload :Grammar,    ROOT + '/grammar'
@@ -23,12 +26,8 @@ module Infer
     Grammar.parse(text, :actions => Parser.new)
   end
 
-  def self.print_derivation(derivation, d = 0)
-    dent = '  ' * d
-    puts "#{dent}- [#{derivation.rule}] #{derivation.conclusions.first}"
-    derivation.parents.each do |deriv|
-      print_derivation(deriv, d + 1)
-    end
+  def self.print_derivation(derivation)
+    Printer.new(derivation).print
   end
 
 end
