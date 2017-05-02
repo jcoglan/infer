@@ -6,7 +6,7 @@ module Infer
     end
 
     def derive(target, state = State.new({}))
-      rules.flat_map { |name, rule| rule.match(self, target, state) }
+      rules.flat_map { |rule| rule.match(self, target, state) }
     end
   end
 

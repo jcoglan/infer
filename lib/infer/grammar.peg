@@ -2,7 +2,9 @@ grammar Infer.Grammar
 
 language      <-  _ (block _)*                                %mk_language
 
-block         <-  syntax_blk / rule_blk
+block         <-  extends_blk / syntax_blk / rule_blk
+
+extends_blk   <-  "extends" sp+ [^\s]+                        %mk_extends
 
 syntax_blk    <-  "syntax" _ lb _ (syntax_smt _)* rb          %mk_syntax_block
 syntax_smt    <-  var assign expr (_ "|" _ el:expr)*          %mk_syntax_clause

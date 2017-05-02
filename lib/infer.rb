@@ -18,12 +18,13 @@ module Infer
   autoload :Grammar,    ROOT + '/grammar'
   autoload :Parser ,    ROOT + '/parser'
 
-  def self.parse_expression(text)
+  def self.expr(text)
     Expression.parse(text, :actions => Parser.new)
   end
 
-  def self.parse_language(text)
-    Grammar.parse(text, :actions => Parser.new)
+  def self.lang(pathname)
+    parser = Parser.new(pathname)
+    Grammar.parse(File.read(pathname), :actions => parser)
   end
 
   def self.print_derivation(derivation)

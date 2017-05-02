@@ -1,0 +1,32 @@
+# N (typed)
+# Figure 8-1: Typing rules for booleans (p93)
+
+extends ./3-2-arithmetic-expressions.txt
+extends ./8-1-typing-rules-for-booleans.txt
+
+syntax {
+  $T := ...
+       | Nat
+}
+
+rule T-Zero {
+  0 : Nat
+}
+
+rule T-Succ {
+      $t1 : Nat
+  ----------------
+  (succ $t1) : Nat
+}
+
+rule T-Pred {
+      $t1 : Nat
+  ----------------
+  (pred $t1) : Nat
+}
+
+rule T-IsZero {
+        $t1 : Nat
+  -------------------
+  (iszero $t1) : Bool
+}
