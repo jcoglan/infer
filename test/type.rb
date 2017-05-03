@@ -3,6 +3,8 @@ require './lib/infer'
 lang = Infer.lang('./tapl/8-2-typing-rules-for-numbers.txt')
 typeof = lang.relation(':')
 
+lang.rules.each { |_, rule| p rule }
+
 
 expr = Infer.expr <<-STR
   if (iszero (succ 0)) then 0 else (succ (succ 0))
@@ -10,7 +12,7 @@ STR
 
 2.times { puts }
 type, derivation = typeof.once_with_derivation(expr)
-Infer.print_derivation(derivation)
+Infer::Printer.new(derivation).print_simple
 
 
 expr = Infer.expr <<-STR
@@ -19,7 +21,7 @@ STR
 
 2.times { puts }
 type, derivation = typeof.once_with_derivation(expr)
-Infer.print_derivation(derivation)
+Infer::Printer.new(derivation).print_simple
 
 
 expr = Infer.expr <<-STR
@@ -28,7 +30,7 @@ STR
 
 2.times { puts }
 type, derivation = typeof.once_with_derivation(expr)
-Infer.print_derivation(derivation)
+Infer::Printer.new(derivation).print_simple
 
 
 expr = Infer.expr <<-STR

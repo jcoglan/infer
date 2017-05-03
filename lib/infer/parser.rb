@@ -3,12 +3,16 @@ module Infer
   Parser = Struct.new(:pathname) do
     def mk_language(t, a, b, el)
       blocks = el[1].elements.map(&:block)
-      rules  = blocks.grep(Rule)
 
       langs  = blocks.grep(Language)
-      rules += langs.flat_map(&:rules)
+      rules  = blocks.grep(Rule)
+      syntax = blocks.grep(Syntax)
 
-      Language.new(nil, rules)
+      Language.new.tap do |lang|
+        langs.each  { |l| lang.import(l) }
+        syntax.each { |s| lang.add_syntax(s) }
+        rules.each  { |r| lang.add_rule(r) }
+      end
     end
 
     def mk_extends(t, a, b, el)

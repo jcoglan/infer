@@ -1,12 +1,12 @@
 # N (typed)
-# Figure 8-1: Typing rules for booleans (p93)
+# Figure 8-2: Typing rules for numbers (p93)
 
-extends ./3-2-arithmetic-expressions.txt
 extends ./8-1-typing-rules-for-booleans.txt
+extends ./3-2-arithmetic-expressions.txt
 
 syntax {
   $T := ...
-       | Nat
+      | Nat
 }
 
 rule T-Zero {

@@ -7,6 +7,10 @@ module Infer
     def in_scope(scope)
       self
     end
+
+    def map_vars
+      self
+    end
   end
 
 end

@@ -1,3 +1,5 @@
+require 'set'
+
 module Infer
 
   ROOT = File.expand_path('../infer', __FILE__)

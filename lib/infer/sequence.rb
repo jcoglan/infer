@@ -23,6 +23,10 @@ module Infer
     def in_scope(scope)
       Sequence.new(map { |v| v.in_scope(scope) })
     end
+
+    def map_vars(&block)
+      Sequence.new(map { |v| v.map_vars(&block) })
+    end
   end
 
 end

@@ -1,7 +1,6 @@
 require './lib/infer'
 
-lang = Infer.lang('./tapl/3-1-booleans.txt')
-
+lang = Infer.lang('./tapl/3-2-arithmetic-expressions.txt')
 eval = lang.relation('->')
 
 expr = Infer.expr('if true then true else false')
@@ -12,6 +11,11 @@ p [:p2, eval.once(expr)]
 
 expr = Infer.expr('if (if true then false else true) then true else false')
 p [:p3, eval.once(expr), eval.many(expr)]
+
+_, deriv = eval.once_with_derivation(expr)
+puts
+Infer.print_derivation(deriv)
+puts
 
 expr = Infer.expr('if true then (if true then false else true) else false')
 p [:p4, eval.once(expr), eval.many(expr)]
