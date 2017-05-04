@@ -10,11 +10,9 @@ syntax {
       | pred $t
       | iszero $t
 
-  $v := ...
-      | $nv
+  $v := ... | $nv
 
-  $nv := 0
-       | succ $nv
+  $nv := 0 | succ $nv
 }
 
 rule E-Succ {
