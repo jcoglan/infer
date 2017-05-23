@@ -16,7 +16,7 @@ then          <-  nl sp* "-"+ sp* nl
 lb            <-  "{"
 rb            <-  "}"
 
-var           <-  "$" [A-Za-z]+ [0-9]* "'"*                   %mk_var
+var           <-  "$" ([A-Za-z]+ / .) [0-9]* "'"*             %mk_var
 refvar        <-  var !assign                                 %mk_refvar
 assign        <-  _ ":=" _
 
