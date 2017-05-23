@@ -1,6 +1,6 @@
 module Infer
 
-  Rule = Struct.new(:name, :premises, :conclusions) do
+  Rule = Struct.new(:name, :premises, :conclusions, :syntactic) do
     def inspect
       "<rule #{name.inspect} #{premises.inspect} #{conclusions.inspect}>"
     end
@@ -21,7 +21,7 @@ module Infer
         end
       end
 
-      states.map { |s| s.derive(name, exprs) }
+      states.map { |s| s.derive(name, exprs, syntactic) }
     end
   end
 

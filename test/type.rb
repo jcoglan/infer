@@ -12,7 +12,7 @@ STR
 
 2.times { puts }
 type, derivation = typeof.once_with_derivation(expr)
-Infer::Printer.new(derivation).print_simple
+Infer.print_derivation(derivation)
 
 
 expr = Infer.expr <<-STR
@@ -21,7 +21,7 @@ STR
 
 2.times { puts }
 type, derivation = typeof.once_with_derivation(expr)
-Infer::Printer.new(derivation).print_simple
+Infer.print_derivation(derivation)
 
 
 expr = Infer.expr <<-STR
@@ -30,7 +30,7 @@ STR
 
 2.times { puts }
 type, derivation = typeof.once_with_derivation(expr)
-Infer::Printer.new(derivation).print_simple
+Infer.print_derivation(derivation)
 
 
 expr = Infer.expr <<-STR

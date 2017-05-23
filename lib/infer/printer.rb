@@ -15,7 +15,7 @@ module Infer
     end
 
     def parents
-      @parents ||= derivation.parents.map { |d| Printer.new(d) }
+      @parents ||= derivation.parents.reject(&:syntactic?).map { |d| Printer.new(d) }
     end
 
     def print_simple(d = 0)

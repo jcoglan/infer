@@ -41,7 +41,7 @@ module Infer
       premises, expressions = generate_premises([expression], true)
 
       conclusion = Sequence.new([expressions.first, MEMBER, set_name])
-      rule = Rule.new(rule_name, premises, [conclusion])
+      rule = Rule.new(rule_name, premises, [conclusion], true)
 
       language.add_rule(rule, false)
     end
