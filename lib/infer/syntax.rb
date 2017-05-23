@@ -2,7 +2,7 @@ module Infer
 
   Syntax = Struct.new(:rules) do
     ELLIPSIS = Word.new('...')
-    MEMBER   = Word.new('∈')
+    MEMBER   = Word.new('←')
 
     def +(syntax)
       return self if syntax.nil?
