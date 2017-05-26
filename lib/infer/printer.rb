@@ -1,7 +1,7 @@
 module Infer
 
   Printer = Struct.new(:derivation) do
-    PADDING = 4
+    PADDING = 3
 
     attr_reader :box_left, :box_right,
                 :conclusion_left, :conclusion_right
@@ -49,11 +49,16 @@ module Infer
 
       divider_width = [premise_width, conclusion.size].max
 
-      if premise_width < divider_width
-        parents.each { |printer| printer.nudge((divider_width - premise_width) / 2) }
-        conc_indent = 0
-      else
+      if premise_width >= divider_width
         conc_indent = (divider_width - conclusion.size) / 2
+      else
+        conc_indent = 0
+
+        avail  = premise_left - offset
+        indent = (divider_width - premise_width) / 2
+
+        parents.each { |printer| printer.nudge([indent - avail, 0].max) }
+        premise_left -= [indent, avail].min
       end
 
       @divider_left  = premise_left
