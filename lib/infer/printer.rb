@@ -56,11 +56,11 @@ module Infer
         conc_indent = (divider_width - conclusion.size) / 2
       end
 
-      @box_left  = offset
-      @box_right = @box_left + [parents_width, divider_width + 1 + rule_name.size].max
-
       @divider_left  = premise_left
       @divider_right = @divider_left + divider_width
+
+      @box_left  = offset
+      @box_right = [@box_left + parents_width, @divider_right + 1 + rule_name.size].max
 
       @conclusion_left  = @divider_left + conc_indent
       @conclusion_right = @conclusion_left + conclusion.size
