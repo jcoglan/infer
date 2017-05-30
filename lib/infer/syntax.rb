@@ -22,7 +22,7 @@ module Infer
       rules.each do |name, expressions|
         set_name = Word.new(name)
         expressions.each_with_index do |expression, i|
-          rule_name = Word.new("#{name}-#{i}")
+          rule_name = Word.new("S-#{name}-#{i}")
           generate_expression_rule(language, set_name, rule_name, expression)
         end
       end
