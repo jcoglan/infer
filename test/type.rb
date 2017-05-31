@@ -1,51 +1,25 @@
 require './lib/infer'
 
-lang = Infer.lang('./tapl/8-2-typing-rules-for-numbers.txt')
-typeof = lang.relation(':')
+LANG = Infer.lang('./tapl/8-2-typing-rules-for-numbers.txt')
+TYPEOF = LANG.relation(':')
 
-lang.rules.each { |_, rule| p rule }
+LANG.rules.each { |_, rule| p rule }
 
+def typeof(expr)
+  expr = Infer.expr(expr)
+  type, derivation = TYPEOF.once_with_derivation(expr)
 
-expr = Infer.expr <<-STR
-  if (iszero (succ 0)) then 0 else (succ (succ 0))
-STR
+  puts
+  puts "# #{expr}"
+  puts "# #{'-' * expr.to_s.size}"
+  puts "# #{type}"
+  puts
+  Infer.print_derivation(derivation)
+  puts
+end
 
-2.times { puts }
-type, derivation = typeof.once_with_derivation(expr)
-Infer.print_derivation(derivation)
-
-
-expr = Infer.expr <<-STR
-  iszero (succ (if false then (if (iszero (succ 0)) then 0 else (succ 0)) else (pred 0)))
-STR
-
-2.times { puts }
-type, derivation = typeof.once_with_derivation(expr)
-Infer.print_derivation(derivation)
-
-
-expr = Infer.expr <<-STR
-  if false then (pred 0) else (if (iszero (succ 0)) then 0 else (succ 0))
-STR
-
-2.times { puts }
-type, derivation = typeof.once_with_derivation(expr)
-Infer.print_derivation(derivation)
-
-
-expr = Infer.expr <<-STR
-  if (iszero (succ 0)) then false else true
-STR
-
-puts
-p expr
-p [:type, typeof.once(expr)]
-
-
-expr = Infer.expr <<-STR
-  if (iszero (succ 0)) then false else 0
-STR
-
-puts
-p expr
-p [:type, typeof.once(expr)]
+typeof 'if (iszero (succ 0)) then 0 else (succ (succ 0))'
+typeof 'iszero (succ (if false then (if (iszero (succ 0)) then 0 else (succ 0)) else (pred 0)))'
+typeof 'if false then (pred 0) else (if (iszero (succ 0)) then 0 else (succ 0))'
+typeof 'if (iszero (succ 0)) then false else true'
+typeof 'if (iszero (succ 0)) then false else 0'

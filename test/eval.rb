@@ -1,4 +1,4 @@
-require './lib/infer'
+require_relative '../lib/infer'
 
 lang = Infer.lang('./tapl/3-2-arithmetic-expressions.txt')
 eval = lang.relation('->')
