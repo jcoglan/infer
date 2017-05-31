@@ -1,0 +1,84 @@
+# → {}
+# Figure 11-6: Tuples, p128
+
+# extends ./9-1-pure-simply-typed-lambda-calculus.txt
+extends ./typed-lambda-booleans-and-numbers.txt
+
+syntax {
+  # since we're using {} as part of the metalanguage, and this language has no
+  # means of doing the * or + operators from regular expressions, we are doing
+  # to define tuples recursively as either the null tuple, or a tuple with
+  # another value prepended
+
+  $u := ⊥
+      | $t, $u
+
+  # likewise we will need a recursive definition of numbers
+
+  $i := 0
+      | + $i
+
+  $t := ...
+      | $u
+      | $u . $i
+
+  $uv := ⊥
+       | $v, $uv
+
+  $v := ...
+      | $uv
+
+  $uT := ⊥
+       | $T, $uT
+
+  $T := ...
+      | $uT
+}
+
+
+# Evaluation
+
+# these rules are modified to encode the required arithmetic as inference rules
+
+rule E-ProjTuple-0 {
+  (($v0, $uv) . 0) -> $v0
+}
+
+rule E-ProjTuple-N {
+  (($v0, $uv) . (+ $i)) -> ($uv . $i)
+}
+
+rule E-Proj {
+       $t1 -> $t1'
+  ---------------------
+  ($t1.$i) -> ($t1'.$i)
+}
+
+rule E-Tuple {
+  todo
+}
+
+
+# Typing
+
+rule T-Tuple-Null {
+  $Γ ⊢ ⊥ : ⊥
+}
+
+rule T-Tuple {
+  $Γ ⊢ $t1 : $T1 | $Γ ⊢ $u2 : $T2
+  -------------------------------
+    $Γ ⊢ ($t1, $u2) : ($T1, $T2)
+}
+
+rule T-Proj-0 {
+        $Γ ⊢ $t0 : $T0
+  --------------------------
+  $Γ ⊢ (($t0, $u) . 0) : $T0
+}
+
+rule T-Proj-N {
+        $Γ ⊢ ($u . $i) : $T
+  ------------------------------
+  $Γ ⊢ (($t0, $u) . (+ $i)) : $T
+}
