@@ -19,7 +19,7 @@ module Infer
     end
 
     def add_rule(rule, apply_syntax = true)
-      rule = @syntax.augment_rule(rule) if apply_syntax
+      rule = @syntax.augment_rule(rule) if apply_syntax and !ENV['NOSYNTAX']
       @rules[rule.name] = rule
     end
 
