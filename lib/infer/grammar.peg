@@ -10,7 +10,7 @@ syntax_blk    <-  "syntax" _ lb _ (syntax_smt _)* rb          %mk_syntax_block
 syntax_smt    <-  var assign expr (_ "|" _ el:expr)*          %mk_syntax_clause
 
 rule_blk      <-  "rule" sp+ keyword _ lb _ rule_expr _ rb    %mk_rule
-rule_expr     <-  (expr (_ ";" _ expr)* sp* then _)? expr
+rule_expr     <-  (expr (_ "|" _ expr)* sp* then _)? expr
 then          <-  nl sp* "-"+ sp* nl
 
 lb            <-  "{"
@@ -25,7 +25,7 @@ element       <-  sub_expr / keyword / refvar
 sub_expr      <-  "(" _ expr _ ")"                            %mk_sub_expr
 
 keyword       <-  [A-Za-z0-9] [A-Za-z0-9-]*                   %mk_keyword
-               /  [^A-Za-z0-9\s\t\n\r(){}|$;#]+               %mk_keyword
+               /  [^A-Za-z0-9\s\t\n\r(){}|$#]+                %mk_keyword
 
 comment       <-  "#" [^\n\r]*
 sp            <-  [ \t] / comment

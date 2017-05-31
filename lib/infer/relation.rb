@@ -3,10 +3,11 @@ module Infer
   Ambiguous = Class.new(StandardError)
   Stuck = Class.new(StandardError)
 
-  Relation = Struct.new(:language, :name) do
-    def derive(term)
+  Relation = Struct.new(:language, :symbols) do
+    def derive(*terms)
       result = Variable.new('<?>')
-      target = Sequence.new([term, Word.new(name), result])
+      ops    = symbols.map { |sym| Word.new(sym) }
+      target = Sequence.new(terms.zip(ops).inject([], &:+) + [result])
       states = language.derive(target)
 
       case states.size
@@ -16,13 +17,13 @@ module Infer
       end
     end
 
-    def once_with_derivation(term)
-      state, result = derive(term)
+    def once_with_derivation(*terms)
+      state, result = derive(*terms)
       [state.walk(result), state.build_derivation]
     end
 
-    def once(term)
-      state, result = derive(term)
+    def once(*terms)
+      state, result = derive(*terms)
       state.walk(result)
     end
 

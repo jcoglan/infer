@@ -23,8 +23,8 @@ module Infer
       @rules[rule.name] = rule
     end
 
-    def relation(name)
-      Relation.new(self, name)
+    def relation(*symbols)
+      Relation.new(self, symbols)
     end
 
     def derive(target, state = State.new({}))
