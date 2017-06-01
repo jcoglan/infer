@@ -18,10 +18,10 @@ def many(expr)
 end
 
 many 'if true then true else false'
-many 'hello: true, ⊥'
-many 'hello: (pred (succ 0)), ⊥'
-many 'hello: (pred (succ 0)), (world: (iszero 0), ⊥)'
-many '(hello: (pred (succ 0)), (world: (iszero 0), ⊥)).hello'
+many 'hello = true, ⊥'
+many 'hello = (pred (succ 0)), ⊥'
+many 'hello = (pred (succ 0)), (world = (iszero 0), ⊥)'
+many '(hello = (pred (succ 0)), (world = (iszero 0), ⊥)).hello'
 
-typeof LANG, 'hello: (pred (succ 0)), (world: (iszero 0), ⊥)'
-typeof LANG, '(hello: (pred (succ 0)), (world: (iszero 0), ⊥)).world'
+typeof LANG, 'hello = (pred (succ 0)), (world = (iszero 0), ⊥)'
+typeof LANG, '(hello = (pred (succ 0)), (world = (iszero 0), ⊥)).world'
