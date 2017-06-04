@@ -4,14 +4,11 @@
 extends ./9-1-pure-simply-typed-lambda-calculus.txt
 
 syntax {
-  $t := ...
-      | unit
+  $t := ... | unit
 
-  $v := ...
-      | unit
+  $v := ... | unit
 
-  $T := ...
-      | Unit
+  $T := ... | Unit
 }
 
 rule T-Unit {
