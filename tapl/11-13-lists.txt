@@ -1,5 +1,5 @@
 # → B List
-# Figure 11-11: Variants, p136
+# Figure 11-13: Lists, p147
 
 # extends ./9-1-pure-simply-typed-lambda-calculus.txt
 extends ./typed-lambda-booleans-and-numbers.txt
