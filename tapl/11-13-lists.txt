@@ -5,19 +5,19 @@
 extends ./typed-lambda-booleans-and-numbers.txt
 
 syntax {
-  $t := ...
-      | nil[$T]
-      | cons[$T] $t $t
-      | isnil[$T] $t
-      | head[$T] $t
-      | tail[$T] $t
+  $t ::= ...
+       | nil[$T]
+       | cons[$T] $t $t
+       | isnil[$T] $t
+       | head[$T] $t
+       | tail[$T] $t
 
-  $v := ...
-      | nil[$T]
-      | cons[$T] $v $v
+  $v ::= ...
+       | nil[$T]
+       | cons[$T] $v $v
 
-  $T := ...
-      | List $T
+  $T ::= ...
+       | List $T
 }
 
 

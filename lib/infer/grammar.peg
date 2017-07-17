@@ -18,7 +18,7 @@ rb            <-  "}"
 
 var           <-  "$" ([A-Za-z]+ / .) [0-9]* "'"*             %mk_var
 refvar        <-  var !assign                                 %mk_refvar
-assign        <-  _ ":=" _
+assign        <-  _ "::=" _
 
 expr          <-  element (sp* el:element)*                   %mk_expr
 element       <-  sub_expr / keyword / refvar

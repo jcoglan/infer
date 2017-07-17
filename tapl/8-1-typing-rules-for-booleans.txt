@@ -4,7 +4,7 @@
 extends ./3-1-booleans.txt
 
 syntax {
-  $T := Bool
+  $T ::= Bool
 }
 
 rule T-True {

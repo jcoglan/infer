@@ -5,17 +5,17 @@
 extends ./typed-lambda-booleans-and-numbers.txt
 
 syntax {
-  $t := ...
-      | inl $t
-      | inr $t
-      | case $t of inl $x ⇒ $t inr $x ⇒ $t
+  $t ::= ...
+       | inl $t
+       | inr $t
+       | case $t of inl $x ⇒ $t inr $x ⇒ $t
 
-  $v := ...
-      | inl $v
-      | inr $v
+  $v ::= ...
+       | inl $v
+       | inr $v
 
-  $T := ...
-      | $T + $T
+  $T ::= ...
+       | $T + $T
 }
 
 

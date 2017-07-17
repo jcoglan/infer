@@ -4,7 +4,7 @@
 extends ./9-1-pure-simply-typed-lambda-calculus.txt
 
 syntax {
-  $t := ... | $t as $T
+  $t ::= ... | $t as $T
 }
 
 rule E-Ascribe {

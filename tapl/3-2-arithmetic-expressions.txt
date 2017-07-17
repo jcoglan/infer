@@ -4,15 +4,15 @@
 extends ./3-1-booleans.txt
 
 syntax {
-  $t := ...
-      | 0
-      | succ $t
-      | pred $t
-      | iszero $t
+  $t ::= ...
+       | 0
+       | succ $t
+       | pred $t
+       | iszero $t
 
-  $v := ... | $nv
+  $v ::= ... | $nv
 
-  $nv := 0 | succ $nv
+  $nv ::= 0 | succ $nv
 }
 
 rule E-Succ {

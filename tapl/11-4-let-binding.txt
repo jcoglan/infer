@@ -5,7 +5,7 @@
 extends ./typed-lambda-booleans-and-numbers.txt
 
 syntax {
-  $t := ... | let $x=$t in $t
+  $t ::= ... | let $x=$t in $t
 }
 
 rule E-LetV {

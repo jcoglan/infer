@@ -3,21 +3,21 @@
 # Based on λ (5-3)
 
 syntax {
-  $x := a | b | c | d | e | f | g
-      | h | i | j | k | l | m | n
-      | o | p | q | r | s | t | u
-      | v | w | x | y | z
+  $x ::= a | b | c | d | e | f | g
+       | h | i | j | k | l | m | n
+       | o | p | q | r | s | t | u
+       | v | w | x | y | z
 
-  $t := $x
-      | λ$x : $T . $t
-      | $t $t
+  $t ::= $x
+       | λ$x : $T . $t
+       | $t $t
 
-  $v := λ$x : $T . $t
+  $v ::= λ$x : $T . $t
 
-  $T := $T → $T
+  $T ::= $T → $T
 
-  $Γ := ∅
-      | $Γ, $x : $T
+  $Γ ::= ∅
+       | $Γ, $x : $T
 }
 
 

@@ -4,13 +4,13 @@
 extends ./11-9-sums.txt
 
 syntax {
-  $t := ...
-      | inl $t as $T
-      | inr $t as $T
+  $t ::= ...
+       | inl $t as $T
+       | inr $t as $T
 
-  $v := ...
-      | inl $v as $T
-      | inr $v as $T
+  $v ::= ...
+       | inl $v as $T
+       | inr $v as $T
 }
 
 

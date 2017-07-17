@@ -5,7 +5,7 @@ extends ./8-1-typing-rules-for-booleans.txt
 extends ./3-2-arithmetic-expressions.txt
 
 syntax {
-  $T := ... | Nat
+  $T ::= ... | Nat
 }
 
 rule T-Zero {

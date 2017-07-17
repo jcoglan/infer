@@ -5,14 +5,14 @@
 extends ./typed-lambda-booleans-and-numbers.txt
 
 syntax {
-  $t := ...
-      | $t, $t
-      | $t.1
-      | $t.2
+  $t ::= ...
+       | $t, $t
+       | $t.1
+       | $t.2
 
-  $v := ... | $v, $v
+  $v ::= ... | $v, $v
 
-  $T := ... | $T × $T
+  $T ::= ... | $T × $T
 }
 
 

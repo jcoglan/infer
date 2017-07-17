@@ -4,10 +4,10 @@
 extends ./9-1-pure-simply-typed-lambda-calculus.txt
 
 syntax {
-  $A := A | B | C | D | E | F | G
-      | H | I | J | K | L | M | N
-      | O | P | Q | R | S | T | U
-      | V | W | X | Y | Z
+  $A ::= A | B | C | D | E | F | G
+       | H | I | J | K | L | M | N
+       | O | P | Q | R | S | T | U
+       | V | W | X | Y | Z
 
-  $T := ... | $A
+  $T ::= ... | $A
 }
