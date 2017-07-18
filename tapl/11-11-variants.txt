@@ -94,19 +94,19 @@ syntax {
   # This is a 'case fold', not a term in its own right but just the recursive
   # syntax of the clauses of a case expression
 
-  $cf ::= ; | <$l=$x> ⇒ $t $cf
+  $cf ::= ; / <$l=$x> ⇒ $t $cf
 
   $t ::= ...
-       | <$l=$t> as $T
-       | case $t of $cf
-       | ~$t
+       / <$l=$t> as $T
+       / case $t of $cf
+       / ~$t
 
   # A variant type is either the empty variant ν, or a <label:Type> pair
   # preceding another variant type
 
-  $vT ::= ν | <$l: $T> $vT
+  $vT ::= ν / <$l: $T> $vT
 
-  $T ::= ... | $vT
+  $T ::= ... / $vT
 }
 
 
@@ -165,7 +165,7 @@ rule T-Variant-N {
 # original expression has type T.
 
 rule T-Case {
-  $Γ ⊢ $t0 : (<$l: $T1> $vT) | ($Γ, $x : $T1) ⊢ $t1 : $T | $Γ ⊢ (case (~$t0) of $cf) : $T
+  $Γ ⊢ $t0 : (<$l: $T1> $vT) / ($Γ, $x : $T1) ⊢ $t1 : $T / $Γ ⊢ (case (~$t0) of $cf) : $T
   ---------------------------------------------------------------------------------------
                         $Γ ⊢ (case $t0 of (<$l=$x> ⇒ $t1 $cf)) : $T
 }

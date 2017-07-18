@@ -3,14 +3,14 @@ require_relative './_typeof'
 
 lang = Infer.lang('./tapl/13-1-references.txt')
 
-evaluate lang, '(ref unit) / ∅'
-evaluate lang, '(ref (λx:Unit. x)) / (∅ , ε ↦ unit)'
+evaluate lang, '(ref unit) | ∅'
+evaluate lang, '(ref (λx:Unit. x)) | (∅ , ε ↦ unit)'
 
 env = '((∅ , ε ↦ (λ x : Unit . x)) , (l ε) ↦ unit)'
 
-evaluate lang, "(! ε) / #{env}"
-evaluate lang, "(! (lε)) / #{env}"
-evaluate lang, "(ε := unit) / #{env}"
+evaluate lang, "(! ε) | #{env}"
+evaluate lang, "(! (lε)) | #{env}"
+evaluate lang, "(ε := unit) | #{env}"
 
 ref_typeof lang, 'ref unit'
 ref_typeof lang, '(λx: (Ref Unit). (x := unit)) (ref unit)'

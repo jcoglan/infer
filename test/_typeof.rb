@@ -9,7 +9,7 @@ def typeof(lang, expr, ctx = '∅')
 end
 
 def ref_typeof(lang, expr, ctx = '∅', env = '∅')
-  relation = lang.relation('/', '⊢', ':')
+  relation = lang.relation('|', '⊢', ':')
 
   type, derivation = relation.once_with_derivation(
     Infer.expr(ctx), Infer.expr(env), Infer.expr(expr))

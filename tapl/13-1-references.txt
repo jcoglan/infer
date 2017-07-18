@@ -5,45 +5,44 @@ extends ./11-2-unit-type.txt
 
 syntax {
   $l ::= ε
-       | l $l
+       / l $l
 
   $t ::= ...
-       | ref $t
-       | !$t
-       | $t := $t
-       | $l
+       / ref $t
+       / !$t
+       / $t := $t
+       / $l
 
   $v ::= ...
-       | $l
+       / $l
 
   $T ::= ...
-       | Ref $T
+       / Ref $T
 
   $μ ::= ∅
-       | $μ, $l ↦ $v
+       / $μ, $l ↦ $v
 
   $Σ ::= ∅
-       | $Σ, $l: $T
+       / $Σ, $l: $T
 }
 
 
 # Evaluation
 
-# The rules are presented here almost as in the book, with the exception that
-# I'm using / rather than | to introduce store typings. (It is currently tricky
-# to use | as a keyword due to its use to separate premises and syntactic
-# clauses.)
+# The rules are presented here almost as in the book, with some minor
+# adjustments that allow the use of auxilliary rules that define the operations
+# on the store μ.
 
 rule E-App1 {
-        ($t1 / $μ) -> ($t1' / $μ')
+        ($t1 | $μ) -> ($t1' | $μ')
   --------------------------------------
-  (($t1 $t2) / $μ) -> (($t1' $t2) / $μ')
+  (($t1 $t2) | $μ) -> (($t1' $t2) | $μ')
 }
 
 rule E-App2 {
-        ($t2 / $μ) -> ($t2' / $μ')
+        ($t2 | $μ) -> ($t2' | $μ')
   --------------------------------------
-  (($v1 $t2) / $μ) -> (($v1 $t2') / $μ')
+  (($v1 $t2) | $μ) -> (($v1 $t2') | $μ')
 }
 
 # The [x ↦ y] operation used here is the beta reduction operation on redexes,
@@ -51,7 +50,7 @@ rule E-App2 {
 # [x ↦ y] expression as literal output and does not evaluate further.
 
 rule E-AppAbs {
-  (((λ$x : $T . $t12) $v2) / $μ) -> (([$x ↦ $v2] $t12) / $μ)
+  (((λ$x : $T . $t12) $v2) | $μ) -> (([$x ↦ $v2] $t12) | $μ)
 }
 
 # This rule relies on the definition of `x ∉ dom y` given later to create new
@@ -62,13 +61,13 @@ rule E-AppAbs {
 rule E-RefV {
                  $l ∉ dom $μ
   -----------------------------------------
-  ((ref $v1) / $μ) -> ($l / ($μ, $l ↦ $v1))
+  ((ref $v1) | $μ) -> ($l | ($μ, $l ↦ $v1))
 }
 
 rule E-Ref {
-        ($t1 / $μ) -> ($t1' / $μ')
+        ($t1 | $μ) -> ($t1' | $μ')
   --------------------------------------
-  ((ref $t1) / $μ) -> ((ref $t1') / $μ')
+  ((ref $t1) | $μ) -> ((ref $t1') | $μ')
 }
 
 # The μ[l] = v operation is defined in auxiliary rules below.
@@ -76,13 +75,13 @@ rule E-Ref {
 rule E-DerefLoc {
          $μ[$l] = $v
   -------------------------
-  ((!$l) / $μ) -> ($v / $μ)
+  ((!$l) | $μ) -> ($v | $μ)
 }
 
 rule E-Deref {
-     ($t1 / $μ) -> ($t1' / $μ')
+     ($t1 | $μ) -> ($t1' | $μ')
   --------------------------------
-  ((!$t1) / $μ) -> ((!$t1') / $μ')
+  ((!$t1) | $μ) -> ((!$t1') | $μ')
 }
 
 # In the book the following rule is given without the premise, i.e. μ' is
@@ -95,19 +94,19 @@ rule E-Deref {
 rule E-Assign {
           [$l ↦ $v2] $μ = $μ'
   ----------------------------------
-  (($l := $v2) / $μ) -> (unit / $μ')
+  (($l := $v2) | $μ) -> (unit | $μ')
 }
 
 rule E-Assign1 {
-           ($t1 / $μ) -> ($t1' / $μ')
+           ($t1 | $μ) -> ($t1' | $μ')
   --------------------------------------------
-  (($t1 := $t2) / $μ) -> (($t1' := $t2) / $μ')
+  (($t1 := $t2) | $μ) -> (($t1' := $t2) | $μ')
 }
 
 rule E-Assign2 {
-           ($t2 / $μ) -> ($t2' / $μ')
+           ($t2 | $μ) -> ($t2' | $μ')
   --------------------------------------------
-  (($v1 := $t2) / $μ) -> (($v1 := $t2') / $μ')
+  (($v1 := $t2) | $μ) -> (($v1 := $t2') | $μ')
 }
 
 # The following rules do not appear in the book but define some of the
@@ -179,47 +178,47 @@ rule E-Ref-Bind2 {
 rule T-Var {
     ($x : $T) ∈ $Γ
   -----------------
-  $Γ / $Σ ⊢ $x : $T
+  $Γ | $Σ ⊢ $x : $T
 }
 
 rule T-Abs {
-       ($Γ, $x : $T1) / $Σ ⊢ $t2 : $T2
+       ($Γ, $x : $T1) | $Σ ⊢ $t2 : $T2
   -----------------------------------------
-  $Γ / $Σ ⊢ (λ$x : $T1 . $t2) : ($T1 → $T2)
+  $Γ | $Σ ⊢ (λ$x : $T1 . $t2) : ($T1 → $T2)
 }
 
 rule T-App {
-  $Γ / $Σ ⊢ $t1 : ($T11 → $T12) | $Γ / $Σ ⊢ $t2 : $T11
+  $Γ | $Σ ⊢ $t1 : ($T11 → $T12) / $Γ | $Σ ⊢ $t2 : $T11
   ----------------------------------------------------
-                $Γ / $Σ ⊢ ($t1 $t2) : $T12
+                $Γ | $Σ ⊢ ($t1 $t2) : $T12
 }
 
 rule T-Unit {
-  $Γ / $Σ ⊢ unit : Unit
+  $Γ | $Σ ⊢ unit : Unit
 }
 
 rule T-Loc {
         $Σ[$l] = $T1
   ------------------------
-  $Γ / $Σ ⊢ $l : (Ref $T1)
+  $Γ | $Σ ⊢ $l : (Ref $T1)
 }
 
 rule T-Ref {
-        $Γ / $Σ ⊢ $t1 : $T1
+        $Γ | $Σ ⊢ $t1 : $T1
   -------------------------------
-  $Γ / $Σ ⊢ (ref $t1) : (Ref $T1)
+  $Γ | $Σ ⊢ (ref $t1) : (Ref $T1)
 }
 
 rule T-Deref {
-  $Γ / $Σ ⊢ $t1 : (Ref $T11)
+  $Γ | $Σ ⊢ $t1 : (Ref $T11)
   --------------------------
-   $Γ / $Σ ⊢ (! $t1) : $T11
+   $Γ | $Σ ⊢ (! $t1) : $T11
 }
 
 rule T-Assign {
-  $Γ / $Σ ⊢ $t1 : (Ref $T11) | $Γ / $Σ ⊢ $t2 : $T11
+  $Γ | $Σ ⊢ $t1 : (Ref $T11) / $Γ | $Σ ⊢ $t2 : $T11
   -------------------------------------------------
-            $Γ / $Σ ⊢ ($t1 := $t2) : Unit
+            $Γ | $Σ ⊢ ($t1 := $t2) : Unit
 }
 
 # Typing is mostly done as in the book; the only additions are these rules for

@@ -4,11 +4,11 @@
 extends ./9-1-pure-simply-typed-lambda-calculus.txt
 
 syntax {
-  $t ::= ... | unit
+  $t ::= ... / unit
 
-  $v ::= ... | unit
+  $v ::= ... / unit
 
-  $T ::= ... | Unit
+  $T ::= ... / Unit
 }
 
 rule T-Unit {
@@ -33,7 +33,7 @@ rule E-SeqNext {
 }
 
 rule T-Seq {
-  $Γ ⊢ $t1 : Unit | $Γ ⊢ $t2 : $T2
+  $Γ ⊢ $t1 : Unit / $Γ ⊢ $t2 : $T2
   --------------------------------
       $Γ ⊢ ($t1 ; $t2) : $T2
 }

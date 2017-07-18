@@ -6,16 +6,16 @@ extends ./typed-lambda-booleans-and-numbers.txt
 
 syntax {
   $t ::= ...
-       | inl $t
-       | inr $t
-       | case $t of inl $x ⇒ $t inr $x ⇒ $t
+       / inl $t
+       / inr $t
+       / case $t of inl $x ⇒ $t inr $x ⇒ $t
 
   $v ::= ...
-       | inl $v
-       | inr $v
+       / inl $v
+       / inr $v
 
   $T ::= ...
-       | $T + $T
+       / $T + $T
 }
 
 
@@ -63,7 +63,7 @@ rule T-Inr {
 }
 
 rule T-Case {
-  $Γ ⊢ $t0 : ($T1 + $T2) | ($Γ, $x1 : $T1) ⊢ $t1 : $T | ($Γ, $x2 : $T2) ⊢ $t2 : $T
+  $Γ ⊢ $t0 : ($T1 + $T2) / ($Γ, $x1 : $T1) ⊢ $t1 : $T / ($Γ, $x2 : $T2) ⊢ $t2 : $T
   --------------------------------------------------------------------------------
                 $Γ ⊢ (case $t0 of inl $x1 ⇒ $t1 inr $x2 ⇒ $t2) : $T
 }

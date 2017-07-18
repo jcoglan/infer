@@ -6,18 +6,18 @@ extends ./typed-lambda-booleans-and-numbers.txt
 
 syntax {
   $t ::= ...
-       | nil
-       | cons $t $t
-       | isnil $t
-       | head $t
-       | tail $t
+       / nil
+       / cons $t $t
+       / isnil $t
+       / head $t
+       / tail $t
 
   $v ::= ...
-       | nil
-       | cons $v $v
+       / nil
+       / cons $v $v
 
   $T ::= ...
-       | List $T
+       / List $T
 }
 
 
@@ -28,7 +28,7 @@ rule T-Nil {
 }
 
 rule T-Cons {
-  $Γ ⊢ $t1 : $T1 | $Γ ⊢ $t2 : (List $T1)
+  $Γ ⊢ $t1 : $T1 / $Γ ⊢ $t2 : (List $T1)
   --------------------------------------
      $Γ ⊢ (cons $t1 $t2) : (List $T1)
 }

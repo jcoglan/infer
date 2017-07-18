@@ -8,22 +8,22 @@ syntax {
   # Much like for 11-6: tuples, we define records recursively. A record is
   # either the empty record ρ, or a label=term pair preceding another record.
 
-  $r ::= ρ | $l = $t, $r
+  $r ::= ρ / $l = $t, $r
 
   $t ::= ...
-       | $r
-       | $r . $l
+       / $r
+       / $r . $l
 
-  $rv ::= ρ | $l = $v, $rv
+  $rv ::= ρ / $l = $v, $rv
 
-  $v ::= ... | $rv
+  $v ::= ... / $rv
 
   # The type of a record is either the empty-record type Rcd, or a label:Type
   # pair preceding another record type.
 
-  $rT ::= Rcd | $l: $T, $rT
+  $rT ::= Rcd / $l: $T, $rT
 
-  $T ::= ... | $rT
+  $T ::= ... / $rT
 }
 
 
@@ -83,7 +83,7 @@ rule T-Rcd-0 {
 }
 
 rule T-Rcd-N {
-    $Γ ⊢ $t : $T | $Γ ⊢ $r : $R
+    $Γ ⊢ $t : $T / $Γ ⊢ $r : $R
   ---------------------------------
   $Γ ⊢ ($l = $t, $r) : ($l: $T, $R)
 }

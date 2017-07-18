@@ -3,11 +3,11 @@
 
 syntax {
   $t ::= true
-       | false
-       | if $t then $t else $t
+       / false
+       / if $t then $t else $t
 
   $v ::= true
-       | false
+       / false
 }
 
 rule E-IfTrue {

@@ -6,13 +6,13 @@ extends ./typed-lambda-booleans-and-numbers.txt
 
 syntax {
   $t ::= ...
-       | $t, $t
-       | $t.1
-       | $t.2
+       / $t, $t
+       / $t.1
+       / $t.2
 
-  $v ::= ... | $v, $v
+  $v ::= ... / $v, $v
 
-  $T ::= ... | $T × $T
+  $T ::= ... / $T × $T
 }
 
 
@@ -54,7 +54,7 @@ rule E-Pair2 {
 # Typing
 
 rule T-Pair {
-  $Γ ⊢ $t1 : $T1 | $Γ ⊢ $t2 : $T2
+  $Γ ⊢ $t1 : $T1 / $Γ ⊢ $t2 : $T2
   -------------------------------
   $Γ ⊢ ($t1, $t2) : ($T1 × $T2)
 }

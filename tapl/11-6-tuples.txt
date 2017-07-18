@@ -10,27 +10,27 @@ syntax {
   # going to define tuples recursively as either the empty tuple τ, or a tuple
   # with another value prepended:
 
-  $u ::= τ | $t, $u
+  $u ::= τ / $t, $u
 
   # Likewise we will need a recursive definition of numbers. A number is either
   # a literal zero, or a number prefixed with a 'successor' operator, +
 
-  $i ::= 0 | + $i
+  $i ::= 0 / + $i
 
   $t ::= ...
-       | $u
-       | $u . $i
+       / $u
+       / $u . $i
 
-  $uv ::= τ | $v, $uv
+  $uv ::= τ / $v, $uv
 
-  $v ::= ... | $uv
+  $v ::= ... / $uv
 
   # The type of a tuple is either the empty-tuple type Tpl, or some other type
   # preceding a tuple type.
 
-  $uT ::= Tpl | $T, $uT
+  $uT ::= Tpl / $T, $uT
 
-  $T ::= ... | $uT
+  $T ::= ... / $uT
 }
 
 
@@ -93,7 +93,7 @@ rule T-Tuple-0 {
 }
 
 rule T-Tuple-N {
-  $Γ ⊢ $t1 : $T1 | $Γ ⊢ $u2 : $T2
+  $Γ ⊢ $t1 : $T1 / $Γ ⊢ $u2 : $T2
   -------------------------------
     $Γ ⊢ ($t1, $u2) : ($T1, $T2)
 }
