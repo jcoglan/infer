@@ -28,7 +28,7 @@ A factorial function defined using mutable references:
         f := (λn: Nat.
                  if iszero n
                  then succ 0
-                 else times n (!f)(pred n));
+                 else times n (!f (pred n)));
         !f)
     (ref (λ_: Nat. 0))
 
