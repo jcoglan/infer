@@ -12,7 +12,7 @@ module Infer
     end
 
     def conclusion
-      @conclusion ||= derivation.conclusions.map(&:inspect).join(', ')
+      @conclusion ||= derivation.conclusion.inspect
     end
 
     def parents

@@ -1,18 +1,15 @@
 module Infer
 
-  Rule = Struct.new(:name, :premises, :conclusions, :syntactic) do
+  Rule = Struct.new(:name, :premises, :conclusion, :syntactic) do
     def inspect
-      "<rule #{name.inspect} #{premises.inspect} #{conclusions.inspect}>"
+      "<rule #{name.inspect} #{premises.inspect} #{conclusion.inspect}>"
     end
 
     def match(lang, target, state)
       scope = Object.new
-      exprs = conclusions.map { |expr| expr.in_scope(scope) }
+      expr  = conclusion.in_scope(scope)
 
-      state = conclusions.inject(state) do |state, expr|
-        state && state.unify(target, expr.in_scope(scope))
-      end
-
+      state = state.unify(target, expr)
       return [] unless state
 
       states = premises.inject([state.clear]) do |states, expr|
@@ -21,7 +18,7 @@ module Infer
         end
       end
 
-      states.map { |s| s.derive(name, exprs, syntactic) }
+      states.map { |s| s.derive(name, expr, syntactic) }
     end
   end
 

@@ -40,9 +40,9 @@ module Infer
         pred = [expr[0].elements[0]] + expr[0].elements[1].map(&:expr)
       end
 
-      cons = [expr[1]]
+      conc = expr[1]
 
-      Rule.new(name, pred, cons)
+      Rule.new(name, pred, conc)
     end
 
     def mk_var(t, a, b, el)

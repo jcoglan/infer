@@ -9,7 +9,7 @@ module Infer
 
     def self.query(query)
       query = program(query)
-      query = query.rules.values.first.conclusions.first
+      query = query.rules.values.first.conclusion
 
       vars = []
       query.map_vars { |var| vars << var }
@@ -89,13 +89,13 @@ module Infer
       end
 
       def mk_fact(t, a, b, el)
-        Rule.new(rule_name, [], [el[0]])
+        Rule.new(rule_name, [], el[0])
       end
 
       def mk_rule(t, a, b, el)
         premises = [el[4]] + el[5].elements.map(&:term)
         conclusion = el[0]
-        Rule.new(rule_name, premises, [conclusion])
+        Rule.new(rule_name, premises, conclusion)
       end
 
       def mk_list(t, a, b, el)

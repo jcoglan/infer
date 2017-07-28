@@ -29,8 +29,8 @@ module Infer
     end
 
     def augment_rule(rule)
-      premises, conclusions = generate_premises(rule.conclusions)
-      Rule.new(rule.name, rule.premises + premises, conclusions)
+      premises, conclusion = generate_premises(rule.conclusion)
+      Rule.new(rule.name, rule.premises + premises, conclusion)
     end
 
   private
@@ -38,25 +38,23 @@ module Infer
     def generate_expression_rule(language, set_name, rule_name, expression)
       return if expression == ELLIPSIS
 
-      premises, expressions = generate_premises([expression], true)
+      premises, expression = generate_premises(expression, true)
 
-      conclusion = Sequence.new([expressions.first, MEMBER, set_name])
-      rule = Rule.new(rule_name, premises, [conclusion], true)
+      conclusion = Sequence.new([expression, MEMBER, set_name])
+      rule = Rule.new(rule_name, premises, conclusion, true)
 
       language.add_rule(rule, false)
     end
 
-    def generate_premises(expressions, renumber = false)
+    def generate_premises(expression, renumber = false)
       vars = Set.new
 
-      expressions = expressions.map do |expression|
-        expression.map_vars do |var|
-          if renumber
-            index = [nil, ''].include?(var.index) ? vars.size.to_s : var.index
-            var = Variable.new(var.syntax_name, index)
-          end
-          var.tap { |v| vars.add(v) }
+      expression = expression.map_vars do |var|
+        if renumber
+          index = [nil, ''].include?(var.index) ? vars.size.to_s : var.index
+          var = Variable.new(var.syntax_name, index)
         end
+        var.tap { |v| vars.add(v) }
       end
 
       premises = vars.map do |var|
@@ -65,7 +63,7 @@ module Infer
         end
       end
 
-      [premises.compact, expressions]
+      [premises.compact, expression]
     end
   end
 

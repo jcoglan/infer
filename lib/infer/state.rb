@@ -1,11 +1,11 @@
 module Infer
 
-  Derivation = Struct.new(:parents, :rule, :conclusions, :syntactic) do
+  Derivation = Struct.new(:parents, :rule, :conclusion, :syntactic) do
     alias :syntactic? :syntactic
 
     def in_state(state)
       parents  = self.parents.map { |d| d.in_state(state) }
-      conclude = self.conclusions.map { |expr| state.walk(expr) }
+      conclude = state.walk(self.conclusion)
       Derivation.new(parents, rule, conclude, syntactic)
     end
   end
@@ -23,8 +23,8 @@ module Infer
       State.new(values, state.parents + [derivation])
     end
 
-    def derive(rule, conclusions, syntactic)
-      State.new(values, Derivation.new(parents, rule, conclusions, syntactic))
+    def derive(rule, conclusion, syntactic)
+      State.new(values, Derivation.new(parents, rule, conclusion, syntactic))
     end
 
     def parents
