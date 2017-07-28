@@ -7,11 +7,12 @@ module Infer
                 :conclusion_left, :conclusion_right
 
     def rule_name
-      derivation.rule.to_s
+      name = derivation.rule.inspect
+      name =~ /^_/ ? '' : ' ' + name
     end
 
     def conclusion
-      @conclusion ||= derivation.conclusions.map(&:to_s).join(', ')
+      @conclusion ||= derivation.conclusions.map(&:inspect).join(', ')
     end
 
     def parents
@@ -65,7 +66,7 @@ module Infer
       @divider_right = @divider_left + divider_width
 
       @box_left  = offset
-      @box_right = [@box_left + parents_width, @divider_right + 1 + rule_name.size].max
+      @box_right = [@box_left + parents_width, @divider_right + rule_name.size].max
 
       @conclusion_left  = @divider_left + conc_indent
       @conclusion_right = @conclusion_left + conclusion.size
@@ -86,7 +87,7 @@ module Infer
     def generate(plan, depth)
       parents.each { |printer| printer.generate(plan, depth + 2) }
 
-      divider = ('-' * (@divider_right - @divider_left)) + ' ' + rule_name
+      divider = ('-' * (@divider_right - @divider_left)) + rule_name
 
       plan.write(depth + 1, @divider_left, divider)
       plan.write(depth, @conclusion_left, conclusion)
