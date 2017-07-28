@@ -1,3 +1,4 @@
 node_modules
 lib/infer/grammar.rb
 lib/infer/expression.rb
+lib/infer/prolog/program.rb

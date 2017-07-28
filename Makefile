@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 PATH  := node_modules/.bin:$(PATH)
 
-derived := lib/infer/grammar.rb lib/infer/expression.rb
+derived := lib/infer/grammar.rb lib/infer/expression.rb lib/infer/prolog/program.rb
 
 .PHONY: all clean test
 

@@ -43,7 +43,7 @@ module Infer
       if values.has_key?(value)
         walk(values[value])
       elsif value.is_a?(Sequence)
-        Sequence.new(value.map { |v| walk(v) })
+        value.class.new(value.map { |v| walk(v) })
       else
         value
       end

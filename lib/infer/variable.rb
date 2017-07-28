@@ -6,8 +6,9 @@ module Infer
     end
 
     def inspect
-      '$' + name
+      name
     end
+    alias :to_s :inspect
 
     def in_scope(scope)
       Variable.new(syntax_name, index, scope)

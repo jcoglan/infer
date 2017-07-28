@@ -18,7 +18,9 @@ module Infer
 
   autoload :Expression, ROOT + '/expression'
   autoload :Grammar,    ROOT + '/grammar'
-  autoload :Parser ,    ROOT + '/parser'
+  autoload :Parser,     ROOT + '/parser'
+
+  autoload :Prolog, ROOT + '/prolog'
 
   def self.expr(text)
     Expression.parse(text, :actions => Parser.new)

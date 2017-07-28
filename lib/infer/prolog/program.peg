@@ -1,0 +1,22 @@
+grammar Infer.Prolog.Program
+
+program         <- _ (entry _)*                                     %mk_program
+
+entry           <- fact / rule
+fact            <- term _ "."                                       %mk_fact
+rule            <-  term _ ":-" _ term (comma term)* _ "."          %mk_rule
+
+term            <-  list / compound / variable / atom
+
+list            <-  "[" _ list_contents? _ "]"                      %mk_list
+list_contents   <-  term (comma term)* (_ "|" _ term)?              %mk_list_contents
+
+compound        <-  atom "(" _ term (comma term)* _ ")"             %mk_compound
+
+variable        <-  [A-Z_] [a-z0-9_]*                               %mk_var
+atom            <-  [a-z0-9_]+                                      %mk_atom
+
+comma           <-  _ "," _
+
+comment         <-  "%" [^\n]*
+_               <-  (comment / [\s])*
