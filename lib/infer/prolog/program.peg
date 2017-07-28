@@ -1,9 +1,9 @@
 grammar Infer.Prolog.Program
 
-program         <- _ (entry _)*                                     %mk_program
+program         <-  _ (entry _)*                                    %mk_program
 
-entry           <- fact / rule
-fact            <- term _ "."                                       %mk_fact
+entry           <-  fact / rule
+fact            <-  term _ "."                                      %mk_fact
 rule            <-  term _ ":-" _ term (comma term)* _ "."          %mk_rule
 
 term            <-  list / compound / variable / atom

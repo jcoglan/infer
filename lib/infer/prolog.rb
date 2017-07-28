@@ -66,7 +66,7 @@ module Infer
     class Compound < Sequence
       def inspect
         functor, args = items.first, items.drop(1)
-        "#{functor.name}(#{args.join(', ')})"
+        "#{functor}(#{args.join(', ')})"
       end
       alias :with_parens :inspect
     end
