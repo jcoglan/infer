@@ -28,6 +28,7 @@ queries = [
   'reverse([a, b, c], [c, B, a]).',
   'reverse([a, b, c], [d, B, a]).',
   'reverse2([a, b, c], X).',
+  'member(a, [a,a,b]).'
 ]
 
 queries.each do |query|
@@ -38,3 +39,20 @@ queries.each do |query|
 
   Infer::Prolog.print_results(states, vars)
 end
+
+__END__
+
+An example:
+
+?- reverse([a, b, c], X).
+
+    ---------------   --------------------     --------------------          --------------------
+    reverse([], [])   append([], [c], [c])     append([], [b], [b])          append([], [a], [a])
+    --------------------------------------   ------------------------      ------------------------
+              reverse([c], [c])              append([c], [b], [c, b])      append([b], [a], [b, a])
+              -------------------------------------------------------   ------------------------------
+                              reverse([b, c], [c, b])                   append([c, b], [a], [c, b, a])
+                              ------------------------------------------------------------------------
+                                                   reverse([a, b, c], [c, b, a])
+
+X = [c, b, a]
