@@ -17,7 +17,7 @@ module Infer
 
     def mk_extends(t, a, b, el)
       path = File.expand_path(el[2].text, File.dirname(pathname))
-      Infer.lang(path)
+      Infer.lang(path, :syntax => false)
     end
 
     def mk_syntax_block(t, a, b, el)

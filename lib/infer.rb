@@ -26,9 +26,15 @@ module Infer
     Expression.parse(text, :actions => Parser.new)
   end
 
-  def self.lang(pathname)
-    parser = Parser.new(pathname)
-    Grammar.parse(File.read(pathname), :actions => parser)
+  def self.lang(pathname, options = {})
+    parser   = Parser.new(pathname)
+    language = Grammar.parse(File.read(pathname), :actions => parser)
+
+    unless options[:syntax] == false
+      language.syntax.generate_rules(language)
+    end
+
+    language
   end
 
   def self.print_derivation(derivation)

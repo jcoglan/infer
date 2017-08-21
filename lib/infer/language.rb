@@ -15,7 +15,6 @@ module Infer
 
     def add_syntax(syntax)
       @syntax = syntax + @syntax
-      @syntax.generate_rules(self)
     end
 
     def add_rule(rule, apply_syntax = true)

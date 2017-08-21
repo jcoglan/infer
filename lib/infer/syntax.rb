@@ -9,7 +9,7 @@ module Infer
 
       merged = syntax.rules.merge(rules) do |key, old_rule, new_rule|
         if new_rule.first == ELLIPSIS
-          old_rule + new_rule.drop(1)
+          ([ELLIPSIS] + old_rule + new_rule).uniq
         else
           new_rule
         end
