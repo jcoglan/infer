@@ -1,6 +1,6 @@
 require_relative './_typeof'
 
-lang = Infer.lang('./tapl/11-9-sums.txt')
+lang = Infer.lang('./tapl/11-9-sums')
 
 typeof lang, 'case (inl 0) of inl x ⇒ (iszero x) inr y ⇒ (if y then false else true)'
 

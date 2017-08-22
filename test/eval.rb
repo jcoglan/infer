@@ -1,6 +1,6 @@
 require_relative '../lib/infer'
 
-lang = Infer.lang('./tapl/3-2-arithmetic-expressions.txt')
+lang = Infer.lang('./tapl/3-2-arithmetic-expressions')
 eval = lang.relation('->')
 
 expr = Infer.expr('if true then true else false')

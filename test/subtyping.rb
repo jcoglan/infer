@@ -1,6 +1,6 @@
 require_relative './_typeof'
 
-lang = Infer.lang('./tapl/15-3-records-and-subtyping.txt')
+lang = Infer.lang('./tapl/15-3-records-and-subtyping')
 
 
 # To prove:
@@ -18,7 +18,8 @@ types = [
   'x: (a: Nat, Rcd), (y: Rcd, Rcd)',
   'x: (a: Nat, Rcd), (y: (m: Nat, Rcd), Rcd)',
   'x: (a: Nat, Rcd), Rcd',
-  'y: Rcd, (x: Rcd, Rcd)'
+  'y: Rcd, (x: Rcd, Rcd)',
+  'y: (c: Nat, Rcd), (x: Rcd, Rcd)'
 ]
 
 types.each do |type|

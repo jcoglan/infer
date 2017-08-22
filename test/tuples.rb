@@ -1,7 +1,7 @@
 require_relative './_evaluate'
 require_relative './_typeof'
 
-lang = Infer.lang('./tapl/11-6-tuples.txt')
+lang = Infer.lang('./tapl/11-6-tuples')
 
 evaluate lang, 'τ'
 evaluate lang, '0, τ'

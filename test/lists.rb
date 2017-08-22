@@ -1,7 +1,7 @@
 require_relative './_evaluate'
 require_relative './_typeof'
 
-lang = Infer.lang('./tapl/11-13-lists.txt')
+lang = Infer.lang('./tapl/11-13-lists')
 
 evaluate lang, 'nil[Nat]'
 evaluate lang, 'cons[Nat] 0 (nil[Nat])'
@@ -17,7 +17,7 @@ typeof lang, 'cons[Bool] (if true then false else true) (cons[Bool] false (nil[B
 typeof lang, 'λx:Bool. (cons[Bool] (if x then x else false) (nil[Bool]))'
 typeof lang, 'cons[(Bool → Bool)] (λx:Bool. x) (nil[(Bool → Bool)])'
 
-lang = Infer.lang('./tapl/inferred-lists.txt')
+lang = Infer.lang('./tapl/inferred-lists')
 
 typeof lang, 'cons 0 nil'
 typeof lang, 'cons (succ 0) (cons 0 nil)'

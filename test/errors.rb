@@ -2,7 +2,7 @@ require_relative './_evaluate'
 require_relative './_typeof'
 
 
-lang = Infer.lang('./tapl/14-2-error-handling.txt')
+lang = Infer.lang('./tapl/14-2-error-handling')
 
 typeof lang, '((λx:Nat. (λy:Nat. x)) error) ((λz:Nat. z) 0)'
 
@@ -13,7 +13,7 @@ typeof lang, <<-EXPR
 EXPR
 
 
-lang = Infer.lang('./tapl/14-3-exceptions-carrying-values.txt')
+lang = Infer.lang('./tapl/14-3-exceptions-carrying-values')
 
 evaluate lang, '(raise true) (pred (succ 0))'
 evaluate lang, '(pred (succ 0)) true'

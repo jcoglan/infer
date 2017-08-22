@@ -22,12 +22,15 @@ module Infer
 
   autoload :Prolog, ROOT + '/prolog'
 
+  EXTENSIONS = ['', '.infer', '.md', '.txt']
+
   def self.expr(text)
     Expression.parse(text, :actions => Parser.new)
   end
 
   def self.lang(pathname, options = {})
-    parser   = Parser.new(pathname)
+    pathname += EXTENSIONS.find { |ext| File.file?(pathname + ext) }
+    parser    = Parser.new(pathname)
     language = Grammar.parse(File.read(pathname), :actions => parser)
 
     unless options[:syntax] == false

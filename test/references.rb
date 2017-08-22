@@ -1,7 +1,7 @@
 require_relative './_evaluate'
 require_relative './_typeof'
 
-lang = Infer.lang('./tapl/13-1-references.txt')
+lang = Infer.lang('./tapl/13-1-references')
 
 evaluate lang, '(ref unit) | ∅'
 evaluate lang, '(ref (λx:Unit. x)) | (∅ , ε ↦ unit)'

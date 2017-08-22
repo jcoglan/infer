@@ -1,6 +1,6 @@
 require './lib/infer'
 
-LANG = Infer.lang('./tapl/8-2-typing-rules-for-numbers.txt')
+LANG = Infer.lang('./tapl/8-2-typing-rules-for-numbers')
 TYPEOF = LANG.relation(':')
 
 LANG.rules.each { |_, rule| p rule }

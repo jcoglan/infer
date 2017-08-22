@@ -1,6 +1,6 @@
 require_relative './_typeof'
 
-lang = Infer.lang('./tapl/11-5-pairs.txt')
+lang = Infer.lang('./tapl/11-5-pairs')
 
 typeof lang, 'λx : Bool. x'
 typeof lang, 'λx : Bool. (x,x)'
