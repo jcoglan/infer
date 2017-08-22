@@ -64,11 +64,11 @@
 These do not appear in the book; they define the `∈` operator sufficiently to
 make `T-Var` actually function.
 
-    rule T-Ctx1 {
+    rule T-Var-0 {
       ($x : $T) ∈ ($Γ, $x : $T)
     }
 
-    rule T-Ctx2 {
+    rule T-Var-N {
              ($x1 : $T1) ∈ $Γ
       -----------------------------
       ($x1 : $T1) ∈ ($Γ, $x2 : $T2)
