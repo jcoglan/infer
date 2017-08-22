@@ -13,7 +13,7 @@ extends ./typed-lambda-booleans-and-numbers
 
       $t ::= ...
            / $r
-           / $r . $l
+           / $t . $l
 
       $rv ::= ρ / $l = $v, $rv
 

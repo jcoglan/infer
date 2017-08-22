@@ -20,7 +20,7 @@ extends ./typed-lambda-booleans-and-numbers
 
       $t ::= ...
            / $u
-           / $u . $i
+           / $t . $i
 
       $uv ::= τ / $v, $uv
 
