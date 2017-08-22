@@ -28,7 +28,8 @@ queries = [
   'reverse([a, b, c], [c, B, a]).',
   'reverse([a, b, c], [d, B, a]).',
   'reverse2([a, b, c], X).',
-  'member(a, [a,a,b]).'
+  'member(a, [a,a,b]).',
+  'member(a, a(a(b))).'
 ]
 
 queries.each do |query|

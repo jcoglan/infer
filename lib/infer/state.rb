@@ -58,7 +58,7 @@ module Infer
       return assign(y, x) if y.is_a?(Variable)
 
       if x.is_a?(Sequence) and y.is_a?(Sequence)
-        return nil unless x.size == y.size
+        return nil unless x.class == y.class and x.size == y.size
 
         x.zip(y).inject(self) do |state, (a, b)|
           state && state.unify(a, b)
