@@ -99,21 +99,28 @@ rest of the tuple.
         $Γ ⊢ ($t1, $u2) : ($T1, $T2)
     }
 
-Just as for `E-ProjTuple`, we need to define `T-Proj` recursively. The type of
-the first element is just the type of that term:
+We also need to take a recursive approach to `T-Proj`. The rule itself, instead
+of using iteration, can be written by saying if `t` has type `uT`, and the `i`th
+element of `uT` is `T` (denoted `uT.i = T`), then `t.i` has type `T`.
 
-    rule T-Proj-0 {
-            $Γ ⊢ $t0 : $T0
-      --------------------------
-      $Γ ⊢ (($t0, $u) . 0) : $T0
+    rule T-Proj {
+      $Γ ⊢ $t : $uT / $uT . $i = $T
+      -----------------------------
+           $Γ ⊢ ($t . $i) : $T
     }
 
-The type of any non-zero index is the type found by recursing once on the
-structure of the tuple and the index, effectively stepping one place into the
-tuple and subtracting 1 from the index.
+Then we need a pair of rules for looking up indexes within a tuple type. The
+first rule gets the first type out if the index is zero:
 
-    rule T-Proj-N {
-            $Γ ⊢ ($u . $i) : $T
-      ------------------------------
-      $Γ ⊢ (($t0, $u) . (+ $i)) : $T
+    rule T-TplField-0 {
+      ($T, $uT) . 0 = $T
+    }
+
+And the second one recurses on the structure of the type and the index for
+values greater than zero:
+
+    rule T-TplField-N {
+            $uT . $i = $T1
+      -------------------------
+      ($T2, $uT) . (+ $i) = $T1
     }
