@@ -19,7 +19,7 @@ types = [
   'x: (a: Nat, Rcd), (y: (m: Nat, Rcd), Rcd)',
   'x: (a: Nat, Rcd), Rcd',
   'y: Rcd, (x: Rcd, Rcd)',
-  'y: (c: Nat, Rcd), (x: Rcd, Rcd)'
+  'y: Rcd, (x: Rcd, Rcd)'
 ]
 
 types.each do |type|
@@ -27,17 +27,20 @@ types.each do |type|
   p smt
 
   states = lang.derive(smt)
-  p states.size
 
   states.each do |state|
     puts
     Infer.print_derivation(state.build_derivation)
   end
-
-  puts
-  puts
+  2.times { puts }
 end
 
 # To type:
 #
 #   (λr: {x: Nat}. r.x) {x=0, y=(succ 0)}
+
+typeof lang, 'x=0, (y=(succ 0), ρ)'
+typeof lang, 'λr: (x: Nat, Rcd). (r.x)'
+typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (x=0, ρ)'
+typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (x=0, (y=(succ 0), ρ))'
+typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (y=true, (x=0, ρ))'
