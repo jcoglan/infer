@@ -5,7 +5,7 @@ module Infer
 
     def initialize
       @rules  = {}
-      @syntax = nil
+      @syntax = Syntax.new({})
     end
 
     def import(language)
