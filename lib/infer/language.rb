@@ -27,7 +27,20 @@ module Infer
     end
 
     def derive(target, state = State.new({}))
-      rules.flat_map { |_, rule| rule.match(self, target, state) }
+      streams = rules.map { |_, rule| rule.match(self, target, state) }
+      interleave(streams)
+    end
+
+    def interleave(enums)
+      Enumerator.new { |output|
+        until enums.empty?
+          loop {
+            enum = enums.shift
+            output.yield(enum.next)
+            enums << enum
+          }
+        end
+      }
     end
   end
 

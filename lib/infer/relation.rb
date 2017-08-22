@@ -10,11 +10,13 @@ module Infer
       target = Sequence.new(terms.zip(ops).inject([], &:+) + [result])
       states = language.derive(target)
 
-      case states.size
-      when 0 then raise Stuck
-      when 1 then [states.first, result]
-      else raise Ambiguous
-      end
+      first = states.next rescue nil
+      raise Stuck unless first
+
+      tail = states.next rescue nil
+      raise Ambiguous if tail
+
+      [first, result]
     end
 
     def once_with_derivation(*terms)

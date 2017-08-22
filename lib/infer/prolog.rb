@@ -18,9 +18,11 @@ module Infer
     end
 
     def self.print_results(states, vars)
-      return puts "false.\n\n" if states.empty?
+      first = states.next rescue nil
+      return puts "false.\n\n" unless first
 
       puts
+      print_state(first, vars)
 
       states.each do |state|
         print_state(state, vars)

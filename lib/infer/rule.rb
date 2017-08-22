@@ -9,16 +9,28 @@ module Infer
       scope = Object.new
       expr  = conclusion.in_scope(scope)
 
-      state = state.unify(target, expr)
-      return [] unless state
+      states = Enumerator.new { |enum|
+        state = state.unify(target, expr)
+        enum.yield(state.clear) if state
+      }
 
-      states = premises.inject([state.clear]) do |states, expr|
-        states.flat_map do |state|
-          lang.derive(expr.in_scope(scope), state).map { |s| s.connect(state) }
-        end
+      states = premises.inject(states) do |states, expr|
+        match_in_states(lang, expr.in_scope(scope), states)
       end
 
-      states.map { |s| s.derive(name, expr, syntactic) }
+      states.lazy.map { |s| s.derive(name, expr, syntactic) }
+    end
+
+    def match_in_states(lang, expr, states)
+      Enumerator.new { |enum|
+        state = states.next
+        head  = lang.derive(expr, state).lazy.map { |s| s.connect(state) }
+        tail  = match_in_states(lang, expr, states)
+
+        lang.interleave([head, tail]).each do |state|
+          enum.yield(state)
+        end
+      }
     end
   end
 
