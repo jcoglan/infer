@@ -149,6 +149,12 @@ The reverse situation should not typecheck:
 This would allow calling, say, `f 3.14`, which would get stuck as `g` only
 accepts `Int`.
 
+Given the above problems with subtyping rules, it's worth noting when `S-Arrow`
+will work effectively. We've seen that the subtyping rules are better at
+checking a proposed solution than at constructing a solution, so this rule will
+be effective when applied after the types of the two functions have been
+derived.
+
     rule S-Arrow {
         $T1 <: $S1 / $S2 <: $T2
       --------------------------
@@ -192,6 +198,11 @@ allows us to pass an argument into an abstraction when its type doesn't exactly
 match the abstraction's parameter type. We can allow this by changing `T-App` to
 say, if the abstraction has type `T1 → T2`, and the argument has type `T`, and
 `T` is a subtype of `T1`, then the application has type `T2`.
+
+Note that by placing the subtyping premise at the end, we only attempt to derive
+it once `T` and `T1` are known via the first two premises. This means the `<:`
+relation is used to check, rather than to construct a solution. Placing the
+subtyping premise first causes programs to loop indefinitely.
 
     rule T-App {
       $Γ ⊢ $t1 : ($T1 → $T2) / $Γ ⊢ $t2 : $T / $T <: $T1

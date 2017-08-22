@@ -2,6 +2,19 @@ require_relative './_typeof'
 
 lang = Infer.lang('./tapl/15-3-records-and-subtyping')
 
+typeof lang, 'x=0, (y=(succ 0), ρ)'
+typeof lang, 'λr: (x: Nat, Rcd). (r.x)'
+typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (x=0, ρ)'
+typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (x=0, (y=(succ 0), ρ))'
+typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (y=true, (x=0, ρ))'
+
+typeof lang, '(λf: ((x: Nat, Rcd) → Rcd). (f (x=0, ρ)))'
+
+# (λf: {x: Nat} → {}. f {x=0}) (λr: {}. {y=true, r})
+# (λr: {}. {y=true, r}) {x=0}
+# {y=true, x=0}
+typeof lang, '(λf: ((x: Nat, Rcd) → Rcd). (f (x=0, ρ))) (λr: Rcd. (y=true, r))'
+
 
 # To prove:
 #
@@ -34,13 +47,3 @@ types.each do |type|
   end
   2.times { puts }
 end
-
-# To type:
-#
-#   (λr: {x: Nat}. r.x) {x=0, y=(succ 0)}
-
-typeof lang, 'x=0, (y=(succ 0), ρ)'
-typeof lang, 'λr: (x: Nat, Rcd). (r.x)'
-typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (x=0, ρ)'
-typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (x=0, (y=(succ 0), ρ))'
-typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (y=true, (x=0, ρ))'
