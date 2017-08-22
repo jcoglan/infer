@@ -10,7 +10,7 @@ module Infer
 
     def import(language)
       add_syntax(language.syntax)
-      @rules = language.rules.merge(@rules)
+      @rules = @rules.merge(language.rules)
     end
 
     def add_syntax(syntax)
@@ -27,7 +27,7 @@ module Infer
     end
 
     def derive(target, state = State.new({}))
-      streams = rules.map { |_, rule| rule.match(self, target, state) }
+      streams = @rules.map { |_, rule| rule.match(self, target, state) }
       interleave(streams)
     end
 
