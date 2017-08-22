@@ -1,5 +1,5 @@
 # N (typed)
-# Figure 8-2: Typing rules for numbers (p93)
+# Figure 8-2: Typing rules for numbers, p93
 
 extends ./8-1-typing-rules-for-booleans
 extends ./3-2-arithmetic-expressions
