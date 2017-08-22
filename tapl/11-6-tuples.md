@@ -62,7 +62,7 @@ same.
       ($t1.$i) -> ($t1'.$i)
     }
 
-E-Tuple must also be expressed as a base case and an inductive step. If the
+`E-Tuple` must also be expressed as a base case and an inductive step. If the
 first element can be evaluated, then do so:
 
     rule E-Tuple-0 {
@@ -84,7 +84,7 @@ be a tuple.
 
 ## Typing
 
-Whereas the book defines T-Tuple iteratively, we define it as two recursive
+Whereas the book defines `T-Tuple` iteratively, we define it as two recursive
 rules. The empty tuple has the "empty" type `Tpl`, and a non-empty tuple has a
 type constructed by combining the type of the first element with the type of the
 rest of the tuple.
@@ -99,8 +99,8 @@ rest of the tuple.
         $Γ ⊢ ($t1, $u2) : ($T1, $T2)
     }
 
-Just as for E-ProjTuple, we need to define T-Proj recursively. The type of the
-first element is just the type of that term:
+Just as for `E-ProjTuple`, we need to define `T-Proj` recursively. The type of
+the first element is just the type of that term:
 
     rule T-Proj-0 {
             $Γ ⊢ $t0 : $T0

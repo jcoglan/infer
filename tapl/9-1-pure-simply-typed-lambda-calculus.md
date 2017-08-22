@@ -62,7 +62,7 @@
 
 
 These do not appear in the book; they define the `∈` operator sufficiently to
-make T-Var actually function.
+make `T-Var` actually function.
 
     rule T-Ctx1 {
       ($x : $T) ∈ ($Γ, $x : $T)

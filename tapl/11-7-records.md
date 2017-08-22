@@ -31,7 +31,7 @@ extends ./typed-bool-nat
 ## Evaluation
 
 Since our rule description language has no understand of numbers, the matching
-of `i` and `j` in E-ProjRcd has to be expressed a different way. We split it
+of `i` and `j` in `E-ProjRcd` has to be expressed a different way. We split it
 into two rules: first, if the accessor label matches the first label in the
 record, we return the first value
 
@@ -89,7 +89,7 @@ the rest of the record.
       $Γ ⊢ ($l = $t, $r) : ($l: $T, $R)
     }
 
-We need to modify T-Prof slightly from the version given in the text. Since we
+We need to modify `T-Proj` slightly from the version given in the text. Since we
 don't have a looping construct, we'll express the type of `t.l` by saying that
 if `t` has some record type `rT`, and the mapping `l: T` appears in `rT`, then
 `t.l` has type `T`.
