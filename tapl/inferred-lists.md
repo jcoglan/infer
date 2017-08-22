@@ -1,8 +1,8 @@
 # → B List
 # Figure 11-13: Lists, p147
 
-# extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-lambda-booleans-and-numbers
+extends ./9-1-pure-simply-typed-lambda-calculus
+extends ./typed-bool-nat
 
     syntax {
       $t ::= ...

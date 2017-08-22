@@ -1,8 +1,8 @@
 # → let
 # Figure 11-4: Let binding, p124
 
-# extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-lambda-booleans-and-numbers
+extends ./9-1-pure-simply-typed-lambda-calculus
+extends ./typed-bool-nat
 
     syntax {
       $t ::= ... / let $x=$t in $t

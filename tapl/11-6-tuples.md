@@ -1,8 +1,8 @@
 # → {}
 # Figure 11-6: Tuples, p128
 
-# extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-lambda-booleans-and-numbers
+extends ./9-1-pure-simply-typed-lambda-calculus
+extends ./typed-bool-nat
 
     syntax {
       # Since we're using {} as part of the metalanguage, and the metalanguage

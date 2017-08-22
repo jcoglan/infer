@@ -1,8 +1,8 @@
 # → <>
 # Figure 11-11: Variants, p136
 
-# extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-lambda-booleans-and-numbers
+extends ./9-1-pure-simply-typed-lambda-calculus
+extends ./typed-bool-nat
 
 These rules differ significantly from those presented in the book. We take a
 similar approach to 11-6: tuples and 11-7: records, and define the structure of

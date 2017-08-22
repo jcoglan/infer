@@ -1,8 +1,8 @@
 # → +
 # Figure 11-9: Sums, p132
 
-# extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-lambda-booleans-and-numbers
+extends ./9-1-pure-simply-typed-lambda-calculus
+extends ./typed-bool-nat
 
     syntax {
       $t ::= ...
