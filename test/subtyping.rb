@@ -1,3 +1,5 @@
+ENV['NOSYNTAX'] = '1'
+
 require_relative './_typeof'
 
 lang = Infer.lang('./tapl/15-3-records-and-subtyping')
@@ -10,7 +12,7 @@ typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (y=true, (x=0, ρ))'
 
 typeof lang, '(λf: ((x: Nat, Rcd) → Rcd). (f (x=0, ρ)))'
 
-typeof lang, '(λr: (x: (a: Nat, Rcd), Rcd). ((r.x).a)) (x=(a=0, (b=0, ρ)), (y=true, ρ))'
+typeof lang, '(λr: (x: (b: Nat, Rcd), Rcd). ((r.x).b)) (x=(a=0, (b=0, ρ)), (y=true, ρ))'
 
 # (λf: {x: Nat} → {}. f {x=0}) (λr: {}. {y=true, r})
 # (λr: {}. {y=true, r}) {x=0}
