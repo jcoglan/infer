@@ -32,7 +32,7 @@ even in a logic programming environment. The existence of `S-Refl` means that,
 in order to avoid generating multiple proofs of the same thing, subtyping rules
 for specific types must include clauses to avoid matching exactly equal types.
 For example, if we have a rule that says all record types are subtypes of `Rcd`
-(i.e. `rT <: Rcd`), then `Rcd <: Rcd` is provable in two ways.
+(i.e. `R <: Rcd`), then `Rcd <: Rcd` is provable in two ways.
 
 For subtyping, this isn't as big a problem as it is for evaluation and typing.
 For the latter, we usually want a unique outcome with one proof; we have some

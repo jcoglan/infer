@@ -22,9 +22,9 @@ extends ./typed-bool-nat
       # The type of a record is either the empty-record type Rcd, or a
       # label:Type pair preceding another record type.
 
-      $rT ::= Rcd / $l: $T, $rT
+      $R ::= Rcd / $l: $T, $R
 
-      $T ::= ... / $rT
+      $T ::= ... / $R
     }
 
 
@@ -91,13 +91,13 @@ the rest of the record.
 
 We need to modify `T-Proj` slightly from the version given in the text. Since we
 don't have a looping construct, we'll express the type of `t.l` by saying that
-if `t` has some record type `rT`, and the type `rT` maps the label `l` to type
-`T` (expressed at `rT.l = T`), then `t.l` has type `T`.
+if `t` has some record type `R`, and the type `R` maps the label `l` to type `T`
+(expressed at `R.l = T`), then `t.l` has type `T`.
 
     rule T-Proj {
-      $Γ ⊢ $t : $rT / $rT . $l = $T
-      -----------------------------
-           $Γ ⊢ ($t . $l) : $T
+      $Γ ⊢ $t : $R / $R . $l = $T
+      ---------------------------
+          $Γ ⊢ ($t . $l) : $T
     }
 
 Then we need two auxilliary rules to actually look up the binding of a label
@@ -105,14 +105,14 @@ within a record type. The first handles the case where a matching label appears
 at the front of the type:
 
     rule T-RcdField-0 {
-      ($l: $T, $rT) . $l = $T
+      ($l: $T, $R) . $l = $T
     }
 
 And the second recurses. This is much like the `T-Var` rules for looking a
 variable up in a typing context.
 
     rule T-RcdField-N {
-             $rT . $l1 = $T1
-      ---------------------------
-      ($l2: $T2, $rT) . $l1 = $T1
+            $R . $l1 = $T1
+      --------------------------
+      ($l2: $T2, $R) . $l1 = $T1
     }
