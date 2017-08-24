@@ -98,10 +98,10 @@ type(G, proj(Term, Label), Type) :-
     type(G, Term, RT),
     rcd_type(RT, Label, Type).
 
-rcd_type(rcd([[Label, Type] | _]), Label, Type).
+rcd_type(rcd([[L, T] | _]), L, T).
 
-rcd_type(rcd([_ | Tail]), Label, Type) :-
-    rcd_type(rcd(Tail), Label, Type).
+rcd_type(rcd([_ | R]), L, T) :-
+    rcd_type(rcd(R), L, T).
 
 
 %% → {} <:
@@ -109,17 +109,14 @@ rcd_type(rcd([_ | Tail]), Label, Type) :-
 
 subtype(rcd(_), rcd([])).
 
-subtype(Rec, rcd([[Label, Type] | Tail])) :-
-    rcd_subtype(Rec, Label, Type),
-    subtype(Rec, rcd(Tail)).
-
-rcd_subtype(rcd([[Label, T2] | _]), Label, T1) :-
-    subtype(T2, T1).
-rcd_subtype(rcd([_ | Tail]), Label, T1) :-
-    rcd_subtype(rcd(Tail), Label, T1).
+subtype(R1, rcd([[L, T] | R2])) :-
+    rcd_type(R1, L, S),
+    subtype(S, T),
+    subtype(R1, rcd(R2)).
 
 /*
     (λf: {x: Nat} → {}. f {x=0}) (λr: {}. {y=true, r})
+    % should be {}
 
     type([], λ(f, arrow(rcd([[x, nat]]), rcd([])), app(f, rec([[x, 0]]))), T)
     type([], λ(r, rcd([]), rec([[y, true]])), T)
