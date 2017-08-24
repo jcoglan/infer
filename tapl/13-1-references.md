@@ -114,13 +114,13 @@ used above such that we can compute results using them. First, we have rules
 defining how to look up the value bound to a store location. Either the location
 is the final one in the store and we return its value:
 
-    rule E-Ref-Get1 {
+    rule E-Ref-Get-0 {
       ($μ, $l ↦ $v) [$l] = $v
     }
 
 Or, the location is somewhere else in the store and we must recurse:
 
-    rule E-Ref-Get2 {
+    rule E-Ref-Get-N {
               $μ[$l1] = $v1
       ---------------------------
       ($μ, $l2 ↦ $v2) [$l1] = $v1
@@ -130,14 +130,14 @@ Next, we need rules for assigning a new value to an existing location in the
 store; this is the `[l ↦ v]μ` operation. Again, either the label is the last one
 in the store and we can simply replace its binding:
 
-    rule E-Ref-Set1 {
+    rule E-Ref-Set-0 {
       [$l ↦ $v2] ($μ, $l ↦ $v1) = ($μ, $l ↦ $v2)
     }
 
 Or, we obtain a new inner store by recursing, and combine this modified inner
 store with the label we've skipped over.
 
-    rule E-Ref-Set2 {
+    rule E-Ref-Set-N {
                   [$l1 ↦ $v1] $μ = $μ'
       ----------------------------------------------
       [$l1 ↦ $v1] ($μ, $l2 ↦ $v2) = ($μ', $l2 ↦ $v2)
@@ -153,13 +153,13 @@ location.
 
 If the store is empty, we use the zero location:
 
-    rule E-Ref-Bind1 {
+    rule E-Ref-Bind-0 {
       ε ∉ dom ∅
     }
 
 Otherwise, we use the 'successor' of the last label in the store.
 
-    rule E-Ref-Bind2 {
+    rule E-Ref-Bind-N {
       (l $l) ∉ dom ($μ, $l ↦ $v)
     }
 
@@ -225,11 +225,11 @@ Typing is mostly done as in the book; the only additions are these rules for
 implementing the look-up `Σ[l]` in a similar manner to looking up locations in
 the runtime store.
 
-    rule T-Ref-Get1 {
+    rule T-Ref-Get-0 {
       ($Σ, $l: $T) [$l] = $T
     }
 
-    rule T-Ref-Get2 {
+    rule T-Ref-Get-N {
              $Σ[$l1] = $T1
       --------------------------
       ($Σ, $l2: $T2) [$l1] = $T1

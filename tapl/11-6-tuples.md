@@ -29,9 +29,9 @@ extends ./typed-bool-nat
       # The type of a tuple is either the empty-tuple type Tpl, or some other
       # type preceding a tuple type.
 
-      $uT ::= Tpl / $T, $uT
+      $Tu ::= Tpl / $T, $Tu
 
-      $T ::= ... / $uT
+      $T ::= ... / $Tu
     }
 
 
@@ -100,11 +100,11 @@ rest of the tuple.
     }
 
 We also need to take a recursive approach to `T-Proj`. The rule itself, instead
-of using iteration, can be written by saying if `t` has type `uT`, and the `i`th
-element of `uT` is `T` (denoted `uT.i = T`), then `t.i` has type `T`.
+of using iteration, can be written by saying if `t` has type `Tu`, and the `i`th
+element of `Tu` is `T` (denoted `Tu.i = T`), then `t.i` has type `T`.
 
     rule T-Proj {
-      $Γ ⊢ $t : $uT / $uT . $i = $T
+      $Γ ⊢ $t : $Tu / $Tu . $i = $T
       -----------------------------
            $Γ ⊢ ($t . $i) : $T
     }
@@ -113,14 +113,14 @@ Then we need a pair of rules for looking up indexes within a tuple type. The
 first rule gets the first type out if the index is zero:
 
     rule T-TplField-0 {
-      ($T, $uT) . 0 = $T
+      ($T, $Tu) . 0 = $T
     }
 
 And the second one recurses on the structure of the type and the index for
 values greater than zero:
 
     rule T-TplField-N {
-            $uT . $i = $T1
+            $Tu . $i = $T1
       -------------------------
-      ($T2, $uT) . (+ $i) = $T1
+      ($T2, $Tu) . (+ $i) = $T1
     }
