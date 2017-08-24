@@ -1,53 +1,28 @@
 ENV['NOSYNTAX'] = '1'
 
-require_relative './_typeof'
+require_relative '../lib/infer'
 
 lang = Infer.lang('./tapl/15-3-records-and-subtyping')
 
-typeof lang, 'x=0, (y=(succ 0), ρ)'
-typeof lang, 'λr: (x: Nat, Rcd). (r.x)'
-typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (x=0, ρ)'
-typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (x=0, (y=(succ 0), ρ))'
-typeof lang, '(λr: (x: Nat, Rcd). (r.x)) (y=true, (x=0, ρ))'
-
-typeof lang, '(λf: ((x: Nat, Rcd) → Rcd). (f (x=0, ρ)))'
-
-typeof lang, '(λr: (x: (b: Nat, Rcd), Rcd). ((r.x).b)) (x=(a=0, (b=0, ρ)), (y=true, ρ))'
-
-# (λf: {x: Nat} → {}. f {x=0}) (λr: {}. {y=true, r})
-# (λr: {}. {y=true, r}) {x=0}
-# {y=true, x=0}
-typeof lang, '(λf: ((x: Nat, Rcd) → Rcd). (f (x=0, ρ))) (λr: Rcd. (y=true, r))'
-
-
-# To prove:
-#
-#   {x: {a: Nat, b: Nat}, y: {m: Nat}} <:
-#       - {x: {a: Nat}, y: {}}
-#       - {x: {a: Nat}, y: {m: Nat}}
-#       - {x: {a: Nat}}
-#       - {y: {}, x: {}}
-
-expr = 'x: (a: Nat, (b: Nat, Rcd)), (y: (m: Nat, Rcd), Rcd)'
-
-types = [
-  'Rcd',
-  'x: (a: Nat, Rcd), (y: Rcd, Rcd)',
-  'x: (a: Nat, Rcd), (y: (m: Nat, Rcd), Rcd)',
-  'x: (a: Nat, Rcd), Rcd',
-  'y: Rcd, (x: Rcd, Rcd)',
-  'y: Rcd, (x: Rcd, Rcd)'
+exprs = [
+  '(x: Nat, Rcd) <: (x: Nat, Rcd)',
+  '(x: Nat, (y: Nat, Rcd)) <: (x: Nat, Rcd)',
+  '(x: Rcd, (y: Nat, Rcd)) <: (x: Rcd, (y: Nat, Rcd))',
+  '(x: (a: Nat, Rcd), (y: Nat, Rcd)) <: (x: Rcd, (y: Nat, Rcd))',
+  '(x: (b: Nat, (a: Nat, Rcd)), (y: Nat, Rcd)) <: (x: (a: Nat, (b: Nat, Rcd)), (y: Nat, Rcd))',
+  '(x: Nat, (y: Nat, Rcd)) <: (y: Nat, (x: Nat, Rcd))',
+  '(x: Nat, (y: Nat, (z: Nat, Rcd))) <: (y: Nat, Rcd)',
 ]
 
-types.each do |type|
-  smt = Infer.expr("(#{expr}) <: (#{type})")
-  p smt
+exprs.each do |expr|
+  puts expr
+  puts
 
-  states = lang.derive(smt)
+  states = lang.derive(Infer.expr expr)
 
-  states.each do |state|
-    puts
+  states.take(1).each do |state|
     Infer.print_derivation(state.build_derivation)
+    puts
   end
-  2.times { puts }
+  puts
 end

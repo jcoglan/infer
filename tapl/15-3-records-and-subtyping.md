@@ -60,7 +60,7 @@ Now we can use `U-RcdEq` to implement the other rules. `S-RcdWidth` says that
 end, that is `T` is a literal prefix of `S`. We'll implement this by comparing
 the two types under a predicate called `…`.
 
-    # rule S-RcdWidth {
+    rule S-RcdWidth {
       $T (= …) $S
       -----------
         $S <: $T
@@ -98,7 +98,7 @@ the same fields but the members of `S` are subtypes of the corresponding members
 of `T`. This can be implemented straightforwardly by comparing the two types
 under the predicate `<:`.
 
-    # rule S-RcdDepth {
+    rule S-RcdDepth {
       $S (= <:) $T
       ------------
         $S <: $T
@@ -127,7 +127,7 @@ permutation by requiring that the fields of `S` are a subset of the fields of
 `T`, and vice-versa. The types being subsets of each other means they contain
 the same fields, but possibly in different orders.
 
-    # rule S-RcdPerm {
+    rule S-RcdPerm {
       $S ⊆ $T / $T ⊆ $S
       -----------------
           $S <: $T
@@ -172,7 +172,7 @@ more rules for permutation rather than relying on the `R.l = T` rule we can
 generate a smaller proof. First we say `S <: T` if `S perm T`, and then we
 define what `perm` means.
 
-    # rule S-RcdPerm {
+    rule S-RcdPerm {
       $S perm $T
       ----------
        $S <: $T
@@ -239,71 +239,6 @@ in exercise 15.2.1:
 
 This proof requires you to realise there exists a type `{y: Nat, x: Nat, z:
 Nat}` that can be used to connect the two types via `S-Trans`. But this requires
-thinking *outside the system*, since `S-Trans` does not give any mechanism for
-constructing the connecting type `U`. We need a different formulation of the
-subtyping relation that works for any record type.
-
-### Unifying the rules
-
-Fortunately, the three operations for generating subtypes can be expressed as a
-single rule:
-
-> A record type `R1` is a subtype of `R2` if, for every field `l: T` in `R2`,
-> there exists a corresponding field `l: S` in `R1` where `S` is a subtype of
-> `T`.
-
-This allows `R1` to contain fields that are not in `R2` (`S-RcdWidth`), it
-allows the members of `R1` to be subtypes of the members of `R2` (`S-RcdDepth`),
-and it allows the matching fields to appear in any order (`S-RcdPerm`).
-
-This rule can be expressed as a pair of inductive rules:
-
-- `S-Rcd-0`: All record types are a subtype of the empty record type `Rcd`.
-- `S-Rcd-N`: A record type `R1` is a subtype of `l: T, R2` if the type `R1.l`
-  (the type associated with label `l` in `R1`) is a subtype of `T`, and `R1` is
-  a subtype of `R2`.
-
-Here are the rules expressed symbolically:
-
-    rule S-Rcd-0 {
-      $R <: Rcd
-    }
-
-    rule S-Rcd-N {
-      $R1 . $l = $S / $S <: $T / $R1 <: $R2
-      -------------------------------------
-              $R1 <: ($l: $T, $R2)
-    }
-
-The relation `R.l = S` used to look up the type bound to a label within a record
-type is defined in 11-7.
-
-Unlike the book's rules, this implementation can generate proofs for arbitrary
-types. This is due to a few things combining to keep the `<:` usable. In the
-notes for 15-1 we saw how `S <: T` works best as a check when `S` and `T` are
-already known, not to generate `S` or `T` when either is unknown. Assuming we're
-trying to derive `$R1 <: ($l: $T, $R2)` as a check, that means `R1`, `l`, `T`
-and `R2` are known. The `R.l = S` relation is deterministic, and so running that
-premise first means `S` is known before `S <: T` is attempted, so again `<:` is
-used as a check on known values.
-
-Indeed, we can use this to derive a proof for the statement from exercise
-15.2.1:
-
-          ------------------------------------- T-RcdField-0
-          (y : Nat , (z : Nat , Rcd)) . y = Nat
-    ------------------------------------------------- T-RcdField-N   ---------- S-Nat   ---------------------------------------------- S-Rcd-0
-    (x : Nat , (y : Nat , (z : Nat , Rcd))) . y = Nat                Nat <: Nat         (x : Nat , (y : Nat , (z : Nat , Rcd))) <: Rcd
-    ---------------------------------------------------------------------------------------------------------------------------------- S-Rcd-N
-                                        (x : Nat , (y : Nat , (z : Nat , Rcd))) <: (y : Nat , Rcd)
-
-One final thing to note is that the rules from the book produce ambiguity:
-`S-RcdWidth`, `S-RcdDepth` and `S-RcdPerm` can all be used to derive `{} <: {}`,
-as can `S-Refl`. We could modify the rules, for example changing `S-RcdWidth` so
-require `S` to be strictly larger than `T` and the other rules to not allow an
-empty left-hand-side. But we'd still be able to derive `S <: T` where `S` and
-`T` are the same in multiple ways, unless we remove `S-Refl`, or change
-`S-RcdDepth` to require at least one type is not literally the same, or
-`S-RcdPerm` to require at least one field to be out of order. These changes just
-add complexity that doesn't appear necessary given the relative simplicity of
-`S-Rcd-N`.
+thinking *outside the system* (c.f. *Gödel, Escher, Bach*, p36), since `S-Trans`
+does not give any mechanism for constructing the connecting type `U`. We need a
+different formulation of the subtyping relation that works for any record type.
