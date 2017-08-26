@@ -2,18 +2,23 @@ require_relative '../lib/infer'
 
 def typeof(lang, expr, ctx = '∅')
   relation = lang.relation('⊢', ':')
+  do_typeof(relation, ctx, expr)
+end
 
-  type, derivation = relation.once_with_derivation(Infer.expr(ctx), Infer.expr(expr))
-
-  print_derivation(expr, type, derivation)
+def algo_typeof(lang, expr, ctx = '∅')
+  relation = lang.relation('↦', ':')
+  do_typeof(relation, ctx, expr)
 end
 
 def ref_typeof(lang, expr, ctx = '∅', env = '∅')
   relation = lang.relation('|', '⊢', ':')
+  do_typeof(relation, ctx, env, expr)
+end
 
-  type, derivation = relation.once_with_derivation(
-    Infer.expr(ctx), Infer.expr(env), Infer.expr(expr))
-
+def do_typeof(relation, *args)
+  expr = args.last
+  args = args.map { |expr| Infer.expr(expr) }
+  type, derivation = relation.once_with_derivation(*args)
   print_derivation(expr, type, derivation)
 end
 

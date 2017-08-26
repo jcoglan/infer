@@ -166,13 +166,8 @@ say that `Bool` and `Nat` are subtypes of themselves. It might get tedious to
 spell this out for every type, but it's easier that putting checks for
 inequality in other rules.
 
-    rule S-Bool {
-      Bool <: Bool
-    }
-
-    rule S-Nat {
-      Nat <: Nat
-    }
+    rule S-Bool { Bool <: Bool }
+    rule S-Nat  { Nat  <: Nat  }
 
 
 ## Typing
@@ -193,24 +188,4 @@ the same problem. Putting the `S <: T` condition first does not help matters,
 because typically `S` and `T` are both unknown when that term is unified.
 
 Therefore we will need to find ways to work the effects of this into other
-rules. For example, the main reason we care about subtyping at first is that it
-allows us to pass an argument into an abstraction when its type doesn't exactly
-match the abstraction's parameter type. We can allow this by changing `T-App` to
-say, if the abstraction has type `T1 → T2`, and the argument has type `T`, and
-`T` is a subtype of `T1`, then the application has type `T2`.
-
-Note that by placing the subtyping premise at the end, we only attempt to derive
-it once `T` and `T1` are known via the first two premises. This means the `<:`
-relation is used to check, rather than to construct a solution. Placing the
-subtyping premise first causes programs to loop indefinitely.
-
-    rule T-App {
-      $Γ ⊢ $t1 : ($T1 → $T2) / $Γ ⊢ $t2 : $T / $T <: $T1
-      --------------------------------------------------
-                    $Γ ⊢ ($t1 $t2) : $T2
-    }
-
-Other language extensions would need their own modifications. For example, to
-allow a value like `{x: 0, y: true}` to be placed inside a `List {x: Nat}`, the
-typing rule for `cons` and other list functions would have to be modified to
-allow subtypes of the declared type as list elements.
+rules, as we'll see in 16-3, algorithmic typing.
