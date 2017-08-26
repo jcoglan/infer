@@ -25,8 +25,8 @@ to solve the same problem over and over. What's needed is what the books calls a
 For example, the main reason we care about subtyping at first is that it allows
 us to pass an argument into an abstraction when its type doesn't exactly match
 the abstraction's parameter type. We can allow this by changing `T-App` to say,
-if the abstraction has type `T1 → T2`, and the argument has type `T`, and `T` is
-a subtype of `T1`, then the application has type `T2`.
+if the abstraction has type `T11 → T12`, and the argument has type `T2`, and
+`T2` is a subtype of `T11`, then the application has type `T12`.
 
     rule TA-App {
       $Γ ↦ $t1 : ($T11 → $T12) / $Γ ↦ $t2 : $T2 / ↦ $T2 <: $T11
@@ -35,7 +35,7 @@ a subtype of `T1`, then the application has type `T2`.
     }
 
 Note that by placing the subtyping premise at the end, we only attempt to derive
-it once `T` and `T1` are known via the first two premises. This means the `<:`
+it once `T2` and `T11` are known via the first two premises. This means the `<:`
 relation is used to check, rather than to construct a solution. Placing the
 subtyping premise first causes programs to loop indefinitely.
 
