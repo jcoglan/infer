@@ -10,9 +10,17 @@ module Infer
     end
   end
 
-  State = Struct.new(:values, :derivation) do
+  State = Struct.new(:values, :cut, :derivation) do
     def assign(var, value)
-      State.new(values.merge(var => value), derivation)
+      State.new(values.merge(var => value), cut, derivation)
+    end
+
+    def cut!
+      State.new(values, 1, derivation)
+    end
+
+    def cut?
+      cut == 2
     end
 
     def clear
@@ -20,11 +28,13 @@ module Infer
     end
 
     def connect(state)
-      State.new(values, state.parents + [derivation])
+      cut = [state.cut, self.cut].grep(1).first
+      State.new(values, cut, state.parents + [derivation])
     end
 
     def derive(rule, conclusion, syntactic)
-      State.new(values, Derivation.new(parents, rule, conclusion, syntactic))
+      cut = {1 => 2}.fetch(self.cut, 0)
+      State.new(values, cut, Derivation.new(parents, rule, conclusion, syntactic))
     end
 
     def parents

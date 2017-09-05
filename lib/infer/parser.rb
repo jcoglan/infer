@@ -55,6 +55,10 @@ module Infer
       el[0]
     end
 
+    def mk_cut(t, a, b)
+      Cut.new(t[a...b])
+    end
+
     def mk_expr(t, a, b, el)
       return el[0] if el[1].elements.empty?
       parts = [el[0]] + el[1].elements.map(&:el)

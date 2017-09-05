@@ -13,4 +13,7 @@ module Infer
     end
   end
 
+  class Cut < Word
+  end
+
 end

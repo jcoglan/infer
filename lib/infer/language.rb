@@ -28,15 +28,24 @@ module Infer
 
     def derive(target, state = State.new({}))
       streams = @rules.map { |_, rule| rule.match(self, target, state) }
-      interleave(streams)
+      indexes = Hash[streams.map.with_index.entries]
+
+      interleave(streams) do |stream|
+        stream.next.tap do |state|
+          streams.delete_if { |s| indexes[stream] < indexes[s] } if state.cut?
+        end
+      end
     end
 
-    def interleave(enums)
+    def interleave(enums, &block)
+      block ||= :next.to_proc
+
       Enumerator.new { |output|
         until enums.empty?
           loop {
             enum = enums.shift
-            output.yield(enum.next)
+            state = block.call(enum)
+            output.yield(state)
             enums << enum
           }
         end

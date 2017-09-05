@@ -24,8 +24,10 @@ module Infer
     def match_in_states(lang, expr, states)
       Enumerator.new { |enum|
         state = states.next
-        head  = lang.derive(expr, state).lazy.map { |s| s.connect(state) }
-        tail  = match_in_states(lang, expr, states)
+        next enum.yield(state.cut!) if expr.is_a?(Cut)
+
+        head = lang.derive(expr, state).lazy.map { |s| s.connect(state) }
+        tail = match_in_states(lang, expr, states)
 
         lang.interleave([head, tail]).each do |state|
           enum.yield(state)
