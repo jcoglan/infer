@@ -18,15 +18,15 @@ module Infer
     end
 
     def self.print_results(states, vars)
-      first = states.next rescue nil
-      return puts "false.\n\n" unless first
-
+      any = false
       puts
-      print_state(first, vars)
 
       states.each do |state|
+        any = true
         print_state(state, vars)
       end
+
+      return puts "false.\n\n" unless any
     end
 
     def self.print_state(state, vars)
