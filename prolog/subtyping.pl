@@ -6,7 +6,7 @@
 
 % T-Var
 type(G, X, T) :- var_type(G, X, T).
-var_type([[X, T] | _], X, T).
+var_type([[X, T] | _], X, T) :- !.
 var_type([_ | G], X, T) :- var_type(G, X, T).
 
 % T-Abs
@@ -55,7 +55,7 @@ type(G, iszero(T1), bool) :- type(G, T1, nat).
 %% Figure 15-1: Simply typed lambda-calculus with subtyping (λ<:), p186
 
 % S-Refl
-% subtype(S, S).
+subtype(S, S) :- !.
 
 % S-Trans
 % subtype(S, T) :- subtype(S, U), subtype(U, T).
@@ -77,9 +77,6 @@ type(G, app(X, Y), T2) :-
     type(G, Y, T),
     subtype(T, T1).
 
-subtype(bool, bool).
-subtype(nat, nat).
-
 
 %% → {}
 %% Figure 11-7: Records, p129
@@ -98,7 +95,7 @@ type(G, proj(Term, Label), Type) :-
     type(G, Term, RT),
     rcd_type(RT, Label, Type).
 
-rcd_type(rcd([[L, T] | _]), L, T).
+rcd_type(rcd([[L, T] | _]), L, T) :- !.
 
 rcd_type(rcd([_ | R]), L, T) :-
     rcd_type(rcd(R), L, T).
