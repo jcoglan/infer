@@ -64,7 +64,7 @@
 These do not appear in the book; they define the `∈` operator sufficiently to
 make `T-Var` actually function.
 
-    rule T-Var-0 {
+    rule T-Var-0 <!> {
       ($x : $T) ∈ ($Γ, $x : $T)
     }
 
