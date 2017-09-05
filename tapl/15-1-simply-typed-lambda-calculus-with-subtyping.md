@@ -14,7 +14,7 @@ extends ./typed-bool-nat
 The subtyping rules given in the book are a reasonable expression of the
 reflexivity and transitivity of subtyping; all types are subtypes of themselves:
 
-    # rule S-Refl {
+    rule S-Refl <!> {
       $S <: $S
     }
 
@@ -32,7 +32,9 @@ even in a logic programming environment. The existence of `S-Refl` means that,
 in order to avoid generating multiple proofs of the same thing, subtyping rules
 for specific types must include clauses to avoid matching exactly equal types.
 For example, if we have a rule that says all record types are subtypes of `Rcd`
-(i.e. `R <: Rcd`), then `Rcd <: Rcd` is provable in two ways.
+(i.e. `R <: Rcd`), then `Rcd <: Rcd` is provable in two ways. To avoid this
+problem in our implementation, the above `S-Refl` has a cut applied to it to
+prevent further searching onces it's matched.
 
 For subtyping, this isn't as big a problem as it is for evaluation and typing.
 For the latter, we usually want a unique outcome with one proof; we have some
@@ -160,14 +162,6 @@ derived.
       --------------------------
       ($S1 → $S2) <: ($T1 → $T2)
     }
-
-Finally, since we have decided to drop `S-Refl`, we'll include specific rules to
-say that `Bool` and `Nat` are subtypes of themselves. It might get tedious to
-spell this out for every type, but it's easier that putting checks for
-inequality in other rules.
-
-    rule S-Bool { Bool <: Bool }
-    rule S-Nat  { Nat  <: Nat  }
 
 
 ## Typing
