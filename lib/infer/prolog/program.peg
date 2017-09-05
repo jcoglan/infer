@@ -6,7 +6,9 @@ entry           <-  fact / rule
 fact            <-  term _ "."                                      %mk_fact
 rule            <-  term _ ":-" _ term (comma term)* _ "."          %mk_rule
 
-term            <-  list / compound / variable / atom
+term            <-  cut / list / compound / variable / atom
+
+cut             <-  "!"                                             %mk_cut
 
 list            <-  "[" _ list_contents? _ "]"                      %mk_list
 list_contents   <-  term (comma term)* (_ "|" _ term)?              %mk_list_contents

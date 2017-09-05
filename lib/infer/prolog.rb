@@ -100,6 +100,10 @@ module Infer
         Rule.new(rule_name, premises, conclusion)
       end
 
+      def mk_cut(t, a, b)
+        Cut.new(t[a...b])
+      end
+
       def mk_list(t, a, b, el)
         List === el[2] ? el[2] : List.nil
       end
