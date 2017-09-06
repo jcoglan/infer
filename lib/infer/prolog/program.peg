@@ -16,7 +16,7 @@ list_contents   <-  term (comma term)* (_ "|" _ term)?              %mk_list_con
 compound        <-  atom "(" _ term (comma term)* _ ")"             %mk_compound
 
 variable        <-  [A-Z_] [A-Za-z0-9_]*                            %mk_var
-atom            <-  [^\[\]|()\sA-Z,.;-]+                            %mk_atom
+atom            <-  [^\[\]|()\sA-Z!,.;-]+                           %mk_atom
 
 comma           <-  _ "," _
 
