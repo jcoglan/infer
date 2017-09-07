@@ -39,12 +39,9 @@ module Infer
       else
         pred = [expr[0].elements[0]] + expr[0].elements[1].map(&:expr)
       end
+      pred << el[4].cut if el[4].respond_to?(:cut)
 
-      pred.unshift(Cut.new) if el[4].respond_to?(:cut)
-
-      conc = expr[1]
-
-      Rule.new(name, pred, conc)
+      Rule.new(name, pred, expr[1])
     end
 
     def mk_var(t, a, b, el)
