@@ -61,20 +61,3 @@ allow subtypes of the declared type as list elements.
       ---------------------------
           $Γ ↦ ($t . $l) : $T
     }
-
-### Bools and Nats
-
-Although these are not included in the book's figure 16-3, I'm including them so
-we can write some tests and examples using simple types. Some extra work is
-needed here to deal with expressions on these types, for example finding the
-join of type types for `if` expressions.
-
-    rule TA-True  { $Γ ↦ true  : Bool }
-    rule TA-False { $Γ ↦ false : Bool }
-    rule TA-Zero  { $Γ ↦ 0     : Nat  }
-
-    rule TA-Succ {
-          $Γ ↦ $t : Nat
-      --------------------
-      $Γ ↦ (succ $t) : Nat
-    }
