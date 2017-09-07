@@ -26,12 +26,27 @@ module Infer
         state = states.next
         next enum.yield(state.cut!) if expr.is_a?(Cut)
 
-        head = lang.derive(expr, state).lazy.map { |s| s.connect(state) }
+        head = match_in_state(lang, expr, state)
         tail = match_in_states(lang, expr, states)
 
         lang.interleave([head, tail]).each do |state|
           enum.yield(state)
         end
+      }
+    end
+
+    def match_in_state(lang, expr, state)
+      Enumerator.new { |enum|
+        next enum.yield(state) if state.failed?
+
+        empty = true
+
+        lang.derive(expr, state).each do |new_state|
+          empty = false
+          enum.yield(new_state.connect(state))
+        end
+
+        enum.yield(state.failed!) if empty and state.cut == 1
       }
     end
   end

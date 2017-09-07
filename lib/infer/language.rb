@@ -31,9 +31,9 @@ module Infer
       indexes = Hash[streams.map.with_index.entries]
 
       interleave(streams) do |stream|
-        stream.next.tap do |state|
-          streams.delete_if { |s| indexes[stream] < indexes[s] } if state.cut?
-        end
+        state = stream.next
+        streams.delete_if { |s| indexes[stream] < indexes[s] } if state.cut?
+        state.failed? ? nil : state
       end
     end
 
@@ -45,7 +45,7 @@ module Infer
           loop {
             enum = enums.shift
             state = block.call(enum)
-            output.yield(state)
+            output.yield(state) if state
             enums << enum
           }
         end

@@ -23,6 +23,14 @@ module Infer
       cut == 2
     end
 
+    def failed!
+      failed? ? self : State.new(nil, cut)
+    end
+
+    def failed?
+      values.nil?
+    end
+
     def clear
       State.new(values)
     end
