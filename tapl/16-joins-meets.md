@@ -175,7 +175,7 @@ label in a record, we stop trying to use any other rules (in particular, the
 rule after this) to match.
 
     rule T-RcdKeyHit <!> {
-      ($l: $S, $R) [$l] = $S, $R
+      ($l: $T, $R) [$l] = $T, $R
     }
 
 Then we have the recursive case that scans along the record looking for more
@@ -184,9 +184,9 @@ rule to derive `Bool`, `Nat` and `⊥` for the value of `S` in `(x: Bool, (x: Na
 Rcd)) [x] = S`. The cut means only the first of these can be derived.
 
     rule T-RcdKeyScan {
-                 $R[$l] = $S, $R'
+                 $R[$l] = $T, $R'
       -------------------------------------
-      ($k: $T, $R) [$l] = $S, ($k: $T, $R')
+      ($k: $S, $R) [$l] = $T, ($k: $S, $R')
     }
 
 It's worth noting why we've introduced a new relation here instead of extending
