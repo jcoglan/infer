@@ -10,12 +10,10 @@ module Infer
       scope = Object.new
       expr  = conclusion.in_scope(scope)
 
-      states = Enumerator.new { |enum|
-        state = state.unify(target, expr)
-        enum.yield(state.clear) if state
-      }
+      state = state.unify(target, expr)
+      return [].each unless state
 
-      states = premises.inject(states) do |states, expr|
+      states = premises.inject([state.clear].each) do |states, expr|
         match_in_states(lang, expr.in_scope(scope), states)
       end
 
@@ -37,9 +35,9 @@ module Infer
     end
 
     def match_in_state(lang, expr, state)
-      Enumerator.new { |enum|
-        next enum.yield(state) if state.failed?
+      return [state].each if state.failed?
 
+      Enumerator.new { |enum|
         empty = true
 
         lang.derive(expr, state).each do |new_state|
