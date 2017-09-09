@@ -2,7 +2,8 @@ module Infer
 
   Rule = Struct.new(:name, :premises, :conclusion, :syntactic) do
     def inspect
-      "<rule #{name.inspect} #{premises.inspect} #{conclusion.inspect}>"
+      body = premises.map(&:inspect).join(', ')
+      "<rule #{name.inspect} #{conclusion.inspect} :- #{body}>"
     end
 
     def match(lang, target, state)
