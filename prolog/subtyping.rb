@@ -5,7 +5,8 @@ program = Infer::Prolog.program(source)
 
 exprs = [
   'type([], λ(x, bool, λ(y, bool, λ(x, nat, x))), T).',
-  'type([], app(λ(f, arrow(rcd([[x, nat]]), rcd([])), app(f, rec([[x, 0]]))), λ(r, rcd([]), rec([[y, true]]))), T).'
+  'type([], app(λ(f, arrow(rcd([[x, nat]]), rcd([])), app(f, rec([[x, 0]]))), λ(r, rcd([]), rec([[y, true]]))), T).',
+  'type([], if(true, λ(r, rcd([[x,nat], [y,nat]]), proj(r,x)), λ(s, rcd([[y,top], [z,nat]]), proj(s,z))), T).',
 ]
 
 exprs.each do |expr|
