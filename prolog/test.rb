@@ -53,6 +53,8 @@ queries = <<-Q
 
   3 is 1+2.
   4 is 1+2.
+  X is 3*4.
+  M is mod(7,2).
 
   len([a,b,c,d,e,[a,b],g], X).
   acclen([a, b, c], 0, L).

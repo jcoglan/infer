@@ -8,14 +8,16 @@ rule            <-  head _ ":-" _ goal (comma goal)* _ "."          %mk_rule
 
 head            <-  comparison / compound / atom
 goal            <-  cut / comparison / operand
-comparable      <-  sum / summand
-summand         <-  list / integer / variable
+comparable      <-  list / compound / sum / summand
+summand         <-  product / factor
+factor          <-  integer / variable
 operand         <-  list / compound / integer / variable / atom
 
 cut             <-  "!"                                             %mk_cut
 
 comparison      <-  comparable _ comparator _ comparable            %mk_infix
 sum             <-  summand _ [+-] _ comparable                     %mk_infix
+product         <-  factor _ [*/] _ summand                         %mk_infix
 
 comparator      <-  "=:=" / "=\\="
                  /  "=<" / "<" / ">=" / ">"

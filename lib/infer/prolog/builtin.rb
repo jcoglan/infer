@@ -18,8 +18,11 @@ module Infer
     FUNCTORS = BUILTINS.keys + COMPARATORS.keys
 
     MATH = {
-      '+' => :+,
-      '-' => :-
+      '+'   => :+,
+      '-'   => :-,
+      '*'   => :*,
+      '/'   => :/,
+      'mod' => '%'
     }
 
     Builtin = Struct.new(:state) do
