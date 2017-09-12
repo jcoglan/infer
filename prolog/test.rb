@@ -15,24 +15,26 @@ program = Infer::Prolog.program <<-PL
   reverse([X|Xs], Acc, Ys) :- reverse(Xs, [X|Acc], Ys).
 PL
 
-queries = [
-  'member(d, [a,b,c]).',
-  'member(a, [a,b,c]).',
-  'member(X, [a,b,c]).',
+queries = <<-Q
+  member(d, [a,b,c]).
+  member(a, [a,b,c]).
+  member(X, [a,b,c]).
 
-  'append([], [a], Z).',
-  'append([a], [b], Z).',
-  'append(X, Y, [a, b, c]).',
+  append([], [a], Z).
+  append([a], [b], Z).
+  append(X, Y, [a, b, c]).
 
-  'reverse([a, b, c], X).',
-  'reverse([a, b, c], [c, B, a]).',
-  'reverse([a, b, c], [d, B, a]).',
-  'reverse2([a, b, c], X).',
-  'member(a, [a,a,b]).',
-  'member(a, a(a(b))).'
-]
+  reverse([a, b, c], X).
+  reverse([a, b, c], [c, B, a]).
+  reverse([a, b, c], [d, B, a]).
+  reverse2([a, b, c], X).
+  member(a, [a,a,b]).
+  member(a, a(a(b))).
+Q
 
-queries.each do |query|
+queries.lines.each do |query|
+  next if query =~ /\A\s*\z/
+
   query, vars = Infer::Prolog.query(query)
   states = program.derive(query)
 
