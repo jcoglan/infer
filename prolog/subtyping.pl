@@ -168,9 +168,9 @@ rcd_pluck(rcd([[K, S] | R]), L, T, rcd([[K, S] | R_])) :-
 
 rcd_not_member(L, R) :-
     rcd_pluck(R, L, S, _),
-    eq(S, nil). % S = nil.
+    S = nil.
 
-eq(A, A).
+A = A.
 
 
 /*

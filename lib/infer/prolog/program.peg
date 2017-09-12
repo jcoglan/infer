@@ -3,17 +3,22 @@ grammar Infer.Prolog.Program
 program         <-  _ (entry _)*                                    %mk_program
 
 entry           <-  fact / rule
-fact            <-  term _ "."                                      %mk_fact
-rule            <-  term _ ":-" _ term (comma term)* _ "."          %mk_rule
+fact            <-  head _ "."                                      %mk_fact
+rule            <-  head _ ":-" _ goal (comma goal)* _ "."          %mk_rule
 
-term            <-  cut / list / compound / variable / atom
+head            <-  infix / compound / atom
+goal            <-  cut / infix / operand
+infix           <-  equality
+operand         <-  list / compound / variable / atom
 
 cut             <-  "!"                                             %mk_cut
 
-list            <-  "[" _ list_contents? _ "]"                      %mk_list
-list_contents   <-  term (comma term)* (_ "|" _ term)?              %mk_list_contents
+equality        <-  operand _ "=" _ operand                         %mk_infix
 
-compound        <-  atom "(" _ term (comma term)* _ ")"             %mk_compound
+list            <-  "[" _ list_contents? _ "]"                      %mk_list
+list_contents   <-  operand (comma operand)* (_ "|" _ operand)?     %mk_list_contents
+
+compound        <-  atom "(" _ operand (comma operand)* _ ")"       %mk_compound
 
 variable        <-  [A-Z_] [A-Za-z0-9_]*                            %mk_var
 atom            <-  [^\[\]|()\sA-Z!,.;-]+                           %mk_atom

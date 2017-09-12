@@ -95,9 +95,13 @@ module Infer
       end
 
       def mk_rule(t, a, b, el)
-        premises = [el[4]] + el[5].elements.map(&:term)
+        premises = [el[4]] + el[5].elements.map(&:goal)
         conclusion = el[0]
         Rule.new(rule_name, premises, conclusion)
+      end
+
+      def mk_infix(t, a, b, el)
+        Compound.new([Word.new(el[2].text), el[0], el[4]])
       end
 
       def mk_cut(t, a, b)
@@ -109,14 +113,14 @@ module Infer
       end
 
       def mk_list_contents(t, a, b, el)
-        head = [el[0]] + el[1].elements.map(&:term)
-        tail = el[2].elements.any? ? el[2].term : List.nil
+        head = [el[0]] + el[1].elements.map(&:operand)
+        tail = el[2].elements.any? ? el[2].operand : List.nil
 
         head.reverse.inject(tail) { |list, term| List.new([term, list]) }
       end
 
       def mk_compound(t, a, b, el)
-        items = [el[0], el[3]] + el[4].elements.map(&:term)
+        items = [el[0], el[3]] + el[4].elements.map(&:operand)
         Compound.new(items)
       end
 
