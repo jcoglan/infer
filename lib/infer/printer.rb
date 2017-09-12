@@ -87,7 +87,7 @@ module Infer
     def generate(plan, depth)
       parents.each { |printer| printer.generate(plan, depth + 2) }
 
-      divider = ('-' * (@divider_right - @divider_left)) + rule_name
+      divider = ('—' * (@divider_right - @divider_left)) + rule_name
 
       plan.write(depth + 1, @divider_left, divider)
       plan.write(depth, @conclusion_left, conclusion)

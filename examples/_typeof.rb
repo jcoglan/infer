@@ -27,7 +27,7 @@ def print_derivation(expr, type, derivation)
 
   puts
   puts "# #{expr}"
-  puts "# #{'-' * expr.to_s.size}"
+  puts "# #{'—' * expr.to_s.size}"
   puts "# #{type}"
   puts
   Infer.print_derivation(derivation)
