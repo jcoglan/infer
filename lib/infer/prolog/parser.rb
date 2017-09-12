@@ -56,6 +56,10 @@ module Infer
         Variable.new(t[a...b])
       end
 
+      def mk_integer(t, a, b, el)
+        Int.new(t[a...b].to_i)
+      end
+
       def mk_atom(t, a, b, el)
         Word.new(t[a...b])
       end

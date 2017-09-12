@@ -170,8 +170,6 @@ rcd_not_member(L, R) :-
     rcd_pluck(R, L, S, _),
     S = nil.
 
-A = A.
-
 
 /*
     (λf: {x: Nat} → {}. f {x=0}) (λr: {}. {y=true, r})

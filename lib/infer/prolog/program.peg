@@ -6,14 +6,18 @@ entry           <-  fact / rule
 fact            <-  head _ "."                                      %mk_fact
 rule            <-  head _ ":-" _ goal (comma goal)* _ "."          %mk_rule
 
-head            <-  infix / compound / atom
-goal            <-  cut / infix / operand
-infix           <-  equality
-operand         <-  list / compound / variable / atom
+head            <-  comparison / compound / atom
+goal            <-  cut / comparison / operand
+comparable      <-  sum / summand
+summand         <-  operand
+operand         <-  list / compound / variable / integer / atom
 
 cut             <-  "!"                                             %mk_cut
 
-equality        <-  operand _ "=" _ operand                         %mk_infix
+comparison      <-  comparable _ comparator _ comparable            %mk_infix
+sum             <-  summand _ [+-] _ comparable                     %mk_infix
+
+comparator      <-  "=" / "is"
 
 list            <-  "[" _ list_contents? _ "]"                      %mk_list
 list_contents   <-  operand (comma operand)* (_ "|" _ operand)?     %mk_list_contents
@@ -21,6 +25,7 @@ list_contents   <-  operand (comma operand)* (_ "|" _ operand)?     %mk_list_con
 compound        <-  atom "(" _ operand (comma operand)* _ ")"       %mk_compound
 
 variable        <-  [A-Z_] [A-Za-z0-9_]*                            %mk_var
+integer         <-  [0-9]+                                          %mk_integer
 atom            <-  [^\[\]|()\sA-Z!,.;-]+                           %mk_atom
 
 comma           <-  _ "," _

@@ -13,6 +13,12 @@ program = Infer::Prolog.program <<-PL
   reverse2(Xs, Ys) :- reverse(Xs, [], Ys).
   reverse([], Ys, Ys).
   reverse([X|Xs], Acc, Ys) :- reverse(Xs, [X|Acc], Ys).
+
+  len([], 0).
+  len([_|T], N) :- len(T, X), N is X+1.
+
+  acclen([_|T], A, L) :- Anew is A+1, acclen(T,Anew,L).
+  acclen([], A, A).
 PL
 
 queries = <<-Q
@@ -30,6 +36,12 @@ queries = <<-Q
   reverse2([a, b, c], X).
   member(a, [a,a,b]).
   member(a, a(a(b))).
+
+  3 is 1+2.
+  4 is 1+2.
+
+  len([a,b,c,d,e,[a,b],g], X).
+  acclen([a, b, c], 0, L).
 Q
 
 queries.lines.each do |query|

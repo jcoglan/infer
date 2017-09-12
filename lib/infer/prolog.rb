@@ -1,10 +1,24 @@
 module Infer
   module Prolog
 
+    autoload :Builtin,  ROOT + '/prolog/builtin'
     autoload :Compound, ROOT + '/prolog/compound'
+    autoload :Int,      ROOT + '/prolog/int'
     autoload :List,     ROOT + '/prolog/list'
     autoload :Parser,   ROOT + '/prolog/parser'
     autoload :Program,  ROOT + '/prolog/program'
+
+    class Language < Infer::Language
+      def derive(target, state = State.new({}))
+        return super unless Builtin.handle?(target)
+
+        state = Builtin.new(state).evaluate(target)
+        return [].each unless state
+
+        state = state.clear.derive(Word.new('_'), target, false)
+        [state].each
+      end
+    end
 
     def self.program(program)
       Program.parse(program, :actions => Parser.new)
