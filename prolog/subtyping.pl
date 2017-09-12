@@ -139,7 +139,7 @@ join(rcd([[L, _] | R1]), R2, J) :-
     join(rcd(R1), R2, J),
     !.
 
-join(_, _, top).
+join(S, T, top).
 
 meet(S, S, S).
 
