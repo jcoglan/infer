@@ -6,23 +6,38 @@ module Infer
       'is' => :is
     }
 
-    METHODS = BUILTINS.merge(
-      '+' => :plus,
-      '-' => :minus
-    )
+    COMPARATORS = {
+      '=:=' => :==,
+      '=\=' => :!=,
+      '=<'  => :<=,
+      '<'   => :<,
+      '>='  => :>=,
+      '>'   => :>
+    }
+
+    FUNCTORS = BUILTINS.keys + COMPARATORS.keys
+
+    MATH = {
+      '+' => :+,
+      '-' => :-
+    }
 
     Builtin = Struct.new(:state) do
       def self.handle?(target)
-        target.is_a?(Compound) and BUILTINS.has_key?(target.functor.name)
+        target.is_a?(Compound) and FUNCTORS.include?(target.functor.name)
       end
 
       def evaluate(target)
-        case target
-        when Compound
-          method = METHODS[target.functor.name]
-          __send__(method, target)
-        else
-          state.walk(target)
+        return state.walk(target) unless target.is_a?(Compound)
+
+        name = target.functor.name
+
+        if BUILTINS.has_key?(name)
+          __send__(BUILTINS[name], target)
+        elsif COMPARATORS.has_key?(name)
+          compare(target)
+        elsif MATH.has_key?(name)
+          Int.new(math(target, MATH))
         end
       end
 
@@ -34,17 +49,16 @@ module Infer
         state.unify(target.left, evaluate(target.right))
       end
 
-      def math(target)
-        x, y = evaluate(target.left), evaluate(target.right)
-        Int.new(yield(x.value, y.value))
+      def compare(target)
+        result = math(target, COMPARATORS)
+        result ? state : nil
       end
 
-      def plus(target)
-        math(target) { |x, y| x + y }
-      end
+      def math(target, table)
+        x = evaluate(target.left).value
+        y = evaluate(target.right).value
 
-      def minus(target)
-        math(target) { |x, y| x - y }
+        x.__send__(table[target.functor.name], y)
       end
     end
 

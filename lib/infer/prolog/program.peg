@@ -9,15 +9,17 @@ rule            <-  head _ ":-" _ goal (comma goal)* _ "."          %mk_rule
 head            <-  comparison / compound / atom
 goal            <-  cut / comparison / operand
 comparable      <-  sum / summand
-summand         <-  operand
-operand         <-  list / compound / variable / integer / atom
+summand         <-  list / integer / variable
+operand         <-  list / compound / integer / variable / atom
 
 cut             <-  "!"                                             %mk_cut
 
 comparison      <-  comparable _ comparator _ comparable            %mk_infix
 sum             <-  summand _ [+-] _ comparable                     %mk_infix
 
-comparator      <-  "=" / "is"
+comparator      <-  "=:=" / "=\\="
+                 /  "=<" / "<" / ">=" / ">"
+                 /  "=" / "is"
 
 list            <-  "[" _ list_contents? _ "]"                      %mk_list
 list_contents   <-  operand (comma operand)* (_ "|" _ operand)?     %mk_list_contents
@@ -25,7 +27,7 @@ list_contents   <-  operand (comma operand)* (_ "|" _ operand)?     %mk_list_con
 compound        <-  atom "(" _ operand (comma operand)* _ ")"       %mk_compound
 
 variable        <-  [A-Z_] [A-Za-z0-9_]*                            %mk_var
-integer         <-  [0-9]+                                          %mk_integer
+integer         <-  "-"? [0-9]+                                     %mk_integer
 atom            <-  [^\[\]|()\sA-Z!,.;-]+                           %mk_atom
 
 comma           <-  _ "," _
