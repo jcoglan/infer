@@ -20,29 +20,36 @@ module Infer
       [query, vars]
     end
 
+    def self.execute_and_print(program, expr)
+      q, vars = query(expr)
+      states  = program.derive(q)
+
+      puts "?- #{q}."
+
+      print_results(states, vars)
+    end
+
     def self.print_results(states, vars)
       any = false
-      puts
 
       states.each do |state|
         any = true
         print_state(state, vars)
       end
 
-      return puts "false.\n\n" unless any
+      puts "false." unless any
+      puts
     end
 
     def self.print_state(state, vars)
+      puts
       Infer.print_derivation(state.build_derivation)
       puts
-
-      return puts "true.\n\n" if vars.empty?
+      return puts "true." if vars.empty?
 
       vars.each do |var|
         puts "#{var} = #{state.walk(var)}"
       end
-
-      puts
     end
 
   end

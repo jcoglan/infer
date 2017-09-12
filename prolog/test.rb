@@ -34,13 +34,7 @@ Q
 
 queries.lines.each do |query|
   next if query =~ /\A\s*\z/
-
-  query, vars = Infer::Prolog.query(query)
-  states = program.derive(query)
-
-  puts "?- #{query}."
-
-  Infer::Prolog.print_results(states, vars)
+  Infer::Prolog.execute_and_print(program, query)
 end
 
 __END__
