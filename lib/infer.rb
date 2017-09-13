@@ -40,8 +40,8 @@ module Infer
     language
   end
 
-  def self.print_derivation(derivation)
-    Printer.new(derivation).print
+  def self.print_derivation(derivation, options = {})
+    Printer.new(derivation, options).print
   end
 
 end

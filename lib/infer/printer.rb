@@ -1,6 +1,6 @@
 module Infer
 
-  Printer = Struct.new(:derivation) do
+  Printer = Struct.new(:derivation, :options) do
     PADDING = 3
 
     attr_reader :box_left, :box_right,
@@ -16,7 +16,7 @@ module Infer
     end
 
     def parents
-      @parents ||= derivation.parents.reject(&:syntactic?).map { |d| Printer.new(d) }
+      @parents ||= derivation.parents.reject(&:syntactic?).map { |d| Printer.new(d, options) }
     end
 
     def print_simple(d = 0)
@@ -33,9 +33,11 @@ module Infer
     end
 
     def prepare(offset)
+      padding = (options || {}).fetch(:padding, PADDING)
+
       parents.inject(offset) do |x, printer|
         printer.prepare(x)
-        printer.box_right + PADDING
+        printer.box_right + padding
       end
 
       if parents.empty?

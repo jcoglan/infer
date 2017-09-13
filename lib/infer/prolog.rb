@@ -57,7 +57,7 @@ module Infer
 
     def self.print_state(state, vars)
       puts
-      Infer.print_derivation(state.build_derivation)
+      Infer.print_derivation(state.build_derivation, :padding => 6)
       puts
       return puts "true." if vars.empty?
 
