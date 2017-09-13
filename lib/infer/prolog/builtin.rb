@@ -2,44 +2,45 @@ module Infer
   module Prolog
 
     BUILTINS = {
-      '='  => :eq,
-      'is' => :is
+      ['=', 2]  => :eq,
+      ['is', 2] => :is
     }
 
     COMPARATORS = {
-      '=:=' => :==,
-      '=\=' => :!=,
-      '=<'  => :<=,
-      '<'   => :<,
-      '>='  => :>=,
-      '>'   => :>
+      ['=:=', 2] => :==,
+      ['=\=', 2] => :!=,
+      ['=<', 2]  => :<=,
+      ['<', 2]   => :<,
+      ['>=', 2]  => :>=,
+      ['>', 2]   => :>
+    }
+
+    MATH = {
+      ['+', 2]   => :+,
+      ['-', 2]   => :-,
+      ['*', 2]   => :*,
+      ['/', 2]   => :/,
+      ['mod', 2] => '%'
     }
 
     FUNCTORS = BUILTINS.keys + COMPARATORS.keys
-
-    MATH = {
-      '+'   => :+,
-      '-'   => :-,
-      '*'   => :*,
-      '/'   => :/,
-      'mod' => '%'
-    }
+    INFIX    = FUNCTORS + MATH.keys
 
     Builtin = Struct.new(:state) do
       def self.handle?(target)
-        target.is_a?(Compound) and FUNCTORS.include?(target.functor.name)
+        target.is_a?(Compound) and FUNCTORS.include?(target.signature)
       end
 
       def evaluate(target)
         return state.walk(target) unless target.is_a?(Compound)
 
-        name = target.functor.name
+        signature = target.signature
 
-        if BUILTINS.has_key?(name)
-          __send__(BUILTINS[name], target)
-        elsif COMPARATORS.has_key?(name)
+        if BUILTINS.has_key?(signature)
+          __send__(BUILTINS[signature], target)
+        elsif COMPARATORS.has_key?(signature)
           compare(target)
-        elsif MATH.has_key?(name)
+        elsif MATH.has_key?(signature)
           Int.new(math(target, MATH))
         end
       end
@@ -61,7 +62,7 @@ module Infer
         x = evaluate(target.left).value
         y = evaluate(target.right).value
 
-        x.__send__(table[target.functor.name], y)
+        x.__send__(table[target.signature], y)
       end
     end
 

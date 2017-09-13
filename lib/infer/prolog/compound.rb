@@ -2,6 +2,10 @@ module Infer
   module Prolog
 
     class Compound < Sequence
+      def signature
+        [functor.name, args.size]
+      end
+
       def functor
         items.first
       end
@@ -19,9 +23,24 @@ module Infer
       end
 
       def inspect
-        "#{functor}(#{args.join(', ')})"
+        if infix?
+          x = left.with_parens rescue left.inspect
+          y = right.with_parens rescue right.inspect
+          "#{x} #{functor} #{y}"
+        else
+          "#{functor}(#{args.join(', ')})"
+        end
       end
-      alias :with_parens :inspect
+
+      def with_parens
+        infix? ? super : inspect
+      end
+
+    private
+
+      def infix?
+        INFIX.include?(signature)
+      end
     end
 
   end
