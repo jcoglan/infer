@@ -31,6 +31,10 @@ module Infer
         target.is_a?(Compound) and FUNCTORS.include?(target.signature)
       end
 
+      def self.print_infix?(target)
+        INFIX.include?(target.signature)
+      end
+
       def evaluate(target)
         return state.walk(target) unless target.is_a?(Compound)
 

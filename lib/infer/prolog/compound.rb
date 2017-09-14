@@ -39,7 +39,7 @@ module Infer
     private
 
       def infix?
-        INFIX.include?(signature)
+        Builtin.print_infix?(self)
       end
     end
 
