@@ -41,14 +41,14 @@ module Infer
       end
 
       def mk_list_contents(t, a, b, el)
-        head = [el[0]] + el[1].elements.map(&:operand)
-        tail = el[2].elements.any? ? el[2].operand : List.nil
+        head = [el[0]] + el[1].elements.map(&:expr)
+        tail = el[2].elements.any? ? el[2].expr : List.nil
 
         head.reverse.inject(tail) { |list, term| List.new([term, list]) }
       end
 
       def mk_compound(t, a, b, el)
-        items = [el[0], el[3]] + el[4].elements.map(&:operand)
+        items = [el[0], el[3]] + el[4].elements.map(&:expr)
         Compound.new(items)
       end
 
