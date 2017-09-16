@@ -1,37 +1,41 @@
 grammar Infer.Prolog.Program
 
-program         <-  _ (entry _)*                                    %mk_program
+program         <-  _ (entry _)*                                      %mk_program
 
-entry           <-  fact / rule
-fact            <-  head _ "."                                      %mk_fact
-rule            <-  head _ ":-" _ goal (comma goal)* _ "."          %mk_rule
+entry           <-  fact / rule / dcg
+fact            <-  head _ "."                                        %mk_fact
+rule            <-  head _ ":-" _ goals _ "."                         %mk_rule
+dcg             <-  head _ "-->" _ dcg_goal (comma dcg_goal)* _ "."   %mk_dcg
+dcg_esc         <-  "{" _ goals _ "}"                                 %mk_dcg_esc
+goals           <-  goal (comma goal)*                                %mk_goals
 
 head            <-  expr
 goal            <-  cut / expr
+dcg_goal        <-  goal / dcg_esc
 
 expr            <-  comparison / comparable
 comparable      <-  sum / summand
 summand         <-  product / factor
 factor          <-  integer / variable / list / compound / atom
 
-cut             <-  "!"                                             %mk_cut
+cut             <-  "!"                                               %mk_cut
 
-comparison      <-  comparable _ comparator _ expr                  %mk_infix
-sum             <-  summand _ [+-] _ comparable                     %mk_infix
-product         <-  factor _ [*/] _ summand                         %mk_infix
+comparison      <-  comparable _ comparator _ expr                    %mk_infix
+sum             <-  summand _ [+-] _ comparable                       %mk_infix
+product         <-  factor _ [*/] _ summand                           %mk_infix
 
 comparator      <-  "=:=" / "=\\="
                  /  "=<" / "<" / ">=" / ">"
                  /  "=" / "is"
 
-list            <-  "[" _ list_contents? _ "]"                      %mk_list
-list_contents   <-  expr (comma expr)* (_ "|" _ expr)?              %mk_list_contents
+list            <-  "[" _ list_contents? _ "]"                        %mk_list
+list_contents   <-  expr (comma expr)* (_ "|" _ expr)?                %mk_list_contents
 
-compound        <-  atom "(" _ expr (comma expr)* _ ")"             %mk_compound
+compound        <-  atom "(" _ expr (comma expr)* _ ")"               %mk_compound
 
-variable        <-  [A-Z_] [A-Za-z0-9_]*                            %mk_var
-integer         <-  "-"? [0-9]+                                     %mk_integer
-atom            <-  [^\[\]|()\sA-Z!,.;-]+                           %mk_atom
+variable        <-  [A-Z_] [A-Za-z0-9_]*                              %mk_var
+integer         <-  "-"? [0-9]+                                       %mk_integer
+atom            <-  [^\[\]|{}()\sA-Z!,.;-]+                           %mk_atom
 
 comma           <-  _ "," _
 

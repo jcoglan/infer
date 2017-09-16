@@ -23,9 +23,21 @@ module Infer
       end
 
       def mk_rule(t, a, b, el)
-        premises = [el[4]] + el[5].elements.map(&:goal)
+        Rule.new(rule_name, el[4], el[0])
+      end
+
+      def mk_dcg(t, a, b, el)
+        premises = [el[4]] + el[5].elements.map(&:dcg_goal)
         conclusion = el[0]
-        Rule.new(rule_name, premises, conclusion)
+        DefiniteClause.new(rule_name, premises, conclusion).rewrite
+      end
+
+      def mk_dcg_esc(t, a, b, el)
+        el[2]
+      end
+
+      def mk_goals(t, a, b, el)
+        [el[0]] + el[1].elements.map(&:goal)
       end
 
       def mk_infix(t, a, b, el)

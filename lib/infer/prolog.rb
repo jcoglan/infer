@@ -1,12 +1,13 @@
 module Infer
   module Prolog
 
-    autoload :Builtin,  ROOT + '/prolog/builtin'
-    autoload :Compound, ROOT + '/prolog/compound'
-    autoload :Int,      ROOT + '/prolog/int'
-    autoload :List,     ROOT + '/prolog/list'
-    autoload :Parser,   ROOT + '/prolog/parser'
-    autoload :Program,  ROOT + '/prolog/program'
+    autoload :Builtin,        ROOT + '/prolog/builtin'
+    autoload :Compound,       ROOT + '/prolog/compound'
+    autoload :DefiniteClause, ROOT + '/prolog/definite_clause'
+    autoload :Int,            ROOT + '/prolog/int'
+    autoload :List,           ROOT + '/prolog/list'
+    autoload :Parser,         ROOT + '/prolog/parser'
+    autoload :Program,        ROOT + '/prolog/program'
 
     class Language < Infer::Language
       def derive(target, state = State.new({}))
@@ -28,23 +29,28 @@ module Infer
       query = program(query)
       query = query.rules.values.first.conclusion
 
-      vars = []
-      query.map_vars { |var| vars << var }
-
-      [query, vars]
+      [query, extract_vars([query])]
     end
 
-    def self.execute_and_print(program, expr)
+    def self.extract_vars(goals)
+      vars = Set.new
+      goals.each { |goal| goal.map_vars { |var| vars.add(var) } }
+      vars
+    end
+
+    def self.execute_and_print(program, expr, options = {})
       q, vars = query(expr)
       states  = program.derive(q)
 
       puts "?- #{q}."
 
-      print_results(states, vars)
+      print_results(states, vars, options)
     end
 
-    def self.print_results(states, vars)
+    def self.print_results(states, vars, options)
       any = false
+
+      states = states.take(options[:limit]) if options[:limit]
 
       states.each do |state|
         any = true
