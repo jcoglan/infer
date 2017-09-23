@@ -41,6 +41,11 @@ program = Infer::Prolog.program <<-PL
   math(X, Y) :- Z is X + Y, number(Z), nonvar(Z), var(K).
 
   truth(X) :- X.
+
+  complexterm(X) :-
+      nonvar(X),
+      functor(X, _, A),
+      A  >  0.
 PL
 
 queries = <<-Q
@@ -98,9 +103,17 @@ queries = <<-Q
   functor([a,b,c], X, Y).
   functor(8, F, A).
   functor(T, f, 7).
+  arg(2, loves(vincent,X), mia).
 
   truth(member(a, [a,b,c])).
   truth(A is 3+4).
+
+  complexterm(a(b)).
+  complexterm(a).
+
+  arg(A, bluth(michael, gob, buster), N).
+  arg(2, bluth(michael, gob, buster), N).
+  arg(A, bluth(michael, gob, buster), buster).
 Q
 
 queries.lines.each do |query|

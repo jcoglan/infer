@@ -26,7 +26,8 @@ module Infer
     }
 
     REFLECT = {
-      ['functor', 3] => :functor
+      ['functor', 3] => :functor,
+      ['arg', 3]     => :arg
     }
 
     TYPE = {
@@ -101,6 +102,17 @@ module Infer
               [compound, 0]
 
         state.unify(functor, sig[0]).unify(arity, Int.new(sig[1]))
+      end
+
+      def arg(term)
+        index, compound, value = term.args
+
+        states = compound.args.map.with_index do |arg, i|
+          s = state.unify(index, Int.new(i + 1))
+          s && s.unify(arg, value)
+        end
+
+        states.compact
       end
 
       def compare(term)

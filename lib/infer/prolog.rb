@@ -17,8 +17,11 @@ module Infer
         state = Builtin.new(state).evaluate(value)
         return [].each unless state
 
-        state = state.clear.derive(Word.new('_'), target, false)
-        [state].each
+        states = [state].flatten.map do |state|
+          state.clear.derive(Word.new('_'), target, false)
+        end
+
+        states.each
       end
     end
 
