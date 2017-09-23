@@ -26,6 +26,7 @@ product         <-  factor _ [*/] _ summand                           %mk_infix
 
 comparator      <-  "=:=" / "=\\="
                  /  "=<" / "<" / ">=" / ">"
+                 /  "==" / "\\=="
                  /  "=" / "is"
 
 list            <-  "[" _ list_contents? _ "]"                        %mk_list

@@ -2,8 +2,10 @@ module Infer
   module Prolog
 
     BUILTINS = {
-      ['=', 2]  => :eq,
-      ['is', 2] => :is
+      ['=', 2]   => :equal,
+      ['is', 2]  => :is,
+      ['==', 2]  => :identical,
+      ['\==', 2] => :not_identical
     }
 
     COMPARATORS = {
@@ -49,12 +51,21 @@ module Infer
         end
       end
 
-      def eq(target)
+      def equal(target)
         state.unify(target.left, target.right)
       end
 
       def is(target)
         state.unify(target.left, evaluate(target.right))
+      end
+
+      def identical(target)
+        left, right = state.walk(target.left), state.walk(target.right)
+        left == right ? state : nil
+      end
+
+      def not_identical(target)
+        identical(target) ? nil : state
       end
 
       def compare(target)

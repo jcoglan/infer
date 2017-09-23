@@ -33,6 +33,8 @@ program = Infer::Prolog.program <<-PL
   max(List, Max)  :-
       List  =  [H|_],
       accmax(List, H, Max).
+
+  q :- X = Y, X == Y.
 PL
 
 queries = <<-Q
@@ -71,6 +73,8 @@ queries = <<-Q
 
   accmax([1,0,5,4], 0, Max).
   max([-11,-2,-7,-4,-12], Max).
+
+  q.
 Q
 
 queries.lines.each do |query|
