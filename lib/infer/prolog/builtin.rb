@@ -52,7 +52,7 @@ module Infer
       end
 
       def evaluate(target)
-        return state.walk(target) unless target.is_a?(Compound)
+        return target unless target.is_a?(Compound)
 
         signature = target.signature
 
@@ -66,8 +66,7 @@ module Infer
           Int.new(math(target, MATH))
 
         elsif TYPE.has_key?(signature)
-          arg = state.walk(target).left
-          __send__(TYPE[signature], arg) ? state : nil
+          __send__(TYPE[signature], target.left) ? state : nil
         end
       end
 
@@ -80,8 +79,7 @@ module Infer
       end
 
       def identical(target)
-        left, right = state.walk(target.left), state.walk(target.right)
-        left == right ? state : nil
+        target.left == target.right ? state : nil
       end
 
       def not_identical(target)
@@ -89,7 +87,7 @@ module Infer
       end
 
       def functor(target)
-        compound, functor, arity = state.walk(target).args
+        compound, functor, arity = target.args
 
         if compound.is_a?(Variable)
           scope = Object.new

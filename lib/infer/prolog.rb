@@ -11,9 +11,10 @@ module Infer
 
     class Language < Infer::Language
       def derive(target, state = State.new({}))
-        return super unless Builtin.handle?(target)
+        value = state.walk(target)
+        return super unless Builtin.handle?(value)
 
-        state = Builtin.new(state).evaluate(target)
+        state = Builtin.new(state).evaluate(value)
         return [].each unless state
 
         state = state.clear.derive(Word.new('_'), target, false)

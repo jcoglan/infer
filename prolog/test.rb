@@ -39,6 +39,8 @@ program = Infer::Prolog.program <<-PL
   s :- r(Y).
 
   math(X, Y) :- Z is X + Y, number(Z), nonvar(Z), var(K).
+
+  truth(X) :- X.
 PL
 
 queries = <<-Q
@@ -96,6 +98,9 @@ queries = <<-Q
   functor([a,b,c], X, Y).
   functor(8, F, A).
   functor(T, f, 7).
+
+  truth(member(a, [a,b,c])).
+  truth(A is 3+4).
 Q
 
 queries.lines.each do |query|
