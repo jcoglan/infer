@@ -2,8 +2,16 @@ module Infer
   module Prolog
 
     class List < Sequence
+      EMPTY   = Word.new('[]')
+      FUNCTOR = Word.new('[|]')
+
       def self.nil
         List.new([])
+      end
+
+      def signature
+        functor = empty? ? EMPTY : FUNCTOR
+        [functor, items.size]
       end
 
       def empty?

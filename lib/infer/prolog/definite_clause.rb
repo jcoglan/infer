@@ -4,23 +4,12 @@ module Infer
     EQ = Word.new('=')
 
     DefiniteClause = Struct.new(:name, :premises, :conclusion) do
-      def self.vars(used)
-        Enumerator.new { |enum|
-          var = Variable.new('A')
-          loop {
-            var = Variable.new(var.name.succ) while used.member?(var)
-            enum.yield(var)
-            var = Variable.new(var.name.succ)
-          }
-        }
-      end
-
       def rewrite
         index = 0 ... premises.size
         chain = index.zip(premises).reject { |i, t| t.is_a?(Array) }
 
         used  = Prolog.extract_vars(premises.flatten)
-        vars  = DefiniteClause.vars(used).take(chain.size + 1)
+        vars  = Variable.generator(used).take(chain.size + 1)
 
         head  = transform(conclusion, vars.first, vars.last)
 

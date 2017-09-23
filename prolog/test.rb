@@ -91,6 +91,11 @@ queries = <<-Q
   var(X).
 
   math(3,4).
+
+  functor(f(a,b), F, A).
+  functor([a,b,c], X, Y).
+  functor(8, F, A).
+  functor(T, f, 7).
 Q
 
 queries.lines.each do |query|

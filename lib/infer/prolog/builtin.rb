@@ -26,6 +26,10 @@ module Infer
     }
 
     REFLECT = {
+      ['functor', 3] => :functor
+    }
+
+    TYPE = {
       ['atom', 1]    => :atom?,
       ['integer', 1] => :integer?,
       ['number', 1]  => :number?,
@@ -34,7 +38,8 @@ module Infer
       ['nonvar', 1]  => :nonvar?
     }
 
-    FUNCTORS = [BUILTINS, COMPARATORS, REFLECT].flat_map(&:keys)
+    SPECIAL  = BUILTINS.merge(REFLECT)
+    FUNCTORS = [BUILTINS, COMPARATORS, REFLECT, TYPE].flat_map(&:keys)
     INFIX    = [BUILTINS, COMPARATORS, MATH].flat_map(&:keys)
 
     Builtin = Struct.new(:state) do
@@ -51,8 +56,8 @@ module Infer
 
         signature = target.signature
 
-        if BUILTINS.has_key?(signature)
-          __send__(BUILTINS[signature], target)
+        if SPECIAL.has_key?(signature)
+          __send__(SPECIAL[signature], target)
 
         elsif COMPARATORS.has_key?(signature)
           compare(target)
@@ -60,9 +65,9 @@ module Infer
         elsif MATH.has_key?(signature)
           Int.new(math(target, MATH))
 
-        elsif REFLECT.has_key?(signature)
+        elsif TYPE.has_key?(signature)
           arg = state.walk(target).left
-          __send__(REFLECT[signature], arg) ? state : nil
+          __send__(TYPE[signature], arg) ? state : nil
         end
       end
 
@@ -81,6 +86,21 @@ module Infer
 
       def not_identical(target)
         identical(target) ? nil : state
+      end
+
+      def functor(target)
+        compound, functor, arity = state.walk(target).args
+
+        if compound.is_a?(Variable)
+          items = [functor] + Variable.generator.take(arity.value)
+          return state.unify(compound, Compound.new(items))
+        end
+
+        sig = compound.respond_to?(:signature) ?
+              compound.signature :
+              [compound, 0]
+
+        state.unify(functor, sig[0]).unify(arity, Int.new(sig[1]))
       end
 
       def compare(target)
