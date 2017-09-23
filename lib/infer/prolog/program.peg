@@ -16,7 +16,7 @@ dcg_goal        <-  goal / dcg_esc
 expr            <-  comparison / comparable
 comparable      <-  sum / summand
 summand         <-  product / factor
-factor          <-  integer / variable / list / compound / atom
+factor          <-  paren / integer / variable / list / compound / atom
 
 cut             <-  "!"                                               %mk_cut
 
@@ -28,6 +28,8 @@ comparator      <-  "=:=" / "=\\="
                  /  "=<" / "<" / ">=" / ">"
                  /  "==" / "\\=="
                  /  "=" / "is"
+
+paren           <-  "(" _ expr _ ")"                                  %mk_paren
 
 list            <-  "[" _ list_contents? _ "]"                        %mk_list
 list_contents   <-  expr (comma expr)* (_ "|" _ expr)?                %mk_list_contents

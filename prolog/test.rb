@@ -78,6 +78,11 @@ queries = <<-Q
 
   q.
   s.
+
+  [a,b,c] == [a|[b,c]].
+  [a,b,c] == a(b(c([]))).
+
+  (3 =:= 4) == =:=(3,4).
 Q
 
 queries.lines.each do |query|

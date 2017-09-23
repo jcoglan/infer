@@ -48,6 +48,10 @@ module Infer
         Cut.new(t[a...b])
       end
 
+      def mk_paren(t, a, b, el)
+        el[2]
+      end
+
       def mk_list(t, a, b, el)
         List === el[2] ? el[2] : List.nil
       end
