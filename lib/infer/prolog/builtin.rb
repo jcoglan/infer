@@ -92,7 +92,9 @@ module Infer
         compound, functor, arity = state.walk(target).args
 
         if compound.is_a?(Variable)
-          items = [functor] + Variable.generator.take(arity.value)
+          scope = Object.new
+          vars  = Variable.generator.take(arity.value)
+          items = [functor] + vars.map { |v| v.in_scope(scope) }
           return state.unify(compound, Compound.new(items))
         end
 
