@@ -43,51 +43,51 @@ module Infer
     INFIX    = [BUILTINS, COMPARATORS, MATH].flat_map(&:keys)
 
     Builtin = Struct.new(:state) do
-      def self.handle?(target)
-        target.is_a?(Compound) and FUNCTORS.include?(target.signature)
+      def self.handle?(term)
+        term.is_a?(Compound) and FUNCTORS.include?(term.signature)
       end
 
-      def self.print_infix?(target)
-        INFIX.include?(target.signature)
+      def self.print_infix?(term)
+        INFIX.include?(term.signature)
       end
 
-      def evaluate(target)
-        return target unless target.is_a?(Compound)
+      def evaluate(term)
+        return term unless term.is_a?(Compound)
 
-        signature = target.signature
+        signature = term.signature
 
         if SPECIAL.has_key?(signature)
-          __send__(SPECIAL[signature], target)
+          __send__(SPECIAL[signature], term)
 
         elsif COMPARATORS.has_key?(signature)
-          compare(target)
+          compare(term)
 
         elsif MATH.has_key?(signature)
-          Int.new(math(target, MATH))
+          Int.new(math(term, MATH))
 
         elsif TYPE.has_key?(signature)
-          __send__(TYPE[signature], target.left) ? state : nil
+          __send__(TYPE[signature], term.left) ? state : nil
         end
       end
 
-      def equal(target)
-        state.unify(target.left, target.right)
+      def equal(term)
+        state.unify(term.left, term.right)
       end
 
-      def is(target)
-        state.unify(target.left, evaluate(target.right))
+      def is(term)
+        state.unify(term.left, evaluate(term.right))
       end
 
-      def identical(target)
-        target.left == target.right ? state : nil
+      def identical(term)
+        term.left == term.right ? state : nil
       end
 
-      def not_identical(target)
-        identical(target) ? nil : state
+      def not_identical(term)
+        identical(term) ? nil : state
       end
 
-      def functor(target)
-        compound, functor, arity = target.args
+      def functor(term)
+        compound, functor, arity = term.args
 
         if compound.is_a?(Variable)
           scope = Object.new
@@ -103,16 +103,16 @@ module Infer
         state.unify(functor, sig[0]).unify(arity, Int.new(sig[1]))
       end
 
-      def compare(target)
-        result = math(target, COMPARATORS)
+      def compare(term)
+        result = math(term, COMPARATORS)
         result ? state : nil
       end
 
-      def math(target, table)
-        x = evaluate(target.left).value
-        y = evaluate(target.right).value
+      def math(term, table)
+        x = evaluate(term.left).value
+        y = evaluate(term.right).value
 
-        x.__send__(table[target.signature], y)
+        x.__send__(table[term.signature], y)
       end
 
       def atom?(term)
