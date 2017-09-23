@@ -37,6 +37,8 @@ program = Infer::Prolog.program <<-PL
   q :- X = Y, X == Y.
   r(X) :- X == Y.
   s :- r(Y).
+
+  math(X, Y) :- Z is X + Y, number(Z), nonvar(Z), var(K).
 PL
 
 queries = <<-Q
@@ -83,6 +85,12 @@ queries = <<-Q
   [a,b,c] == a(b(c([]))).
 
   (3 =:= 4) == =:=(3,4).
+
+  atom(a).
+  atom(X).
+  var(X).
+
+  math(3,4).
 Q
 
 queries.lines.each do |query|

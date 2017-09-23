@@ -25,8 +25,17 @@ module Infer
       ['mod', 2] => '%'
     }
 
-    FUNCTORS = BUILTINS.keys + COMPARATORS.keys
-    INFIX    = FUNCTORS + MATH.keys
+    REFLECT = {
+      ['atom', 1]    => :atom?,
+      ['integer', 1] => :integer?,
+      ['number', 1]  => :number?,
+      ['atomic', 1]  => :atomic?,
+      ['var', 1]     => :var?,
+      ['nonvar', 1]  => :nonvar?
+    }
+
+    FUNCTORS = [BUILTINS, COMPARATORS, REFLECT].flat_map(&:keys)
+    INFIX    = [BUILTINS, COMPARATORS, MATH].flat_map(&:keys)
 
     Builtin = Struct.new(:state) do
       def self.handle?(target)
@@ -44,10 +53,16 @@ module Infer
 
         if BUILTINS.has_key?(signature)
           __send__(BUILTINS[signature], target)
+
         elsif COMPARATORS.has_key?(signature)
           compare(target)
+
         elsif MATH.has_key?(signature)
           Int.new(math(target, MATH))
+
+        elsif REFLECT.has_key?(signature)
+          arg = state.walk(target).left
+          __send__(REFLECT[signature], arg) ? state : nil
         end
       end
 
@@ -78,6 +93,30 @@ module Infer
         y = evaluate(target.right).value
 
         x.__send__(table[target.signature], y)
+      end
+
+      def atom?(term)
+        term.is_a?(Word)
+      end
+
+      def integer?(term)
+        term.is_a?(Int)
+      end
+
+      def number?(term)
+        integer?(term)
+      end
+
+      def atomic?(term)
+        atom?(term) or var?(term)
+      end
+
+      def var?(term)
+        term.is_a?(Variable)
+      end
+
+      def nonvar?(term)
+        not var?(term)
       end
     end
 
