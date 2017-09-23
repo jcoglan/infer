@@ -101,7 +101,8 @@ module Infer
               compound.signature :
               [compound, 0]
 
-        state.unify(functor, sig[0]).unify(arity, Int.new(sig[1]))
+        s = state.unify(functor, sig[0])
+        s && s.unify(arity, Int.new(sig[1]))
       end
 
       def arg(term)
