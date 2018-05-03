@@ -21,7 +21,7 @@ module Infer
 
     def print_simple(d = 0)
       indent = '    ' * d
-      puts "#{indent}- [#{rule_name}] #{conclusion}"
+      puts "#{indent}- [#{rule_name.strip}] #{conclusion}"
       parents.each { |printer| printer.print_simple(d + 1) }
     end
 
