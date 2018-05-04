@@ -20,3 +20,11 @@ v        --> [shoots].
 conj     --> [and].
 conj     --> [or].
 conj     --> [but].
+
+
+%% Examples
+
+?- np(X, []).
+?- s([the, woman, shoots, a, man], []).
+?- s([the, woman, shoots, a, man, but, a, man, shoots, the, man], []).
+?- s(X, []).

@@ -13,3 +13,12 @@ bblock(NewCount)  -->  [b],bblock(Count),
 cblock(0)  -->  [].
 cblock(NewCount)  -->  [c],cblock(Count),
                        { NewCount is Count + 1 }.
+
+
+%% Examples
+
+?- s([], []).
+?- s([a,b,c], []).
+?- s([a,a,b,b,c,c], []).
+?- s([a,a,a,b,b,b,c,c,c], []).
+?- s([a,a,a,b,b,c,c,c], []).

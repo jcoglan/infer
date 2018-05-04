@@ -171,6 +171,13 @@ rcd_not_member(L, R) :-
     S = nil.
 
 
+%% Examples
+
+?- type([], λ(x, bool, λ(y, bool, λ(x, nat, x))), T).
+?- type([], app(λ(f, arrow(rcd([[x, nat]]), rcd([])), app(f, rec([[x, 0]]))), λ(r, rcd([]), rec([[y, true]]))), T).
+?- type([], if(true, λ(r, rcd([[x,nat], [y,nat]]), proj(r,x)), λ(s, rcd([[y,top], [z,nat]]), proj(s,z))), T).
+?- join(rcd([[x,bool], [y,bool]]), rcd([[y,nat], [z,nat]]), J).
+
 /*
     (λf: {x: Nat} → {}. f {x=0}) (λr: {}. {y=true, r})
     % should be {}

@@ -2,7 +2,7 @@ grammar Infer.Prolog.Program
 
 program         <-  _ (entry _)*                                      %mk_program
 
-entry           <-  fact / rule / dcg
+entry           <-  query / fact / rule / dcg
 fact            <-  head _ "."                                        %mk_fact
 rule            <-  head _ ":-" _ goals _ "."                         %mk_rule
 dcg             <-  head _ "-->" _ dcg_goal (comma dcg_goal)* _ "."   %mk_dcg
@@ -12,6 +12,8 @@ goals           <-  goal (comma goal)*                                %mk_goals
 head            <-  expr
 goal            <-  cut / expr
 dcg_goal        <-  goal / dcg_esc
+
+query           <-  "?-" _ expr _ "."                                 %mk_query
 
 expr            <-  comparison / comparable
 comparable      <-  sum / summand

@@ -29,24 +29,17 @@ module Infer
       Program.parse(program, :actions => Parser.new)
     end
 
-    def self.query(query)
-      query = program(query)
-      query = query.rules.values.first.conclusion
-
-      [query, extract_vars([query])]
-    end
-
     def self.extract_vars(goals)
       vars = Set.new
       goals.each { |goal| goal.map_vars { |var| vars.add(var) } }
       vars
     end
 
-    def self.execute_and_print(program, expr, options = {})
-      q, vars = query(expr)
-      states  = program.derive(q)
+    def self.execute_and_print(program, query, options = {})
+      vars   = extract_vars([query])
+      states = program.derive(query)
 
-      puts "?- #{q}."
+      puts "?- #{query}."
 
       print_results(states, vars, options)
     end

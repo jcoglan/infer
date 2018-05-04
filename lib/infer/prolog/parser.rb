@@ -14,7 +14,8 @@ module Infer
       def mk_program(t, a, b, el)
         Language.new.tap do |lang|
           rules = el[1].elements.map(&:entry)
-          rules.each { |rule| lang.add_rule(rule, false) }
+          rules.grep(Rule).each { |rule| lang.add_rule(rule, false) }
+          rules.grep(Proof).each { |proof| lang.add_proof(proof) }
         end
       end
 
@@ -38,6 +39,10 @@ module Infer
 
       def mk_goals(t, a, b, el)
         [el[0]] + el[1].elements.map(&:goal)
+      end
+
+      def mk_query(t, a, b, el)
+        Proof.new(t[a...b], el[2])
       end
 
       def mk_infix(t, a, b, el)

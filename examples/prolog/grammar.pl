@@ -28,3 +28,11 @@ lex(him,    pro(sin, obj)).
 
 lex(shoots, v(sin)).
 lex(shoot,  v(plu)).
+
+
+%% Examples
+
+?- s(T, [the, women, shoot, him], []).
+?- s(T, [the, women, shoot, he], []).
+?- s(T, [a, women, shoot, him], []).
+?- s(T, [she, shoots, the, man], []).
