@@ -1,4 +1,4 @@
-extends ./16-3-algorithmic-typing
+    import ./16-3-algorithmic-typing
 
 The following is an extension to the rules of chapter 16, which give rules for
 records but not the more basic types `Bool` and `Nat`. Partly, that's because
@@ -251,6 +251,22 @@ variable `S`, while `R[l] = ⊥` asks where it's at all possible to derive that
 statement, which changes which rules are applicable.
 
 
+### Examples
+
+    prove { Top ∨ Top = $J }
+    prove { Nat ∨ Nat = $J }
+    prove { Top ∨ Nat = $J }
+    prove { Nat ∨ Bool = $J }
+    prove { (x: Nat, Rcd) ∨ (x: Nat, Rcd) = $J }
+    prove { Nat ∨ (x: Nat, Rcd) = $J }
+    prove { (x: Nat, Rcd) ∨ (y: Bool, (x: Nat, Rcd)) = $J }
+    prove { (x: Nat, Rcd) ∨ (x: Nat, (y: Bool, Rcd)) = $J }
+    prove { (z: Top, (x: Nat, Rcd)) ∨ (x: Bool, (y: Bool, Rcd)) = $J }
+
+    prove { (x: Nat, Rcd) ∧ (y: Bool, Rcd) = $M }
+    prove { (x: Nat, (y: Top, Rcd)) ∧ (y: Bool, (z: Nat, Rcd)) = $M }
+
+
 ## Typing
 
 Now that we can calculate joins and meets, we can write typing rules for our
@@ -291,7 +307,7 @@ basic types. These are mostly the same as we've seen before, but the rule for
       $Γ ↦ (iszero $t) : Bool
     }
 
-### Example
+### A proof
 
 Here's a proof using the above rules showing that `∅ ↦ if true then {x=0, y=1}
 else {y=false, z=true} : {y:Top}`.
@@ -308,3 +324,52 @@ else {y=false, z=true} : {y:Top}`.
     ∅ ↦ true : Bool           ∅ ↦ (x = 0 , (y = (succ 0) , ρ)) : (x : Nat , (y : Nat , Rcd))            ∅ ↦ (y = false , (z = true , ρ)) : (y : Bool , (z : Bool , Rcd))                                                                                        (x : Nat , (y : Nat , Rcd)) ∨ (y : Bool , (z : Bool , Rcd)) = (y : Top , Rcd)
     ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- TA-If
                                                                                                                        ∅ ↦ (if true then (x = 0 , (y = (succ 0) , ρ)) else (y = false , (z = true , ρ))) : (y : Top , Rcd)
+
+
+### Examples
+
+    prove { ∅ ↦ (x=0, (y=(succ 0), ρ)) : $T }
+    prove { ∅ ↦ (λr: (x: Nat, Rcd). (r.x)) : $T }
+    prove { ∅ ↦ ((λr: (x: Nat, Rcd). (r.x)) (x=0, ρ)) : $T }
+    prove { ∅ ↦ ((λr: (x: Nat, Rcd). (r.x)) (x=0, (y=(succ 0), ρ))) : $T }
+    prove { ∅ ↦ ((λr: (x: Nat, Rcd). (r.x)) (y=true, (x=0, ρ))) : $T }
+
+    prove { ∅ ↦ ((λf: ((x: Nat, Rcd) → Rcd). (f (x=0, ρ)))) : $T }
+
+    prove {
+      ∅ ↦ ((λr: (x: (b: Nat, Rcd), Rcd). ((r.x).b))
+           (x=(a=0, (b=0, ρ)), (y=true, ρ)))
+        : $T
+    }
+
+    # (λf: {x: Nat} → {}. f {x=0}) (λr: {}. {y=true, r})
+    # (λr: {}. {y=true, r}) {x=0}
+    # {y=true, x=0}
+    prove {
+      ∅ ↦ ((λf: ((x: Nat, Rcd) → Rcd). (f (x=0, ρ)))
+           (λr: Rcd. (y=true, r)))
+        : $T
+    }
+
+    # if true then {x=0, y=1} else {y=false, z=true}
+    prove {
+      ∅ ↦ (if true then
+              (x=0, (y=(succ 0), ρ))
+            else
+              (y=false, (z=true, ρ)))
+        : $T
+    }
+
+    # if true then (λr: {x:Nat, y:Bool}. r.x) else (λs: {y:Top, z:Nat}. s.z)
+    # : {x:Nat, y:Bool, z:Nat} → Nat
+    prove {
+      ∅ ↦ (if true then
+              (λr: (x: Nat, (y: Bool, Rcd)). (r.x))
+            else
+              (λs: (y: Top, (z: Nat, Rcd)). (s.z)))
+        : $T
+    }
+
+    # (λr: {x:Top}. r.x) {}
+    # should not typecheck
+    prove { ∅ ↦ ((λr:(x:Top,Rcd). (r.x)) ρ) : $T }

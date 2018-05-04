@@ -1,7 +1,7 @@
 # → +
 # Figure 11-10: Sums (with unique typing), p135
 
-extends ./11-9-sums
+    import ./11-9-sums
 
     syntax {
       $t ::= ...
@@ -49,4 +49,14 @@ extends ./11-9-sums
                     $Γ ⊢ $t1 : $T2
       -------------------------------------------
       $Γ ⊢ (inr $t1 as ($T1 + $T2)) : ($T1 + $T2)
+    }
+
+
+## Examples
+
+    prove {
+      ∅ ⊢ (case (inl 0 as (Nat + Bool)) of
+            inl x ⇒ (iszero x)
+            inr y ⇒ (if y then false else true))
+        : $T
     }

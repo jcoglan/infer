@@ -1,8 +1,8 @@
 # → {} <:
 # Figure 16-1: Subtype relation with records (compact version), p211
 
-extends ./11-7-records
-extends ./15-1-simply-typed-lambda-calculus-with-subtyping
+    import ./11-7-records
+    import ./15-1-simply-typed-lambda-calculus-with-subtyping
 
 
 ## Subtyping
@@ -75,3 +75,30 @@ empty left-hand-side. But we'd still be able to derive `S <: T` where `S` and
 `S-RcdPerm` to require at least one field to be out of order. These changes just
 add complexity that doesn't appear necessary given the relative simplicity of
 `S-Rcd-N`.
+
+
+### Examples
+
+To prove:
+
+    {x: {a: Nat, b: Nat}, y: {m: Nat}} <:
+        - {x: {a: Nat}, y: {}}
+        - {x: {a: Nat}, y: {m: Nat}}
+        - {x: {a: Nat}}
+        - {y: {}, x: {}}
+
+    prove {
+      (x: (a: Nat, (b: Nat, Rcd)), (y: (m: Nat, Rcd), Rcd)) <: Rcd
+    }
+    prove {
+      (x: (a: Nat, (b: Nat, Rcd)), (y: (m: Nat, Rcd), Rcd)) <: (x: (a: Nat, Rcd), (y: Rcd, Rcd))
+    }
+    prove {
+      (x: (a: Nat, (b: Nat, Rcd)), (y: (m: Nat, Rcd), Rcd)) <: (x: (a: Nat, Rcd), (y: (m: Nat, Rcd), Rcd))
+    }
+    prove {
+      (x: (a: Nat, (b: Nat, Rcd)), (y: (m: Nat, Rcd), Rcd)) <: (x: (a: Nat, Rcd), Rcd)
+    }
+    prove {
+      (x: (a: Nat, (b: Nat, Rcd)), (y: (m: Nat, Rcd), Rcd)) <: (y: Rcd, (x: Rcd, Rcd))
+    }

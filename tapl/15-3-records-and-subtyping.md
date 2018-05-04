@@ -1,8 +1,8 @@
 # → {} <:
 # Figure 15-3: Records and subtyping, p187
 
-extends ./11-7-records
-extends ./15-1-simply-typed-lambda-calculus-with-subtyping
+    import ./11-7-records
+    import ./15-1-simply-typed-lambda-calculus-with-subtyping
 
 
 ## Subtyping
@@ -242,3 +242,16 @@ Nat}` that can be used to connect the two types via `S-Trans`. But this requires
 thinking *outside the system* (c.f. *Gödel, Escher, Bach*, p36), since `S-Trans`
 does not give any mechanism for constructing the connecting type `U`. We need a
 different formulation of the subtyping relation that works for any record type.
+
+
+## Examples
+
+    prove { (x: Nat, Rcd) <: (x: Nat, Rcd) }
+    prove { (x: Nat, (y: Nat, Rcd)) <: (x: Nat, Rcd) }
+    prove { (x: Rcd, (y: Nat, Rcd)) <: (x: Rcd, (y: Nat, Rcd)) }
+    prove { (x: (a: Nat, Rcd), (y: Nat, Rcd)) <: (x: Rcd, (y: Nat, Rcd)) }
+    prove { (x: (b: Nat, (a: Nat, Rcd)), (y: Nat, Rcd)) <: (x: (a: Nat, (b: Nat, Rcd)), (y: Nat, Rcd)) }
+    prove { (x: Nat, (y: Nat, Rcd)) <: (y: Nat, (x: Nat, Rcd)) }
+
+    # Not provable with these rules
+    prove { (x: Nat, (y: Nat, (z: Nat, Rcd))) <: (y: Nat, Rcd) }

@@ -1,8 +1,8 @@
 # → +
 # Figure 11-9: Sums, p132
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       $t ::= ...
@@ -66,4 +66,14 @@ extends ./typed-bool-nat
       $Γ ⊢ $t0 : ($T1 + $T2) / ($Γ, $x1 : $T1) ⊢ $t1 : $T / ($Γ, $x2 : $T2) ⊢ $t2 : $T
       --------------------------------------------------------------------------------
                     $Γ ⊢ (case $t0 of inl $x1 ⇒ $t1 inr $x2 ⇒ $t2) : $T
+    }
+
+
+## Examples
+
+    prove {
+      ∅ ⊢ (case (inl 0) of
+            inl x ⇒ (iszero x)
+            inr y ⇒ (if y then false else true))
+        : $T
     }

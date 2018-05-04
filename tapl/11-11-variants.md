@@ -1,8 +1,8 @@
 # → <>
 # Figure 11-11: Variants, p136
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
 These rules differ significantly from those presented in the book. We take a
 similar approach to 11-6: tuples and 11-7: records, and define the structure of
@@ -123,7 +123,7 @@ first clause
 and another for recursing on the input and clauses
 
     rule E-CaseVariant-N {
-               (case (<$l=$v> as $T) of $cf) -> $v2 
+               (case (<$l=$v> as $T) of $cf) -> $v2
       ------------------------------------------------------
       (case (<$l=$v> as $T) of (<$l1=$x1> ⇒ $t1 $cf)) -> $v2
     }
@@ -186,4 +186,24 @@ type by applying a special operator to the term carrying that type.
       $Γ ⊢ $t : (<$l: $T> $vT)
       ------------------------
           $Γ ⊢ (~$t) : $vT
+    }
+
+
+## Examples
+
+    prove { ∅ ⊢ (<foo=0> as (<bar: Bool> (<foo: Nat> ν))) : $T }
+    prove { ∅ ⊢ (~(<foo=0> as (<bar: Bool> (<foo: Nat> ν)))) : $T }
+    prove { ∅ ⊢ (~(~(<foo=0> as (<bar: Bool> (<foo: Nat> ν))))) : $T }
+
+    prove {
+      ∅ ⊢ (case (<foo=0> as (<foo: Nat> ν)) of (<foo=x> ⇒ x ;)) : $T
+    }
+
+    prove {
+      ∅ ⊢ (case (<bar=false> as (<foo: Nat> (<bar: Bool> (<qux: Nat> ν)))) of
+            (<foo=x> ⇒ x
+            (<bar=y> ⇒ (if y then 0 else (succ 0))
+            (<qux=z> ⇒ (pred (succ z))
+            ;))))
+        : $T
     }

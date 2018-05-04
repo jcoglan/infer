@@ -1,8 +1,8 @@
-# → × 
+# → ×
 # Figure 11-5: Pairs, p126
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       $t ::= ...
@@ -70,3 +70,12 @@ extends ./typed-bool-nat
       ------------------------
          $Γ ⊢ ($t1.2) : $T12
     }
+
+
+## Examples
+
+    prove { ∅ ⊢ (λx : Bool. x) : $T }
+    prove { ∅ ⊢ (λx : Bool. (x,x)) : $T }
+    prove { ∅ ⊢ ((λx : Bool. (x,x)) true) : $T }
+    prove { ∅ ⊢ (((λx : Bool. (x,x)) true).2) : $T }
+    prove { ∅ ⊢ ((((λx : Bool. (λy : Bool. (x,y))) true) false).2) : $T }

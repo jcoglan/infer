@@ -1,8 +1,8 @@
 # → let
 # Figure 11-4: Let binding, p124
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       $t ::= ... / let $x=$t in $t
@@ -22,4 +22,18 @@ extends ./typed-bool-nat
       $Γ ⊢ $t1 : $T1 / ($Γ, $x : $T1) ⊢ $t2 : $T2
       -------------------------------------------
             $Γ ⊢ (let $x=$t1 in $t2) : $T2
+    }
+
+
+## Examples
+
+    prove { ∅ ⊢ (let x = 0 in (iszero (succ x))) : $T }
+
+    prove { ∅ ⊢ (λx:Bool. (λy:Bool. (if x then y else false))) : $T }
+    prove { ∅ ⊢ (λx:Bool. (λy:Bool. (λx:Nat. x))) : $T }
+
+    prove {
+      (∅ , f : (Bool → Bool))
+          ⊢ (λx:Bool. (f (if x then false else x)))
+          : $T
     }
