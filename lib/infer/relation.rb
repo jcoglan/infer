@@ -6,8 +6,7 @@ module Infer
   Relation = Struct.new(:language, :symbols) do
     def derive(*terms)
       result = Variable.new('<?>')
-      ops    = symbols.map { |sym| Word.new(sym) }
-      target = Sequence.new(terms.zip(ops).inject([], &:+) + [result])
+      target = Sequence.new(terms.zip(symbols).inject([], &:+) + [result])
       states = language.derive(target)
 
       first = states.next rescue nil

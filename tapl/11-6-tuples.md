@@ -1,8 +1,8 @@
 # → {}
 # Figure 11-6: Tuples, p128
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       # Since we're using {} as part of the metalanguage, and the metalanguage
@@ -82,6 +82,14 @@ be a tuple.
     }
 
 
+## Examples
+
+    loop -> { τ }
+    loop -> { 0, τ }
+    loop -> { (iszero (pred (succ 0))), ((if false then 0 else (succ 0)), τ) }
+    loop -> { ((iszero (pred (succ 0))), ((if false then 0 else (succ 0)), τ)) . (+0) }
+
+
 ## Typing
 
 Whereas the book defines `T-Tuple` iteratively, we define it as two recursive
@@ -124,3 +132,16 @@ values greater than zero:
       -------------------------
       ($T2, $Tu) . (+ $i) = $T1
     }
+
+
+### Examples
+
+    prove { ∅ ⊢ (0, (true, τ)) : $T }
+    prove { ∅ ⊢ ((0, (true, τ)) . 0) : $T }
+    prove { ∅ ⊢ ((0, (true, τ)) . (+0)) : $T }
+    prove { ∅ ⊢ (0, ((if true then (succ 0) else 0), τ)) : $T }
+    prove { ∅ ⊢ ((iszero 0), (0, ((if true then (succ 0) else 0), τ))) : $T }
+    prove { ∅ ⊢ ((0, (false, ((pred 0), τ))) . (+0)) : $T }
+    prove { ∅ ⊢ ((0, (false, ((pred 0), τ))) . (+(+0))) : $T }
+
+    prove { ∅ ⊢ (succ ((0, (false, ((pred 0), τ))) . (+(+0)))) : $T }

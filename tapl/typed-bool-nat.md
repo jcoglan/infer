@@ -1,5 +1,5 @@
-extends ./3-1-booleans
-extends ./3-2-arithmetic-expressions
+    import ./3-1-booleans
+    import ./3-2-arithmetic-expressions
 
     syntax {
       $T ::= ...

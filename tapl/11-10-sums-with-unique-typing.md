@@ -52,7 +52,7 @@
     }
 
 
-## Examples
+### Examples
 
     prove {
       ∅ ⊢ (case (inl 0 as (Nat + Bool)) of

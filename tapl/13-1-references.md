@@ -1,7 +1,7 @@
 # → Unit Ref
 # Figure 13-1: References, p166
 
-extends ./11-2-unit-type
+    import ./11-2-unit-type
 
     syntax {
       $l ::= ε
@@ -173,6 +173,16 @@ is, we only need to recurse rightwards from the end of the store, and the
 location itself is not destructured.
 
 
+### Examples
+
+    loop -> { (ref unit) | ∅ }
+    loop -> { (ref (λx:Unit. x)) | (∅ , ε ↦ unit) }
+
+    loop -> { (! ε) | ((∅ , ε ↦ (λ x : Unit . x)) , (l ε) ↦ unit) }
+    loop -> { (! (lε)) | ((∅ , ε ↦ (λ x : Unit . x)) , (l ε) ↦ unit) }
+    loop -> { (ε := unit) | ((∅ , ε ↦ (λ x : Unit . x)) , (l ε) ↦ unit) }
+
+
 ## Typing
 
     rule T-Var {
@@ -234,3 +244,54 @@ the runtime store.
       --------------------------
       ($Σ, $l2: $T2) [$l1] = $T1
     }
+
+
+### Examples
+
+    prove { ∅ | ∅ ⊢ (ref unit) : $T }
+    prove { ∅ | ∅ ⊢ ((λx: (Ref Unit). (x := unit)) (ref unit)) : $T }
+    prove { ∅ | ∅ ⊢ ((λx: (Ref Unit). (!x)) (ref unit)) : $T }
+
+    prove { ∅ | (∅ , ε : (Unit → Unit)) ⊢ ε : $T }
+
+
+## Exercises
+
+Ex. 13.5.8
+
+A factorial function defined using mutable references:
+
+    (λf: Ref (Nat → Nat).
+        f := (λn: Nat.
+                 if iszero n
+                 then succ 0
+                 else times n (!f (pred n)));
+        !f)
+    (ref (λ_: Nat. 0))
+
+c.f.: Scheme, where letrec relies on define. let cannot create self-referential
+functions b/c the scope where the function is created is not the one where the
+variable is bound:
+
+    (let ((f (lambda (n) (f ...))))
+      (f 0))
+
+    == ((lambda (f) (f 0))
+        (lambda (n) (f ...)))
+                     ^
+              this f is free
+
+This same restriction applies to the lambda calculus without references.
+However, letrec using define means the variables share scope:
+
+    (letrec ((f (lambda (n) (f ...))))
+      (f 0))
+
+    == ((lambda ()
+          (define f (lambda (n) (f ...)))
+          (f 0)))
+
+This sharing of scope and sequencing of statements is what allows letrec to work
+and is very close to what's going on in the lambda calculus above. The only
+addition is that we need to fabricate a reference of the correct type before
+assigning a recursive function to it.

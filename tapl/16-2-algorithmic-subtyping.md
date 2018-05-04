@@ -1,7 +1,7 @@
 # → {} <:
 # Figure 16-2: Algorithmic subtyping, p212
 
-extends ./11-7-records
+    import ./11-7-records
 
     syntax {
       $T ::= ... / Top

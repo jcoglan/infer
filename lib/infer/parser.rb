@@ -39,7 +39,7 @@ module Infer
       if expr[0].elements.empty?
         pred = []
       else
-        pred = [expr[0].elements[0]] + expr[0].elements[1].map(&:expr)
+        pred = [expr[0].elements[0]] + expr[0].elements[1].map(&:rule_expr)
       end
       pred << el[4].cut if el[4].respond_to?(:cut)
 
@@ -48,6 +48,10 @@ module Infer
 
     def mk_proof(t, a, b, el)
       Proof.new(t[a...b], el[4])
+    end
+
+    def mk_loop(t, a, b, el)
+      Proof.new(t[a...b], el[6], el[2])
     end
 
     def mk_var(t, a, b, el)

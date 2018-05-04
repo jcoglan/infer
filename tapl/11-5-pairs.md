@@ -72,7 +72,7 @@
     }
 
 
-## Examples
+### Examples
 
     prove { ∅ ⊢ (λx : Bool. x) : $T }
     prove { ∅ ⊢ (λx : Bool. (x,x)) : $T }

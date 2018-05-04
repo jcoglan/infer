@@ -244,7 +244,7 @@ does not give any mechanism for constructing the connecting type `U`. We need a
 different formulation of the subtyping relation that works for any record type.
 
 
-## Examples
+### Examples
 
     prove { (x: Nat, Rcd) <: (x: Nat, Rcd) }
     prove { (x: Nat, (y: Nat, Rcd)) <: (x: Nat, Rcd) }

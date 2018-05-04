@@ -31,7 +31,7 @@
     }
 
 
-## Examples
+### Examples
 
     prove { (if (iszero (succ 0)) then 0 else (succ (succ 0))) : $T }
     prove { (iszero (succ (if false then (if (iszero (succ 0)) then 0 else (succ 0)) else (pred 0)))) : $T }

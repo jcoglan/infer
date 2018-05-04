@@ -1,7 +1,7 @@
 # N (untyped)
 # Figure 3-2: Arithmetic expressions (NB), p41
 
-extends ./3-1-booleans
+    import ./3-1-booleans
 
     syntax {
       $t ::= ...
@@ -47,4 +47,22 @@ extends ./3-1-booleans
                $t1 -> $t1'
       -----------------------------
       (iszero $t1) -> (iszero $t1')
+    }
+
+
+### Examples
+
+    loop -> { if true then true else false }
+    loop -> { if false then true else false }
+    loop -> { if (if true then false else true) then true else false }
+
+
+    loop -> { if true then (if true then false else true) else false }
+
+    loop -> {
+      if (if (if true then true else true)
+          then false
+          else true)
+      then true
+      else false
     }

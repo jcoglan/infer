@@ -1,7 +1,7 @@
 # → A
 # Figure 11-1: Uninterpreted base types, p118
 
-extends ./9-1-pure-simply-typed-lambda-calculus
+    import ./9-1-pure-simply-typed-lambda-calculus
 
     syntax {
       $A ::= A / B / C / D / E / F / G

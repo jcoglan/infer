@@ -1,7 +1,7 @@
 # → exceptions
 # Figure 14-3: Exceptions carrying values, p175
 
-extends ./14-2-error-handling
+    import ./14-2-error-handling
 
     syntax {
       $t ::= ... / raise $t
@@ -41,6 +41,17 @@ extends ./14-2-error-handling
       -----------------------------------------
       (try $t1 with $t2) -> (try $t1' with $t2)
     }
+
+
+### Examples
+
+    loop -> { (raise true) (pred (succ 0)) }
+    loop -> { (pred (succ 0)) true }
+    loop -> { (pred (succ 0)) (raise true) }
+    loop -> { (raise (pred (succ 0))) (pred (succ 0)) }
+    loop -> { raise (raise (raise (pred (succ 0)))) }
+    loop -> { try (succ 0) with h }
+    loop -> { try (raise (succ 0)) with h }
 
 
 ## Typing

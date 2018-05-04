@@ -189,7 +189,7 @@ type by applying a special operator to the term carrying that type.
     }
 
 
-## Examples
+### Examples
 
     prove { ∅ ⊢ (<foo=0> as (<bar: Bool> (<foo: Nat> ν))) : $T }
     prove { ∅ ⊢ (~(<foo=0> as (<bar: Bool> (<foo: Nat> ν)))) : $T }

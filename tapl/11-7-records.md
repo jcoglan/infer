@@ -1,8 +1,8 @@
 # → {}
 # Figure 11-7: Records, p129
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       # Much like for 11-6: tuples, we define records recursively. A record is
@@ -73,6 +73,15 @@ evaluated, then do so:
     }
 
 
+### Examples
+
+    loop -> { if true then true else false }
+    loop -> { hello = true, ρ }
+    loop -> { hello = (pred (succ 0)), ρ }
+    loop -> { hello = (pred (succ 0)), (world = (iszero 0), ρ) }
+    loop -> { (hello = (pred (succ 0)), (world = (iszero 0), ρ)).hello }
+
+
 ## Typing
 
 The type of the empty record is `Rcd` while the type of any non-empty record is
@@ -116,3 +125,14 @@ variable up in a typing context.
       --------------------------
       ($l2: $T2, $R) . $l1 = $T1
     }
+
+
+### Examples
+
+    prove { ∅ ⊢ (hello = (pred (succ 0)), (world = (iszero 0), ρ)) : $T }
+    prove { ∅ ⊢ ((hello = (pred (succ 0)), (world = (iszero 0), ρ)).world) : $T }
+
+    prove { ∅ ⊢ (λr: (x: Nat, Rcd). (r.x)) : $T }
+    prove { ∅ ⊢ ((λr: (x: Nat, Rcd). (r.x)) (x=0, ρ)) : $T }
+    prove { ∅ ⊢ ((λr: (x: Nat, (y: Bool, Rcd)). (r.x)) (x=0, (y=true, ρ))) : $T }
+    prove { ∅ ⊢ ((λr: (x: Nat, (y: Bool, Rcd)). (r.y)) (x=0, (y=true, ρ))) : $T }

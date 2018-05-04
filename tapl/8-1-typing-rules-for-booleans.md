@@ -1,7 +1,7 @@
 # B (typed)
 # Figure 8-1: Typing rules for booleans, p93
 
-extends ./3-1-booleans
+    import ./3-1-booleans
 
     syntax {
       $T ::= Bool

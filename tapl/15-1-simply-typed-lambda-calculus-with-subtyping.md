@@ -1,8 +1,8 @@
 # → <: Top
 # Figure 15-1: Simply typed lambda calculus with subtyping (λ<:), p186
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       $T ::= ... / Top

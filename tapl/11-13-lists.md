@@ -1,8 +1,8 @@
 # → B List
 # Figure 11-13: Lists, p147
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       $t ::= ...
@@ -70,6 +70,37 @@ extends ./typed-bool-nat
     }
 
 
+### Examples
+
+    loop -> { nil[Nat] }
+    loop -> { cons[Nat] 0 (nil[Nat]) }
+    loop -> { cons[Nat] (pred (succ 0)) (nil[Nat]) }
+
+    loop -> {
+      cons[Nat] (if (iszero 0) then (succ 0) else 0)
+                (cons[Nat] (pred (succ 0))
+                           (nil[Nat]))
+    }
+
+    loop -> {
+      head[Nat] (cons[Nat] (if (iszero 0) then (succ 0) else 0)
+                           (cons[Nat] (pred (succ 0))
+                                      (nil[Nat])))
+    }
+
+    loop -> {
+      tail[Nat] (cons[Nat] (if (iszero 0) then (succ 0) else 0)
+                           (cons[Nat] (pred (succ 0))
+                                      (nil[Nat])))
+    }
+
+    loop -> {
+      head[Nat] (tail[Nat] (cons[Nat] (if (iszero 0) then (succ 0) else 0)
+                                      (cons[Nat] (pred (succ 0))
+                                                 (nil[Nat]))))
+    }
+
+
 ## Typing
 
     rule T-Nil {
@@ -99,3 +130,12 @@ extends ./typed-bool-nat
       -----------------------------------
       $Γ ⊢ (tail[$T11] $t1) : (List $T11)
     }
+
+
+### Examples
+
+    prove { ∅ ⊢ (nil[Bool]) : $T }
+    prove { ∅ ⊢ (cons[Bool] true (cons[Bool] false (nil[Bool]))) : $T }
+    prove { ∅ ⊢ (cons[Bool] (if true then false else true) (cons[Bool] false (nil[Bool]))) : $T }
+    prove { ∅ ⊢ (λx:Bool. (cons[Bool] (if x then x else false) (nil[Bool]))) : $T }
+    prove { ∅ ⊢ (cons[(Bool → Bool)] (λx:Bool. x) (nil[(Bool → Bool)])) : $T }

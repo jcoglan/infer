@@ -1,8 +1,8 @@
 # → error
 # Figure 14-1: Errors, p172
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       $t ::= ... / error

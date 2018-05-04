@@ -1,7 +1,7 @@
 # → {} <:
 # Figure 16-3: Algorithmic typing, p217
 
-extends ./16-2-algorithmic-subtyping
+    import ./16-2-algorithmic-subtyping
 
 ### Lambda calculus
 

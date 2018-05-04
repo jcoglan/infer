@@ -1,7 +1,7 @@
 # → as
 # Figure 11-3: Ascription, p122
 
-extends ./9-1-pure-simply-typed-lambda-calculus
+    import ./9-1-pure-simply-typed-lambda-calculus
 
     syntax {
       $t ::= ... / $t as $T

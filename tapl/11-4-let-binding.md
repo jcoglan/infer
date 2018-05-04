@@ -25,7 +25,7 @@
     }
 
 
-## Examples
+### Examples
 
     prove { ∅ ⊢ (let x = 0 in (iszero (succ x))) : $T }
 

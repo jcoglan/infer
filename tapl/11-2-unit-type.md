@@ -1,7 +1,7 @@
 # → Unit
 # Figure 11-2: Unit type, p119
 
-extends ./9-1-pure-simply-typed-lambda-calculus
+    import ./9-1-pure-simply-typed-lambda-calculus
 
     syntax {
       $t ::= ... / unit

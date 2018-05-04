@@ -69,7 +69,7 @@
     }
 
 
-## Examples
+### Examples
 
     prove {
       ∅ ⊢ (case (inl 0) of

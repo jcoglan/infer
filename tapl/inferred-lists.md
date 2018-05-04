@@ -1,8 +1,8 @@
 # → B List
 # Figure 11-13: Lists, p147
 
-extends ./9-1-pure-simply-typed-lambda-calculus
-extends ./typed-bool-nat
+    import ./9-1-pure-simply-typed-lambda-calculus
+    import ./typed-bool-nat
 
     syntax {
       $t ::= ...
@@ -50,3 +50,14 @@ extends ./typed-bool-nat
       -----------------------------
       $Γ ⊢ (tail $t1) : (List $T11)
     }
+
+
+### Examples
+
+    prove { ∅ ⊢ (cons 0 nil) :$T }
+    prove { ∅ ⊢ (cons (succ 0) (cons 0 nil)) :$T }
+    prove { ∅ ⊢ (λx:Nat. (λy:(List Nat). (cons x y))) :$T }
+    prove { ∅ ⊢ ((λx:Nat. (λy:(List Nat). (cons x y))) 0) :$T }
+    prove { ∅ ⊢ (((λx:Nat. (λy:(List Nat). (cons x y))) 0) nil) :$T }
+    prove { ∅ ⊢ (cons (λx:Bool. (cons x nil)) nil) :$T }
+    prove { ∅ ⊢ (cons (succ 0) (cons true nil)) :$T }
