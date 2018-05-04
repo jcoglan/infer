@@ -39,7 +39,7 @@ module Infer
       if expr[0].elements.empty?
         pred = []
       else
-        pred = [expr[0].elements[0]] + expr[0].elements[1].map(&:rule_expr)
+        pred = [expr[0].rule_expr] + expr[0].elements[1].map(&:rule_expr)
       end
       pred << el[4].cut if el[4].respond_to?(:cut)
 
