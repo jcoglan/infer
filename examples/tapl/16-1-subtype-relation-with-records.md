@@ -58,11 +58,13 @@ used as a check on known values.
 Indeed, we can use this to derive a proof for the statement from exercise
 15.2.1:
 
-          ------------------------------------- T-RcdField-0
+    prove { (x: Nat, (y: Nat, (z: Nat, Rcd))) <: (y: Nat, Rcd) }
+
+          ───────────────────────────────────── T-RcdField-0
           (y : Nat , (z : Nat , Rcd)) . y = Nat
-    ------------------------------------------------- T-RcdField-N   ---------- S-Nat   ---------------------------------------------- S-Rcd-0
-    (x : Nat , (y : Nat , (z : Nat , Rcd))) . y = Nat                Nat <: Nat         (x : Nat , (y : Nat , (z : Nat , Rcd))) <: Rcd
-    ---------------------------------------------------------------------------------------------------------------------------------- S-Rcd-N
+    ───────────────────────────────────────────────── T-RcdField-N   ────────── S-Refl   ────────────────────────────────────────────── S-Rcd-0
+    (x : Nat , (y : Nat , (z : Nat , Rcd))) . y = Nat                Nat <: Nat          (x : Nat , (y : Nat , (z : Nat , Rcd))) <: Rcd
+    ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── S-Rcd-N
                                         (x : Nat , (y : Nat , (z : Nat , Rcd))) <: (y : Nat , Rcd)
 
 One final thing to note is that the rules from the book produce ambiguity:
