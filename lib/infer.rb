@@ -9,6 +9,7 @@ module Infer
   autoload :Rule,     ROOT + '/rule'
   autoload :State,    ROOT + '/state'
   autoload :Syntax,   ROOT + '/syntax'
+  autoload :Proof,    ROOT + '/proof'
 
   autoload :Sequence, ROOT + '/sequence'
   autoload :Variable, ROOT + '/variable'
@@ -31,7 +32,7 @@ module Infer
   def self.lang(pathname, options = {})
     pathname += EXTENSIONS.find { |ext| File.file?(pathname + ext) }
     parser    = Parser.new(pathname)
-    language = Grammar.parse(File.read(pathname), :actions => parser)
+    language  = Grammar.parse(File.read(pathname), :actions => parser)
 
     unless options[:syntax] == false
       language.syntax.generate_rules(language)

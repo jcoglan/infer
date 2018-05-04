@@ -1,11 +1,12 @@
 module Infer
 
   class Language
-    attr_reader :rules, :syntax
+    attr_reader :rules, :syntax, :proofs
 
     def initialize
       @rules  = {}
       @syntax = Syntax.new({})
+      @proofs = []
     end
 
     def import(language)
@@ -20,6 +21,10 @@ module Infer
     def add_rule(rule, apply_syntax = true)
       rule = @syntax.augment_rule(rule) if apply_syntax and !ENV['NOSYNTAX']
       @rules[rule.name] = rule
+    end
+
+    def add_proof(proof)
+      @proofs << proof
     end
 
     def relation(*symbols)

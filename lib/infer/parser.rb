@@ -5,13 +5,15 @@ module Infer
       blocks = el[1].elements.map(&:block)
 
       langs  = blocks.grep(Language)
-      rules  = blocks.grep(Rule)
       syntax = blocks.grep(Syntax)
+      rules  = blocks.grep(Rule)
+      proofs = blocks.grep(Proof)
 
       Language.new.tap do |lang|
         langs.each  { |l| lang.import(l) }
         syntax.each { |s| lang.add_syntax(s) }
         rules.each  { |r| lang.add_rule(r) }
+        proofs.each { |p| lang.add_proof(p) }
       end
     end
 
@@ -42,6 +44,10 @@ module Infer
       pred << el[4].cut if el[4].respond_to?(:cut)
 
       Rule.new(name, pred, expr[1])
+    end
+
+    def mk_proof(t, a, b, el)
+      Proof.new(t[a...b], el[4])
     end
 
     def mk_var(t, a, b, el)

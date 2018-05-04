@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# vim: ft=ruby
+exec /usr/bin/env ruby --disable-gems -x "$0" $*
+#!ruby
+
+require_relative '../lib/infer'
+
+langs = ARGV.map do |arg|
+  Infer.lang(File.expand_path(arg), :syntax => false)
+end
+
+main_lang = Infer::Language.new
+langs.each { |lang| main_lang.import(lang) }
+main_lang.syntax.generate_rules(main_lang)
+
+langs.flat_map(&:proofs).each do |proof|
+  proof.derive_and_print(main_lang)
+end

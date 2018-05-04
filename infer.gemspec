@@ -12,5 +12,8 @@ Gem::Specification.new do |s|
   s.require_paths    = %w[lib]
 
   s.files = %w[LICENSE.md README.md] +
+            %w[bin/infer] +
             Dir.glob('{lib,tapl}/**/*.{md,rb}')
+
+  s.executables = %w[infer]
 end

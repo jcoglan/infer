@@ -2,9 +2,9 @@ grammar Infer.Grammar
 
 language      <-  _ (block _)*                                %mk_language
 
-block         <-  extends_blk / syntax_blk / rule_blk / text
+block         <-  extends_blk / syntax_blk / rule_blk / proof_block / text
 
-extends_blk   <-  "extends" sp+ [^\s]+                        %mk_extends
+extends_blk   <-  ("extends" / "import") sp+ [^\s]+           %mk_extends
 
 syntax_blk    <-  "syntax" _ lb _ (syntax_smt _)* rb          %mk_syntax_block
 syntax_smt    <-  var assign expr (_ "/" _ el:expr)*          %mk_syntax_clause
@@ -14,6 +14,15 @@ rule_blk      <-  "rule" sp+ keyword _ (cut _)?
 
 rule_expr     <-  (expr (_ "/" _ expr)* sp* then _)? expr
 then          <-  nl sp* "-"+ sp* nl
+
+expr          <-  element (sp* el:element)*                   %mk_expr
+element       <-  sub_expr / cut / keyword / refvar
+sub_expr      <-  "(" _ expr _ ")"                            %mk_sub_expr
+
+proof_block   <-  "prove" _ lb _ proof_expr _ rb              %mk_proof
+proof_expr    <-  proof_elt (_ el:proof_elt)*                 %mk_expr
+proof_elt     <-  proof_sub / keyword / refvar
+proof_sub     <-  "(" _ proof_expr _ ")"                      %mk_sub_expr
 
 text          <-  [^\n\r]* [\n\r]
 
@@ -25,10 +34,6 @@ refvar        <-  var !assign                                 %mk_refvar
 assign        <-  _ "::=" _
 
 cut           <-  "<!>"                                       %mk_cut
-
-expr          <-  element (sp* el:element)*                   %mk_expr
-element       <-  sub_expr / cut / keyword / refvar
-sub_expr      <-  "(" _ expr _ ")"                            %mk_sub_expr
 
 keyword       <-  [A-Za-z0-9] [A-Za-z0-9-]*                   %mk_keyword
                /  [^A-Za-z0-9\s(){}/$#]+                      %mk_keyword

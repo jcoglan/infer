@@ -244,3 +244,24 @@ Finally, `print` takes any `Show` value and prints it, again returning `IO ()`.
     rule F-Print {
       $Γ ⊢ print :: (Show $a) ⇒ ($a → (IO ∅))
     }
+
+
+## Examples
+
+    prove { ∅ ⊢ 4 :: Int }
+    prove { ∅ ⊢ ((3 + 4) + (5 + 6)) :: $T }
+
+    prove { ∅ ⊢ (\x -> x) :: $T }
+    prove { ∅ ⊢ (\x -> (putStrLn x)) :: $T }
+    prove { ∅ ⊢ (>>= getLine) :: $T }
+
+    prove {
+      ∅ ⊢ (do (s <- getLine (t <- getLine (putStrLn (s ++ t))))) :: $T
+    }
+
+    prove {
+      ∅ ⊢ (do (x <- getLine
+              (y <- ((fmap read) getLine)
+              (print ((read x) + y)))))
+          :: $T
+    }
