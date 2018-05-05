@@ -17,7 +17,7 @@ module Infer
       end
     end
 
-    def mk_extends(t, a, b, el)
+    def mk_import(t, a, b, el)
       path = File.expand_path(el[2].text, File.dirname(pathname))
       Infer.lang(path, :syntax => false)
     end
