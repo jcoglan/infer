@@ -82,7 +82,7 @@ module Infer
       el[1]
     end
 
-    def mk_keyword(t, a, b, el)
+    def mk_word(t, a, b, el)
       Word.new(t[a...b])
     end
   end
