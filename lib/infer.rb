@@ -14,6 +14,7 @@ module Infer
   autoload :Variable, ROOT + '/variable'
   autoload :Word,     ROOT + '/word'
 
+  autoload :Pager  , ROOT + '/pager'
   autoload :Printer, ROOT + '/printer'
 
   autoload :Grammar, ROOT + '/grammar'

@@ -8,6 +8,8 @@ require_relative '../lib/infer'
 path = File.expand_path(ARGV.first)
 program = Infer::Prolog.program(File.read(path))
 
-program.proofs.each do |proof|
-  Infer::Prolog.execute_and_print(program, proof.expression)
+Infer::Pager.capture do
+  program.proofs.each do |proof|
+    Infer::Prolog.execute_and_print(program, proof.expression)
+  end
 end

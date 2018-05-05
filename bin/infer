@@ -13,6 +13,8 @@ main_lang = Infer::Language.new
 langs.each { |lang| main_lang.import(lang) }
 main_lang.syntax.generate_rules(main_lang)
 
-langs.flat_map(&:proofs).each do |proof|
-  proof.derive_and_print(main_lang)
+Infer::Pager.capture do
+  langs.flat_map(&:proofs).each do |proof|
+    proof.derive_and_print(main_lang)
+  end
 end
