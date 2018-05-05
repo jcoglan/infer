@@ -5,11 +5,12 @@ module Infer
     PAGER_ENV = { 'LESS' => 'FRSX', 'LV' => '-c' }
 
     def self.capture
-      if $stdout.isatty
-        new.tap { yield }.wait
-      else
-        yield
-      end
+      return yield unless $stdout.isatty
+
+      pager = new
+      yield
+      pager.wait
+    rescue Errno::EPIPE
     end
 
     attr_reader :input
