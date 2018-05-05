@@ -1,26 +1,27 @@
+require 'pathname'
 require 'set'
 
 module Infer
-  ROOT = File.expand_path('../infer', __FILE__)
+  ROOT = Pathname.new(File.expand_path('..', __FILE__)).join('infer')
 
-  autoload :Language, ROOT + '/language'
-  autoload :Relation, ROOT + '/relation'
-  autoload :Rule,     ROOT + '/rule'
-  autoload :State,    ROOT + '/state'
-  autoload :Syntax,   ROOT + '/syntax'
-  autoload :Proof,    ROOT + '/proof'
+  autoload :Language, ROOT.join('language')
+  autoload :Relation, ROOT.join('relation')
+  autoload :Rule,     ROOT.join('rule')
+  autoload :State,    ROOT.join('state')
+  autoload :Syntax,   ROOT.join('syntax')
+  autoload :Proof,    ROOT.join('proof')
 
-  autoload :Sequence, ROOT + '/sequence'
-  autoload :Variable, ROOT + '/variable'
-  autoload :Word,     ROOT + '/word'
+  autoload :Sequence, ROOT.join('sequence')
+  autoload :Variable, ROOT.join('variable')
+  autoload :Word,     ROOT.join('word')
 
-  autoload :Pager  , ROOT + '/pager'
-  autoload :Printer, ROOT + '/printer'
+  autoload :Pager  , ROOT.join('pager')
+  autoload :Printer, ROOT.join('printer')
 
-  autoload :Grammar, ROOT + '/grammar'
-  autoload :Parser,  ROOT + '/parser'
+  autoload :Grammar, ROOT.join('grammar')
+  autoload :Parser,  ROOT.join('parser')
 
-  autoload :Prolog, ROOT + '/prolog'
+  autoload :Prolog, ROOT.join('prolog')
 
   EXTENSIONS = ['', '.infer', '.md', '.txt']
 

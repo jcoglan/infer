@@ -1,13 +1,13 @@
 module Infer
   module Prolog
 
-    autoload :Builtin,        ROOT + '/prolog/builtin'
-    autoload :Compound,       ROOT + '/prolog/compound'
-    autoload :DefiniteClause, ROOT + '/prolog/definite_clause'
-    autoload :Int,            ROOT + '/prolog/int'
-    autoload :List,           ROOT + '/prolog/list'
-    autoload :Parser,         ROOT + '/prolog/parser'
-    autoload :Program,        ROOT + '/prolog/program'
+    autoload :Builtin,        ROOT.join('prolog', 'builtin')
+    autoload :Compound,       ROOT.join('prolog', 'compound')
+    autoload :DefiniteClause, ROOT.join('prolog', 'definite_clause')
+    autoload :Int,            ROOT.join('prolog', 'int')
+    autoload :List,           ROOT.join('prolog', 'list')
+    autoload :Parser,         ROOT.join('prolog', 'parser')
+    autoload :Program,        ROOT.join('prolog', 'program')
 
     class Language < Infer::Language
       def derive(target, state = State.new({}))
