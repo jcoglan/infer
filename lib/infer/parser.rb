@@ -4,16 +4,11 @@ module Infer
     def mk_language(t, a, b, el)
       blocks = el[1].elements.map(&:block)
 
-      langs  = blocks.grep(Language)
-      syntax = blocks.grep(Syntax)
-      rules  = blocks.grep(Rule)
-      proofs = blocks.grep(Proof)
-
       Language.new.tap do |lang|
-        langs.each  { |l| lang.import(l) }
-        syntax.each { |s| lang.add_syntax(s) }
-        rules.each  { |r| lang.add_rule(r) }
-        proofs.each { |p| lang.add_proof(p) }
+        blocks.grep(Language).each { |l| lang.import(l) }
+        blocks.grep(Syntax).each   { |s| lang.add_syntax(s) }
+        blocks.grep(Rule).each     { |r| lang.add_rule(r) }
+        blocks.grep(Proof).each    { |p| lang.add_proof(p) }
       end
     end
 
