@@ -1,7 +1,6 @@
 require 'set'
 
 module Infer
-
   ROOT = File.expand_path('../infer', __FILE__)
 
   autoload :Language, ROOT + '/language'
@@ -17,17 +16,12 @@ module Infer
 
   autoload :Printer, ROOT + '/printer'
 
-  autoload :Expression, ROOT + '/expression'
-  autoload :Grammar,    ROOT + '/grammar'
-  autoload :Parser,     ROOT + '/parser'
+  autoload :Grammar, ROOT + '/grammar'
+  autoload :Parser,  ROOT + '/parser'
 
   autoload :Prolog, ROOT + '/prolog'
 
   EXTENSIONS = ['', '.infer', '.md', '.txt']
-
-  def self.expr(text)
-    Expression.parse(text, :actions => Parser.new)
-  end
 
   def self.lang(pathname, options = {})
     pathname += EXTENSIONS.find { |ext| File.file?(pathname + ext) }
@@ -44,5 +38,4 @@ module Infer
   def self.print_derivation(derivation, options = {})
     Printer.new(derivation, options).print
   end
-
 end
